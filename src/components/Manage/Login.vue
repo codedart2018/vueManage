@@ -131,17 +131,12 @@
                                 this.mainMenu(res.data.menu)
                                 //追加路由菜单
                                 let routes = sessionRoutes(res.data.menu)
-                                for( let [ index, route ] of new Map( routes.map( ( item, i ) => [ i, item ] ) ) ) {
-                                    let key = this.$router.options.routes.length-1
-                                    this.$router.options.routes.splice(key, 0, route)
-                                }
 
                                 //重新追加权限路由
-//                                for (let route of routes) {
-//                                    this.$router.options.routes.push(route)
-//                                }
+                                for (let route of routes) {
+                                    this.$router.options.routes.push(route)
+                                }
                                 this.$router.addRoutes(routes)
-                                //this.$router.options.routes = routes
                                 this.$Message.success("登陆成功")
                                 //验证通过
                                 this.login_loading = true

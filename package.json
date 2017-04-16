@@ -6,7 +6,7 @@
     "private": true,
     "repository": {
         "type": "git",
-        "url": "https://github.com/myxingke/vueManage.git"
+        "url": "git+https://github.com/myxingke/vueManage.git"
     },
     "scripts": {
         "dev": "node build/dev-server.js",
@@ -14,8 +14,9 @@
     },
     "dependencies": {
         "async-validate": "^1.0.1",
+        "iview": "^2.0.0-rc.10",
         "vue": "^2.2.2",
-        "vue-router": "^2.2.0",
+        "vue-router": "^2.4.0",
         "vuex": "^2.2.1"
     },
     "devDependencies": {
@@ -64,5 +65,9 @@
         "> 1%",
         "last 2 versions",
         "not ie <= 8"
-    ]
+    ],
+    "bugs": {
+        "url": "https://github.com/myxingke/vueManage/issues"
+    },
+    "homepage": "https://github.com/myxingke/vueManage#readme"
 }

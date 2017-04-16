@@ -81,6 +81,7 @@ export default new Router({
 
 //动态循环菜单
 function eachMenu(menu = [], routes = []) {
+    //todo 判断原路由里有通配路由没，如果有T除掉
     if(menu.length <= 0) return routes
     for (let i = 0, l = menu.length; i < l; i++) {
         let item = menu[i]
