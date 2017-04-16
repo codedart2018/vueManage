@@ -12,15 +12,15 @@
 
                 <Form ref="formValidate" :model="formValidate" :rules="ruleValidate">
                     <Form-item prop="username">
-                        <Input type="text" v-model="formValidate.username" placeholder="帐号"></Input>
+                        <Input type="text" v-model="formValidate.username" placeholder="帐号" @on-enter="handleSubmit('formValidate')"></Input>
                     </Form-item>
 
                     <Form-item prop="password">
-                        <Input type="password" v-model="formValidate.password" placeholder="密码"></Input>
+                        <Input type="password" v-model="formValidate.password" placeholder="密码" @on-enter="handleSubmit('formValidate')"></Input>
                     </Form-item>
 
                     <Form-item prop="code" class="">
-                        <Input type="text" v-model="formValidate.code" placeholder="验证码"></Input>
+                        <Input type="text" v-model="formValidate.code" placeholder="验证码" @on-enter="handleSubmit('formValidate')"></Input>
                         <img :src="verifyUrl" @click="refreshVerify()" class="code-img" title="点击切换验证码">
                     </Form-item>
 
