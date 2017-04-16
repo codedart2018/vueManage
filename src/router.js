@@ -1,3 +1,7 @@
+/**
+ * Created by truncate on 2017/4/12.
+ * todo 2.4 版本前 addRouter 有问题 详见README.md 说明 目前退出没有把动态加入路由给删除掉
+ */
 import Vue from 'vue'
 import Router from 'vue-router'
 
