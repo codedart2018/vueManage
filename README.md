@@ -20,19 +20,19 @@ npm run build --report
 
 ### 说明
 我也是一枚菜鸟，JS 前端写的渣逼。知道 vue 也有一年多时间了。最近才下定决心用它来写个自己的项目。后端我是用PHP 开发的
-因为PHP框架是自己写的 还在完善中无法提供源码。我自己写得烂得渣一逼欢迎大家提意见！！
+因为PHP框架是自己写的 还在完善中无法提供源码。但面我提供API了，后面所有功能出来都将会一一的更新线上API。我自己写得烂得渣一逼欢迎大家提意见！！
 
 ### 前台:
-   > vue-cli 
-   > vue 
-   > vue-router 
-   > vuex 
-   > iview
+   > vue-cli \
+   > vue \
+   > vue-router \ 
+   > vuex \
+   > iview \
    > axios
 
 ### 后台:
-   > apache 
-   > PHP
+   > apache \
+   > PHP \
    > mysql redis
    
 ### API
