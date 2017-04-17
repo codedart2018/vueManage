@@ -38,7 +38,7 @@ npm run build --report
 ### API
    > 之前没有提供API 现在我补上了 \
    > 把项目里的 http://www.hphp.cn 替换成 http://api.yongchuan.cc 
-   > 我后端是没有开启跨域的，只有你们自己 把 config 里的 proxyTable 配置好即可
+   > 我后端是没有开启跨域的，只有你们自己 把 config 里的 proxyTable 配置好即可 \
    > 登陆帐号 admin 登陆密码 123456 验证码必填 但可以不填正确。
    
 
