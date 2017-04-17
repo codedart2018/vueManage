@@ -51,7 +51,7 @@ npm run build --report
 
 ### 2.4 路由的坑:
    > 2.4 动态路由无论怎么追加都在通配路由后面导致登陆后取到的路由点击404页面。\
-   > 我提的问题 https://github.com/vuejs/vue-router/issues/1341\
+   > 我提的问题 https://github.com/vuejs/vue-router/issues/1341 \
    > 解决方法 先不要安装路由 进入node_modules 单独安装
  ```
  cd node_modules
