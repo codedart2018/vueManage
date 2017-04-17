@@ -1,10 +1,11 @@
 <template>
     <div class="hello">
         <h1>{{ msg }}</h1>
-        <h2>Essential Links</h2>
+        <h2>这个页面是我写测试用的</h2>
         <div class="ht">
             <router-link to="/manage/iview">Iview</router-link>
             <router-link to="/manage/validate">validator</router-link>
+            <router-link to="/state">State</router-link>
             组件点击事件
             <my-button @click.native="buttonClick"></my-button>
         </div>

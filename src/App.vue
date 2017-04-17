@@ -6,7 +6,8 @@
 
 <script>
     import Http from './libs/http'
-    import {mapMutations} from 'vuex'
+    import {mapActions} from 'vuex'
+    import {filterRouters} from './router'
 
     export default {
         name: 'app',
@@ -16,22 +17,32 @@
             }
         },
         methods: {
-            ...mapMutations(['delMainMenu', 'userOut']),
+            ...mapActions(['delMainMenu', 'userOut']),
             verify_login() {
                 let token = this.$store.state.User.token
                 let uid = this.$store.state.User.user_info.uid
+                let menu = this.$store.state.mainMenu
                 this.request('VerifyLogin', {uid: uid, token: token}).then((res) => {
                     if (!res.status) {
+                        //let new_router = filterRouters(this.$router.options.routes, menu);
+                        //this.$router.options.routes = new_router;
                         //删除登陆的一切信息
-                        this.delMainMenu()
-                        this.userOut()
+                        this.delMainMenu(this)
+                        this.userOut(this)
                         this.$router.push({path: '/login'})
                         this.$Message.error(res.msg)
                     }
                 })
             }
         },
-        mixins: [Http]
+        mixins: [Http],
+        watch: {
+            '$route' (to, from) {
+                if(to.path == '/login') {
+
+                }
+            }
+        },
     }
 </script>
 

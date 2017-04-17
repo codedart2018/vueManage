@@ -52,9 +52,9 @@
 
 <script>
     import {canvas} from '../../assets/js/canvas/canvas_login'
-    import { mapMutations } from 'vuex'
+    import { mapActions } from 'vuex'
     import Http from '../../libs/http'
-    import {sessionRoutes} from '../../router'
+    import {sessionRouters, filterRouters} from '../../router'
 
     export default {
         beforeCreate: function () {
@@ -114,7 +114,7 @@
 
         },
         methods: {
-            ...mapMutations(['mainMenu', 'userLogin']),
+            ...mapActions(['mainMenu', 'userLogin']),
             showAccount() {
                 this.scan = true
                 this.account = false
@@ -130,7 +130,7 @@
                             if (res.status) {
                                 this.mainMenu(res.data.menu)
                                 //追加路由菜单
-                                let routes = sessionRoutes(res.data.menu)
+                                let routes = sessionRouters(res.data.menu)
 
                                 //重新追加权限路由
                                 for (let route of routes) {
@@ -172,7 +172,17 @@
         mounted() {
             canvas();
             //this.myMethod();
-            console.log(this.$router.options.routes)
+            //console.log(this.$router.options.routes)
+            let x = [{
+                path: '/state',
+                name: 'state',
+                meta: {
+                    title: 'state',
+                    routeAuth: false
+                },
+                hidden: true
+            }]
+            //filterRouters(this.$router.options.routes, x);
         },
         mixins: [Http],
         components: {

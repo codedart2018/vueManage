@@ -100,7 +100,8 @@
     //引入公共 main
     import commonMain from "./Common/Main.vue"
     import Http from '../libs/http'
-    import {mapMutations} from 'vuex'
+    import {mapActions, mapGetters} from 'vuex'
+    import {filterRouters} from '../router'
 
     export default {
         beforeCreate: function () {
@@ -120,18 +121,23 @@
         },
         mounted() {
             this.user = this.$store.state.User.user_info
-            console.log(this.$router.options.routes);
+            //console.log(this.$router.options.routes);
         },
         methods: {
-            ...mapMutations(['delMainMenu', 'userOut']),
+            ...mapActions(['delMainMenu', 'userOut']),
             returnMain() {
                 this.openNames = ["0"]
             },
             topRightDropDown(name) {
                 if (name == 'out') {
+                    let menu = this.$store.state.mainMenu
+                    console.log(menu)
+                    let new_router = filterRouters(this.$router.options.routes, menu);
+                    console.log(new_router)
+                    this.$router.options.routes = new_router;
                     //删除登陆的一切信息
-                    this.delMainMenu()
-                    this.userOut()
+                    this.delMainMenu(this)
+                    this.userOut(this)
                     this.$router.push({path: '/login'})
                     this.$Message.success("退出成功")
                 }

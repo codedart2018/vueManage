@@ -14,7 +14,9 @@ import Iview from '@/components/Iview'
 
 Vue.use(Router)
 
-//获取token
+/**
+ * 获取token
+ */
 let token = window.localStorage.getItem('token')
 if(token) {
     //取出菜单
@@ -24,7 +26,10 @@ if(token) {
     var Menu = []
 }
 
-// 后置追加路由 注通配路由应该最后加入
+/**
+ * 后置追加路由 注通配路由应该最后加入
+ * @type {[*]}
+ */
 const afterRouter = [
     {
         path: '*', //其他页面，强制跳转到登录页面
@@ -38,7 +43,10 @@ const afterRouter = [
     }
 ]
 
-// 默认路由 带后台取出的路由
+/**
+ * 默认路由 带后台取出的路由
+ * @type {[*]}
+ */
 const router =[
     {
         path: '/',
@@ -59,6 +67,7 @@ const router =[
         component: Login,
         hidden: true
     },
+    //以下我测试用的路由
     {
         path: '/manage/',
         component: Manage,
@@ -72,10 +81,22 @@ const router =[
             { path: 'validate', component: Validate, name: '权限管理' }
         ]
     },
-    ...sessionRoutes(Menu)
+    {
+        path: '/state',
+        component: resolve => require(['./test/store.vue'], resolve),
+        name: 'state',
+        meta: {
+            title: 'state',
+            routeAuth: false
+        },
+        hidden: true
+    },
+    ...sessionRouters(Menu)
 ]
 
-//导出路由
+/**
+ * 导出路由
+ */
 export default new Router({
     path: '/',
     mode: 'history',
@@ -83,7 +104,12 @@ export default new Router({
     routes: router.concat(afterRouter)
 })
 
-//动态循环菜单
+/**
+ * 动态循环菜单
+ * @param menu 菜单
+ * @param routes 路由
+ * @returns {Array}
+ */
 function eachMenu(menu = [], routes = []) {
     if(menu.length <= 0) return routes
     for (let i = 0, l = menu.length; i < l; i++) {
@@ -107,7 +133,32 @@ function eachMenu(menu = [], routes = []) {
     return routes
 }
 
-export function sessionRoutes(menu = [], routes = []) {
+/**
+ * 导出循环处理结果
+ * @param menu 菜单
+ * @param routes 路由
+ * @returns {Array}
+ */
+export function sessionRouters(menu = [], routes = []) {
     routes = eachMenu(menu)
     return routes
+}
+
+/**
+ * 导出过滤路由结果
+ * @param old 原路由
+ * @param routes 要过滤的路由
+ */
+export function filterRouters(old = [], routes = []) {
+    if(old.length == 0 || routes.length == 0) return []
+    var new_routes = []
+    //for (let [index, route] of new Map(old.map((item, i) => [i, item]))) { }
+    for (let route of old){
+        for(let tmp of routes) {
+            if(route.path != tmp.path) {
+                new_routes.push(route)
+            }
+        }
+    }
+    return new_routes
 }
