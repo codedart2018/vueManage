@@ -131,9 +131,7 @@
             topRightDropDown(name) {
                 if (name == 'out') {
                     let menu = this.$store.state.mainMenu
-                    console.log(menu)
-                    let new_router = filterRouters(this.$router.options.routes, menu);
-                    console.log(new_router)
+                    let new_router = filterRouters(this.$router.options.routes, [menu]);
                     this.$router.options.routes = new_router;
                     //删除登陆的一切信息
                     this.delMainMenu(this)
