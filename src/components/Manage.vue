@@ -13,13 +13,17 @@
                     <Icon type="laptop"></Icon>
                     <router-link to="/manage/" class="menu-a">管理控制台</router-link>
                 </li>
+                <li class="li-border">
+                    <Icon type="android-menu"></Icon>
+                    <router-link to="/manage/" class="menu-a">快捷面板</router-link>
+                </li>
             </ul>
             </Col>
             <Col span="12">
             <ul class="bar-ul pull-right">
                 <li class="li-border">
                     <Icon type="ios-bell" class="bell"></Icon>
-                    <span class="bell-num">0</span>
+                    <span class="bell-num">310</span>
                 </li>
                 <li class="li-border">
                     <Dropdown placement="bottom-end" @on-click="topRightDropDown">
@@ -34,6 +38,7 @@
                         </Dropdown-menu>
                     </Dropdown>
                 </li>
+                <li class="li-border">客服工单</li>
                 <li class="li-border">帮助文档</li>
                 <li class="li-border user">
                     <div class="avatar" style="background-image: url('https://avatars.githubusercontent.com/u/12706830?v=3')"></div>
@@ -49,7 +54,7 @@
                         </Dropdown-menu>
                     </Dropdown>
                 </li>
-                <li></li>
+                <li>皮肤颜色</li>
             </ul>
             </Col>
             </Col>
