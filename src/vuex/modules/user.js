@@ -1,6 +1,9 @@
 /**
  * Created by truncate on 2017/3/27.
  */
+
+import * as types from '../mutation-types'
+
 const state = {
     user_info: JSON.parse(window.localStorage.getItem('user_info')) || {},
     token: window.localStorage.getItem('token') || ''
@@ -8,19 +11,18 @@ const state = {
 
 const mutations = {
     //登陆
-    userLogin (state, {user_info, token}) {
+    [types.USER_LOGIN] (state, { user_info, token }) {
         window.localStorage.setItem('user_info', JSON.stringify(user_info))
         window.localStorage.setItem('token', token)
-        Object.assign(state.user_info, user_info)
-        //TODO 有问题
-        //Object.assign(state.token, token)
+        state.user_info = user_info
+        state.token = token
     },
     //退出
-    userOut (state) {
+    [types.USER_OUT] (state) {
         window.localStorage.removeItem('user_info')
         window.localStorage.removeItem('token')
-        Object.assign(state.user_info, {})
-        Object.assign(state.token, '')
+        state.user_info = {}
+        state.token = ''
     }
 }
 

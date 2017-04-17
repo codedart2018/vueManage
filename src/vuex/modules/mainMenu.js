@@ -1,23 +1,22 @@
 /**
  * Created by truncate on 2017/4/12.
  */
+import * as types from '../mutation-types'
 
-const state = {}
+const state = {
+    mainMenu: JSON.parse(window.localStorage.getItem('mainMenu')) || {}
+}
 
 const mutations = {
-    state: JSON.parse(window.localStorage.getItem('mainMenu')) || {},
-    //加载所有菜单
-    mainMenu (state, menu) {
+    //所有菜单
+    [types.MAIN_MENU] (state, menu) {
         window.localStorage.setItem('mainMenu', JSON.stringify(menu))
-        Object.assign(state, menu)
+        state.mainMenu = menu
     },
-    //添加菜单
-    addMainMenu (state, { menu }) {
-
-    },
-    delMainMenu (state) {
+    [types.DEL_MAIN_MENU] (state, menu) {
         window.localStorage.removeItem('mainMenu')
-        Object.assign(state, {})
+        window.localStorage.removeItem('mainMenu')
+        state.mainMenu = menu
     }
 }
 
