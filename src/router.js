@@ -172,7 +172,7 @@ export function filterRouters(old = [], routes = []) {
     //for (let [index, route] of new Map(old.map((item, i) => [i, item]))) { }
     for (let route of old){
         for(let tmp of routes) {
-            if(route.path != tmp.path) {
+            if(route.name != tmp.name) {
                 new_routes.push(route)
             }
         }
