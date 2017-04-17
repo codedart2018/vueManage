@@ -25,7 +25,7 @@ npm run build --report
 ### 前台:
    > vue-cli \
    > vue \
-   > vue-router \ 
+   > vue-router \
    > vuex \
    > iview \
    > axios
