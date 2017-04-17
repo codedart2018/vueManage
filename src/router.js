@@ -112,9 +112,8 @@ export default new Router({
  */
 function eachMenu(menu = [], routes = []) {
     if(menu.length <= 0) return routes
-    for (let i = 0, l = menu.length; i < l; i++) {
-        let item = menu[i]
-        if (item.path && item.component) {
+    for (let item of menu){
+        if(item.path && item.component) {
             let arr = {
                 id: item.id,
                 icon: item.icon,
@@ -130,6 +129,24 @@ function eachMenu(menu = [], routes = []) {
             routes.push(arr)
         }
     }
+    // for (let i = 0, l = menu.length; i < l; i++) {
+    //     let item = menu[i]
+    //     if (item.path && item.component) {
+    //         let arr = {
+    //             id: item.id,
+    //             icon: item.icon,
+    //             name: item.name,
+    //             parent: item.parent,
+    //             path: item.path,
+    //             url: item.url,
+    //             component: resolve => require([`${item.component}`], resolve)
+    //         };
+    //         if(item.children.length != 0) {
+    //             arr.children = eachMenu(item.children)
+    //         }
+    //         routes.push(arr)
+    //     }
+    // }
     return routes
 }
 
