@@ -40,6 +40,7 @@
                 </li>
                 <li class="li-border">客服工单</li>
                 <li class="li-border">帮助文档</li>
+                <li class="li-border">缓存清除</li>
                 <li class="li-border user">
                     <div class="avatar" style="background-image: url('https://avatars.githubusercontent.com/u/12706830?v=3')"></div>
                     <Dropdown placement="bottom-end" @on-click="topRightDropDown">

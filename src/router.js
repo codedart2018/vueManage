@@ -123,7 +123,7 @@ function eachMenu(menu = [], routes = []) {
                 url: item.url,
                 component: resolve => require([`${item.component}`], resolve)
             };
-            if(item.children.length != 0) {
+            if(item.children && item.children.length != 0) {
                 arr.children = eachMenu(item.children)
             }
             routes.push(arr)
