@@ -39,7 +39,7 @@ const afterRouter = [
         },
         //redirect: '/login'
         component: NotFound,
-        hidden: true
+        display: 0
     }
 ]
 
@@ -56,7 +56,7 @@ const router =[
         },
         name: 'Hello',
         component: Hello,
-        hidden: true
+        display: 0
     },
     {
         path: '/login', //登录
@@ -65,7 +65,7 @@ const router =[
             routeAuth: false
         },
         component: Login,
-        hidden: true
+        display: 0
     },
     //以下我测试用的路由
     {
@@ -89,7 +89,7 @@ const router =[
             title: 'state',
             routeAuth: false
         },
-        hidden: true
+        display: 0
     },
     ...sessionRouters(Menu)
 ]
@@ -121,6 +121,7 @@ function eachMenu(menu = [], routes = []) {
                 parent: item.parent,
                 path: item.path,
                 url: item.url,
+                display: item.display,
                 component: resolve => require([`${item.component}`], resolve)
             };
             if(item.children && item.children.length != 0) {

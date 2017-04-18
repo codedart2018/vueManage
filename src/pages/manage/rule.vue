@@ -2,7 +2,7 @@
     <div>
         <Row class="mb-15">
             <Col span="12">
-            <Button type="success"><Icon type="plus-round"></Icon>&nbsp;成功按钮</Button>
+            <router-link to="/manage/add_rule"><Button type="success"><Icon type="plus-round"></Icon>&nbsp;成功按钮</Button></router-link>
             </Col>
             <Col span="12">col-12</Col>
         </Row>

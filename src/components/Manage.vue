@@ -74,14 +74,13 @@
                         </div>
                     </li>
 
-                    <template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
+                    <template v-for="(item,index) in $router.options.routes" v-if="item.display == 1">
                         <Submenu :name="index">
                             <template slot="title">
                                 <Icon type="ios-paper"></Icon>
                                 {{item.name}}
                             </template>
-                            <Menu-item v-bind:name="index+9999+key" v-for="(child, key) in item.children"
-                                       v-if="!child.hidden" class="menu-li">
+                            <Menu-item v-bind:name="index+9999+key" v-for="(child, key) in item.children" v-if="child.display == 1" class="menu-li">
                                 <router-link :to="child.path" class="li-a">{{child.name}}</router-link>
                             </Menu-item>
                         </Submenu>
@@ -127,6 +126,7 @@
         },
         mounted() {
             this.user = this.$store.state.User.user_info
+            //console.log(this.$router.options.routes)
         },
         methods: {
             ...mapActions(['delMainMenu', 'userOut']),
