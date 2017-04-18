@@ -65,7 +65,7 @@ npm run build --report
 
 ### 截图
 
-##### PHP 后端模拟菜单
+##### PHP 后端模拟菜单(暂时模拟输出)
 
 ![后端模拟菜单](./demo/images/menu_arr.jpg)
 
