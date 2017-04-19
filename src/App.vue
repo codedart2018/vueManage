@@ -5,7 +5,6 @@
 </template>
 
 <script>
-    import Http from './libs/http'
     import {mapActions} from 'vuex'
     import {filterRouters} from './router'
 
@@ -35,7 +34,6 @@
                 })
             }
         },
-        mixins: [Http],
         watch: {
             '$route' (to, from) {
                 if(to.path == '/login') {

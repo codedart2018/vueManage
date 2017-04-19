@@ -104,7 +104,6 @@
 <script>
     //引入公共 main
     import commonMain from "./Common/Main.vue"
-    import Http from '../libs/http'
     import {mapActions, mapGetters} from 'vuex'
     import {filterRouters} from '../router'
 
@@ -157,7 +156,6 @@
                 this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
             }
         },
-        mixins: [Http],
         beforeDestroy: function () {
 
         }

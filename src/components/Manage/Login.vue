@@ -53,7 +53,6 @@
 <script>
     import {canvas} from '../../assets/js/canvas/canvas_login'
     import { mapActions } from 'vuex'
-    import Http from '../../libs/http'
     import {sessionRouters, filterRouters} from '../../router'
 
     export default {
@@ -184,7 +183,6 @@
             }]
             //filterRouters(this.$router.options.routes, x);
         },
-        mixins: [Http],
         components: {
 
         },

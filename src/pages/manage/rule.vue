@@ -236,6 +236,17 @@
                 this.$refs[name].resetFields();
             }
         },
-        mixins: [Http]
+        //mixins: [Http],
+        mounted() {
+            this.request('AddRule', this.formValidate).then((res) => {
+                if (res.status) {
+                    this.modal_rule = false
+                    this.$Message.success('提交成功!');
+                } else {
+                    this.$Message.error(res.msg)
+                }
+            })
+            console.log(this.$msg);
+        }
     }
 </script>

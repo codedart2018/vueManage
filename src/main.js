@@ -10,10 +10,12 @@ import 'iview/dist/styles/iview.css' // 使用 IVIEW CSS
 import './assets/style/customize/common.less'; // 定制公共 less
 import Plugin from './plugin/toast' // 定制吐司
 import Util from './libs/util' // 工具
+import Http from './libs/http'; //请求工具
 
 Vue.use(Plugin)
-Vue.config.productionTip = false
+Vue.use(Http)
 Vue.use(IView)
+Vue.config.productionTip = false
 
 Router.beforeEach(({meta, path}, from, next) => {
     Util.title(meta.title);
