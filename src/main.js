@@ -7,9 +7,9 @@ import Router from './router.js'
 import Store from './vuex/store/index'
 import IView from 'iview'
 import 'iview/dist/styles/iview.css' // 使用 IVIEW CSS
-import './assets/style/customize/common.less'; //定制公共 less
-import Plugin from './plugin/toast' //定制吐司
-import Util from './libs/util' //工具
+import './assets/style/customize/common.less'; // 定制公共 less
+import Plugin from './plugin/toast' // 定制吐司
+import Util from './libs/util' // 工具
 
 Vue.use(Plugin)
 Vue.config.productionTip = false

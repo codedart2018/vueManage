@@ -26,19 +26,14 @@ const apiHttp = {
                 console.log("url 错误", "返回结果：err = ", "无法请求，无效的请求！", "\n");
             }
         },
-        handelResponse(res, cb, errCb) {
-            if (res.code == 200) {
-                cb(res.data)
-            } else {
-                if (typeof errCb == 'function') {
-                    errCb()
-                }
-                this.handleError(res)
-            }
-        },
         apiPost(url, data) {
             return new Promise((resolve, reject) => {
                 AxiosInst.post(url, data).then((response) => {
+                    if(response.data == null) {
+                        console.log("接口输出异常...")
+                        this.$Message.error("接口输出异常...")
+                        return
+                    }
                     resolve(response.data)
                 }).catch((response) => {
                     console.log('Customize Notice', response)
@@ -51,6 +46,11 @@ const apiHttp = {
                 AxiosInst.get(url, {
                     params: data
                 }).then((response) => {
+                    if(response.data == null) {
+                        console.log("接口输出异常...")
+                        this.$Message.error("接口输出异常...")
+                        return
+                    }
                     resolve(response.data)
                 }).catch((response) => {
                     console.log('Customize Notice', response)

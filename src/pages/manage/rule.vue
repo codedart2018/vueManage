@@ -89,6 +89,8 @@
 
 
 <script>
+    import Http from '../../libs/http'
+
     export default {
         data () {
             return {
@@ -217,8 +219,14 @@
                 this.$refs[name].validate((valid) => {
                     if (valid) {
                         console.log(this.formValidate)
-                        this.modal_rule = false
-                        this.$Message.success('提交成功!');
+                        this.request('AddRule', this.formValidate).then((res) => {
+                            if (res.status) {
+                                this.modal_rule = false
+                                this.$Message.success('提交成功!');
+                            } else {
+                                this.$Message.error(res.msg)
+                            }
+                        })
                     } else {
                         this.$Message.error('表单验证失败!');
                     }
@@ -227,6 +235,7 @@
             handleReset (name) {
                 this.$refs[name].resetFields();
             }
-        }
+        },
+        mixins: [Http]
     }
 </script>
