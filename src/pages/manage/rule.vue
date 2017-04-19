@@ -2,7 +2,8 @@
     <div>
         <Row class="mb-15">
             <Col span="12">
-            <router-link to="/manage/add_rule"><Button type="success"><Icon type="plus-round"></Icon>&nbsp;成功按钮</Button></router-link>
+            <router-link to="/manage/add_rule"><Button type="success"><Icon type="plus-round"></Icon>&nbsp;添加节点</Button></router-link>
+            <Button type="primary" @click="modal_rule = true"><Icon type="plus-round"></Icon>&nbsp;添加节点</Button></Button>
             </Col>
             <Col span="12">col-12</Col>
         </Row>
@@ -10,10 +11,75 @@
             <Table border :columns="columns4" :data="data1"></Table>
         </Row>
         <Row type="flex" justify="end">
-            <Page :total="1000" :page-size=15 :page-size-opts="[15, 30, 45, 60]" show-total show-sizer show-sizer show-elevator></Page>
+            <Page :total="1000" :page-size="15" :page-size-opts="[15, 30, 45, 60]" show-total show-sizer show-sizer show-elevator></Page>
         </Row>
+
+        <!--Modal 对话框-->
+        <Modal v-model="modal_rule" title="添加权限节点" class-name="customize-modal-center">
+            <div slot="header" class="ivu-modal-header-inner">{{modal_title}}</div>
+            <div>
+                <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
+                    <Form-item label="所属模块">
+                        <Select v-model="formValidate.select" placeholder="请选择">
+                            <Option value="beijing">管理</Option>
+                            <Option value="shanghai">上海市</Option>
+                            <Option value="shenzhen">深圳市</Option>
+                        </Select>
+                    </Form-item>
+                    <Form-item label="节点名称" prop="name">
+                        <Input v-model="formValidate.name" placeholder="请填写节点名称"></Input>
+                    </Form-item>
+                    <Form-item label="节点图标" prop="icon">
+                        <Input v-model="formValidate.icon" placeholder="请填写节点图标"></Input>
+                    </Form-item>
+                    <Form-item label="控制器名称" prop="controller">
+                        <Input v-model="formValidate.controller" placeholder="请填写控制器名称"></Input>
+                    </Form-item>
+                    <Form-item label="方法名称" prop="action">
+                        <Input v-model="formValidate.action" placeholder="请填写方法名称"></Input>
+                    </Form-item>
+                    <Form-item label="path路径" prop="path">
+                        <Input v-model="formValidate.path" placeholder="请填写path路径"></Input>
+                        <div class="ng-mb-15 label-color">path路径vue前端路由路径</div>
+                    </Form-item>
+                    <Form-item label="组件地址" prop="component">
+                        <Input v-model="formValidate.component" placeholder="请填写组件地址"></Input>
+                        <div class="ng-mb-15 label-color">填写了path路径请一定填写组件地址,且地址是相对地址</div>
+                    </Form-item>
+                    <Form-item label="排序" prop="soft">
+                        <Input v-model="formValidate.soft" placeholder="只能填写正数,数值越大越靠前"></Input>
+                    </Form-item>
+                    <Form-item label="是否显示" prop="display">
+                        <Radio-group v-model="formValidate.display">
+                            <Radio label="1">显示</Radio>
+                            <Radio label="0">隐藏</Radio>
+                        </Radio-group>
+                    </Form-item>
+                    <Form-item label="节点认证" prop="auth">
+                        <Radio-group v-model="formValidate.auth">
+                            <Radio label="1">认证</Radio>
+                            <Radio label="0">拒绝</Radio>
+                        </Radio-group>
+                    </Form-item>
+                    <Form-item label="节点状态" prop="status">
+                        <Radio-group v-model="formValidate.status">
+                            <Radio label="1">显示</Radio>
+                            <Radio label="0">锁定</Radio>
+                        </Radio-group>
+                    </Form-item>
+                    <Form-item label="节点说明" prop="desc">
+                        <Input v-model="formValidate.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入..."></Input>
+                    </Form-item>
+                </Form>
+            </div>
+            <div slot="footer">
+                <Button type="primary" @click="handleSubmit('formValidate')">提交</Button>
+                <Button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button>
+            </div>
+        </Modal>
     </div>
 </template>
+
 <style scoped>
     .mb-15 {
         margin-bottom: 15px;
@@ -21,10 +87,12 @@
 
 </style>
 
+
 <script>
     export default {
         data () {
             return {
+                modal_title: '添加权限节点',
                 columns4: [
                     {
                         type: 'selection',
@@ -42,10 +110,6 @@
                     {
                         title: 'URL',
                         key: 'url'
-                    },
-                    {
-                        title: '左侧菜单',
-                        key: 'address'
                     },
                     {
                         title: '是否显示',
@@ -95,7 +159,6 @@
                         name: '角色权限',
                         url: '/api/manage/auth',
                         path: 'auth',
-                        address: '北京市朝阳区芍药居',
                         display: 2,
                         status: 1,
                         auth: 1
@@ -104,12 +167,65 @@
                         name: '权限节点',
                         url: '/api/manage/rule',
                         path: 'rule',
-                        address: '北京市海淀区西二旗',
                         display: 1,
                         status: 2,
                         auth: 0
                     }
-                ]
+                ],
+                formValidate: {
+                    name: '',
+                    icon: '',
+                    controller: '',
+                    action: '',
+                    path: '',
+                    component: '',
+                    display: 0,
+                    status: 1,
+                    auth: 1,
+                    soft: 0,
+                    desc: ''
+                },
+                ruleValidate: {
+                    name: [
+                        { required: true, message: '节点名称不能为空', trigger: 'blur' },
+                        { type: 'string', min: 2, message: '节点名称不能少于2个字符', trigger: 'blur' }
+                    ],
+                    controller: [
+                        { type: 'string', message: '控制器只能英文前小后驼峰', trigger: 'blur', pattern: /^[a-zA-z]+$/}
+                    ],
+                    action: [
+                        { type: 'string', message: '方法只能是英文前小后驼峰', trigger: 'blur', pattern: /^[a-zA-z]+$/}
+                    ]
+                },
+                modal_rule: false
+            }
+        },
+        methods: {
+            ok (name) {
+                this.$refs[name].validate((valid) => {
+                    if (valid) {
+                        this.$Message.success('提交成功!');
+                    } else {
+                        this.$Message.error('表单验证失败!');
+                    }
+                })
+            },
+            cancel () {
+                this.$Message.info('点击了取消');
+            },
+            handleSubmit (name) {
+                this.$refs[name].validate((valid) => {
+                    if (valid) {
+                        console.log(this.formValidate)
+                        this.modal_rule = false
+                        this.$Message.success('提交成功!');
+                    } else {
+                        this.$Message.error('表单验证失败!');
+                    }
+                })
+            },
+            handleReset (name) {
+                this.$refs[name].resetFields();
             }
         }
     }

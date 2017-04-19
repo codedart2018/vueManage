@@ -158,5 +158,8 @@
             }
         },
         mixins: [Http],
+        beforeDestroy: function () {
+
+        }
     }
 </script>
