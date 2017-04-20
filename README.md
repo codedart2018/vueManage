@@ -41,6 +41,10 @@ npm run build --report
    > 我后端是没有开启跨域的，只有你们自己 把 config 里的 proxyTable 配置好即可 \
    > 登陆帐号 admin 登陆密码 123456 验证码必填 但可以不填正确。
    
+#### 关于跨域
+ > 我本地不论访问 www.php.cn 还是 api.yongchuan.cc 都是没有问题的。但有朋友反应无法跨域，我暂时后端开启了跨域，但不定哪天关闭了
+ 建议装一个跨域插件 把 api.yongchuan.cc 规则加进去就可以了。 \
+ > 插件地址：https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi
 
 ### 实现功能
 * 登录
@@ -64,11 +68,6 @@ npm run build --report
  > 目前官方没有路由删除掉。等官方下一个版本看是否有删除路由功能。暂时退出我自己把登陆追加进去的路由给删除了。
  
 #### 亲测了打包后动态路由照样可以使用，不用担心路径问题！不用担心路径问题！说两遍。
-
-#### 关于跨域
- > 我本地不论访问 www.php.cn 还是 api.yongchuan.cc 都是没有问题的。但有朋友反应无法跨域，我暂时后端开启了跨域，但不定哪天关闭了
- 建议装一个跨域插件 把 api.yongchuan.cc 规则加进去就可以了。 \
- > 插件地址：https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi
 
 ### 截图
 
