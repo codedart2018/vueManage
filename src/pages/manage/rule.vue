@@ -47,7 +47,7 @@
                         <div class="ng-mb-15 label-color">填写了path路径请一定填写组件地址,且地址是相对地址</div>
                     </Form-item>
                     <Form-item label="排序" prop="soft">
-                        <Input v-model="formValidate.soft" placeholder="只能填写正数,数值越大越靠前"></Input>
+                        <Input type="text" v-model="formValidate.soft" placeholder="只能填写正数,数值越大越靠前"></Input>
                     </Form-item>
                     <Form-item label="是否显示" prop="display">
                         <Radio-group v-model="formValidate.display">
@@ -197,6 +197,9 @@
                     ],
                     action: [
                         { type: 'string', message: '方法只能是英文前小后驼峰', trigger: 'blur', pattern: /^[a-zA-z]+$/}
+                    ],
+                    soft: [
+                        { type: 'number', message: '排序只能填写正正数', trigger: 'blur'}
                     ]
                 },
                 modal_rule: false
@@ -238,15 +241,7 @@
         },
         //mixins: [Http],
         mounted() {
-            this.request('AddRule', this.formValidate).then((res) => {
-                if (res.status) {
-                    this.modal_rule = false
-                    this.$Message.success('提交成功!');
-                } else {
-                    this.$Message.error(res.msg)
-                }
-            })
-            console.log(this.$msg);
+
         }
     }
 </script>

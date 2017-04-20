@@ -66,7 +66,7 @@
                 <div class="sidebar-fold">
                     <Icon type="android-menu"></Icon>
                 </div>
-                <Menu width="auto" theme="dark" accordion :open-names="openNames">
+                <Menu width="auto" theme="dark" accordion :open-names="openNames" @on-select="abc">
                     <li class="ivu-menu-submenu">
                         <div class="ivu-menu-submenu-title" @click="returnMain">
                             <i class="ivu-icon ivu-icon-ios-home"></i>
@@ -143,6 +143,9 @@
                     this.$router.push({path: '/login'})
                     this.$Message.success("退出成功")
                 }
+            },
+            abc(name) {
+                console.log(name)
             }
         },
         components: {
