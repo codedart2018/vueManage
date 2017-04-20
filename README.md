@@ -67,7 +67,7 @@ npm run build --report
 
 #### 关于跨域
  > 我本地不论访问 www.php.cn 还是 api.yongchuan.cc 都是没有问题的。但有朋友反应无法跨域，我暂时后端开启了跨域，但不定哪天关闭了
- 建议装一个跨域插件 把 api.yongchuan.cc 规则加进去就可以了。
+ 建议装一个跨域插件 把 api.yongchuan.cc 规则加进去就可以了。 \
  > 插件地址：https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi
 
 ### 截图
