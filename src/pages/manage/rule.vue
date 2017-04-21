@@ -2,7 +2,6 @@
     <div>
         <Row class="mb-15">
             <Col span="12">
-            <router-link to="/manage/add_rule"><Button type="success"><Icon type="plus-round"></Icon>&nbsp;添加节点</Button></router-link>
             <Button type="primary" @click="modal_rule = true"><Icon type="plus-round"></Icon>&nbsp;添加节点</Button></Button>
             </Col>
             <Col span="12">col-12</Col>
@@ -11,7 +10,7 @@
             <Table border :columns="columns4" :data="data1"></Table>
         </Row>
         <Row type="flex" justify="end">
-            <Page :total="1000" :page-size="15" :page-size-opts="[15, 30, 45, 60]" show-total show-sizer show-sizer show-elevator></Page>
+            <Page :total="1000" :page-size="15" show-total show-elevator @on-change="changePage"></Page>
         </Row>
 
         <!--Modal 对话框-->
@@ -38,32 +37,41 @@
                     <Form-item label="方法名称" prop="action">
                         <Input v-model="formValidate.action" placeholder="请填写方法名称"></Input>
                     </Form-item>
-                    <Form-item label="path路径" prop="path">
+                    <Form-item label="路由路径" prop="path">
                         <Input v-model="formValidate.path" placeholder="请填写path路径"></Input>
                         <div class="ng-mb-15 label-color">path路径vue前端路由路径</div>
+                    </Form-item>
+                    <Form-item label="路由参数" prop="params">
+                        <Input v-model="formValidate.params" placeholder="多个参数请用半角逗号分隔"></Input>
                     </Form-item>
                     <Form-item label="组件地址" prop="component">
                         <Input v-model="formValidate.component" placeholder="请填写组件地址"></Input>
                         <div class="ng-mb-15 label-color">填写了path路径请一定填写组件地址,且地址是相对地址</div>
                     </Form-item>
-                    <Form-item label="排序" prop="soft">
-                        <Input type="text" v-model="formValidate.soft" placeholder="只能填写正数,数值越大越靠前"></Input>
+                    <Form-item label="排序" prop="sort">
+                        <Input type="text" v-model="formValidate.sort" placeholder="只能填写正数,数值越大越靠前" number></Input>
                     </Form-item>
-                    <Form-item label="是否显示" prop="display">
-                        <Radio-group v-model="formValidate.display">
-                            <Radio label="1">显示</Radio>
-                            <Radio label="0">隐藏</Radio>
-                        </Radio-group>
-                    </Form-item>
-                    <Form-item label="节点认证" prop="auth">
-                        <Radio-group v-model="formValidate.auth">
-                            <Radio label="1">认证</Radio>
-                            <Radio label="0">拒绝</Radio>
-                        </Radio-group>
-                    </Form-item>
+                    <Row>
+                        <Col span="12">
+                            <Form-item label="是否显示" prop="display">
+                                <Radio-group v-model="formValidate.display">
+                                    <Radio label="1">显示</Radio>
+                                    <Radio label="0">隐藏</Radio>
+                                </Radio-group>
+                            </Form-item>
+                        </Col>
+                        <Col span="12">
+                            <Form-item label="节点认证" prop="auth">
+                                <Radio-group v-model="formValidate.auth">
+                                    <Radio label="1">认证</Radio>
+                                    <Radio label="0">拒绝</Radio>
+                                </Radio-group>
+                            </Form-item>
+                        </Col>
+                    </Row>
                     <Form-item label="节点状态" prop="status">
                         <Radio-group v-model="formValidate.status">
-                            <Radio label="1">显示</Radio>
+                            <Radio label="1">正常</Radio>
                             <Radio label="0">锁定</Radio>
                         </Radio-group>
                     </Form-item>
@@ -180,11 +188,12 @@
                     controller: '',
                     action: '',
                     path: '',
+                    params: '',
                     component: '',
                     display: 0,
                     status: 1,
                     auth: 1,
-                    soft: 0,
+                    sort: 0,
                     desc: ''
                 },
                 ruleValidate: {
@@ -198,11 +207,12 @@
                     action: [
                         { type: 'string', message: '方法只能是英文前小后驼峰', trigger: 'blur', pattern: /^[a-zA-z]+$/}
                     ],
-                    soft: [
-                        { type: 'number', message: '排序只能填写正正数', trigger: 'blur'}
+                    sort: [
+                        { type: 'number', message: '排序只能填写正正数', trigger: 'blur'},
+                        { type: 'number', max: 9999, message: '排序最大9999', trigger: 'blur'},
                     ]
                 },
-                modal_rule: false
+                modal_rule: false,
             }
         },
         methods: {
@@ -237,10 +247,14 @@
             },
             handleReset (name) {
                 this.$refs[name].resetFields();
+            },
+            //分页切换页码
+            changePage (page) {
+                console.log(page)
             }
         },
-        //mixins: [Http],
         mounted() {
+            //服务端获取数据
 
         }
     }
