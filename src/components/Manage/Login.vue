@@ -172,16 +172,6 @@
             canvas();
             //this.myMethod();
             //console.log(this.$router.options.routes)
-            let x = [{
-                path: '/state',
-                name: 'state',
-                meta: {
-                    title: 'state',
-                    routeAuth: false
-                },
-                hidden: true
-            }]
-            //filterRouters(this.$router.options.routes, x);
         },
         components: {
 

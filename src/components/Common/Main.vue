@@ -60,7 +60,12 @@
                         <p>卡片内容</p>
                         <p>卡片内容</p>
                         <p>卡片内容</p>
-                        <p><router-link to="/manage/iview">什么鸡巴鬼</router-link></p>
+                        <p>
+                            <router-link to="/state" style="color: #000;">什么鸡巴鬼</router-link>
+                        </p>
+                        <p>
+                            <router-link :to="{ name: '你好', params: { id: 123 }}" style="color: #000;">什么鸡巴鬼</router-link>
+                        </p>
                     </Card>
                 </Col>
             </Row>

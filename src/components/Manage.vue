@@ -66,27 +66,18 @@
                 <div class="sidebar-fold">
                     <Icon type="android-menu"></Icon>
                 </div>
-                <Menu width="auto" theme="dark" accordion :open-names="openNames" @on-select="abc">
-                    <li class="ivu-menu-submenu">
-                        <div class="ivu-menu-submenu-title" @click="returnMain">
-                            <i class="ivu-icon ivu-icon-ios-home"></i>
-                            <router-link to="/manage/" class="menu-a">管理首页</router-link>
-                        </div>
-                    </li>
 
-                    <template v-for="(item,index) in $router.options.routes" v-if="item.display == 1">
-                        <Submenu :name="index">
-                            <template slot="title">
-                                <Icon type="ios-paper"></Icon>
-                                {{item.name}}
-                            </template>
-                            <Menu-item v-bind:name="index+9999+key" v-for="(child, key) in item.children" v-if="child.display == 1" class="menu-li">
-                                <router-link :to="child.path" class="li-a">{{child.name}}</router-link>
-                            </Menu-item>
-                        </Submenu>
-                    </template>
+                <Menu width="auto" theme="dark" >
+                    <Submenu :name="index" v-for="(item, index) in $router.options.routes" v-if="item.display == 1">
+                        <template slot="title">
+                            <Icon type="ios-paper"></Icon>
+                            {{item.name}}
+                        </template>
+                        <Menu-item v-bind:name="(index+9999)*(key+1)" v-for="(child, key) in item.children" v-if="child.display == 1">
+                            <span @click="goPath(child.name)">{{child.name}}</span>
+                        </Menu-item>
+                    </Submenu>
                 </Menu>
-
             </aside>
 
             <section class="content-container">
@@ -129,9 +120,6 @@
         },
         methods: {
             ...mapActions(['delMainMenu', 'userOut']),
-            returnMain() {
-                this.openNames = ["0"]
-            },
             topRightDropDown(name) {
                 if (name == 'out') {
                     let menu = this.$store.state.MainMenu.mainMenu
@@ -146,6 +134,10 @@
             },
             abc(name) {
                 console.log(name)
+            },
+            //编程式导航
+            goPath(name) {
+                this.$router.push({ name: name })
             }
         },
         components: {
