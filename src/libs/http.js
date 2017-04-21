@@ -11,7 +11,6 @@ class Http {
 }
 
 Http.install = function (Vue) {
-    Vue.prototype.$msg = 'Hello World';
 
     Vue.prototype.request = function (method, opts) {
         let m = methodMap[method]
@@ -66,6 +65,7 @@ Http.install = function (Vue) {
             })
         })
     }
+
 }
 
 export default Http

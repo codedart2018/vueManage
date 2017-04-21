@@ -45,6 +45,7 @@ const afterRouter = [
 
 /**
  * 默认路由 带后台取出的路由
+ * 后端取出来必须要有name 不然编程式导航会找不到路径
  * @type {[*]}
  */
 const router =[
@@ -76,15 +77,16 @@ const router =[
         meta: {
             title: '管理中心'
         },
+        display: 0,
         children: [
-            { path: 'iview', component: Iview, name: '角色管理' },
-            { path: 'validate', component: Validate, name: '权限管理' }
+            { path: 'iview', component: Iview, name: '角色管理', display: 1 },
+            { path: 'validate', component: Validate, name: '权限管理', display: 1 }
         ]
     },
     {
-        path: '/state',
+        path: '/state/:id?',
         component: resolve => require(['./test/store.vue'], resolve),
-        name: 'state',
+        name: '你好',
         meta: {
             title: 'state',
             routeAuth: false
@@ -119,11 +121,27 @@ function eachMenu(menu = [], routes = []) {
                 icon: item.icon,
                 name: item.name,
                 parent: item.parent,
-                path: item.path,
+                path: `${item.path}`,
                 url: item.url,
                 display: item.display,
                 component: resolve => require([`${item.component}`], resolve)
             };
+
+            //参数处理
+            if(item.params) {
+                let last_str = item.path.charAt(item.path.length - 1);
+                let tmp_str = ''
+                for(let p of item.params.split(",")) {
+                    tmp_str += "/:" + p + "?"
+                }
+                if(last_str == "/") {
+                    arr.path = arr.path + tmp_str.substr(1)
+                } else {
+                    arr.path = arr.path + tmp_str
+                }
+            }
+
+            //递归子菜单
             if(item.children && item.children.length != 0) {
                 arr.children = eachMenu(item.children)
             }
