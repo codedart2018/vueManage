@@ -101,6 +101,18 @@
 
     export default {
         data () {
+            //参数验证
+            const validateParams = (rule, value, callback) => {
+                if (value) {
+                    let reg = /^[a-zA-Z]+[,]?[a-zA-Z]+$/;
+                    if (!reg.test(value)) {
+                        callback(new Error('路由参数只能英文半角逗号'));
+                    } else {
+                        callback();
+                    }
+                }
+            }
+
             return {
                 modal_title: '添加权限节点',
                 columns4: [
@@ -210,7 +222,11 @@
                     sort: [
                         { type: 'number', message: '排序只能填写正正数', trigger: 'blur'},
                         { type: 'number', max: 9999, message: '排序最大9999', trigger: 'blur'},
+                    ],
+                    params: [
+                        { validator: validateParams, trigger: 'blur'}
                     ]
+
                 },
                 modal_rule: false,
             }
