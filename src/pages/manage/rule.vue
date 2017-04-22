@@ -267,16 +267,16 @@
             //分页切换页码
             changePage (page) {
                 console.log(page)
-                this.$router.beforeEach(({meta, path}, from, next) => {
-                    console.log(from)
-                    console.log(meta)
-                })
-                //this.$router.router.push({ name: 'user', params: { page: page }})
+                console.info(this.$router.currentRoute)
+                this.$router.push({ name: this.$router.currentRoute.name, query: { page: page }})
             }
         },
         mounted() {
             //服务端获取数据
-
+            console.log(this.$route.query)
+            console.info(this.$router)
+            console.log('deviceid: ' + this.$route.params.page);
+            console.log('deviceid: ' + this.$route);
         }
     }
 </script>

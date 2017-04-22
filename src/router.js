@@ -129,7 +129,7 @@ function eachMenu(menu = [], routes = []) {
                 component: resolve => require([`${item.component}`], resolve)
             };
 
-            //参数处理
+            //参数处理 todo 之前理解错了 地址栏参数获取是query
             if(item.params) {
                 let last_str = item.path.charAt(item.path.length - 1);
                 let tmp_str = ''
@@ -150,24 +150,7 @@ function eachMenu(menu = [], routes = []) {
             routes.push(arr)
         }
     }
-    // for (let i = 0, l = menu.length; i < l; i++) {
-    //     let item = menu[i]
-    //     if (item.path && item.component) {
-    //         let arr = {
-    //             id: item.id,
-    //             icon: item.icon,
-    //             name: item.name,
-    //             parent: item.parent,
-    //             path: item.path,
-    //             url: item.url,
-    //             component: resolve => require([`${item.component}`], resolve)
-    //         };
-    //         if(item.children.length != 0) {
-    //             arr.children = eachMenu(item.children)
-    //         }
-    //         routes.push(arr)
-    //     }
-    // }
+
     return routes
 }
 

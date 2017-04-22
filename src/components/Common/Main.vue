@@ -64,7 +64,7 @@
                             <router-link to="/state" style="color: #000;">什么鸡巴鬼</router-link>
                         </p>
                         <p>
-                            <router-link :to="{ name: '你好', params: { id: 123 }}" style="color: #000;">什么鸡巴鬼</router-link>
+                            <router-link :to="{ name: '你好', query: { id: 123 }}" style="color: #000;">什么鸡巴鬼</router-link>
                         </p>
                     </Card>
                 </Col>
