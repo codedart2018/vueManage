@@ -33,6 +33,7 @@ if(token) {
 const afterRouter = [
     {
         path: '*', //其他页面，强制跳转到登录页面
+        name: '通配路由',
         meta: {
             title: '抱歉未找到该页面',
             routeAuth: false
@@ -45,7 +46,7 @@ const afterRouter = [
 
 /**
  * 默认路由 带后台取出的路由
- * 后端取出来必须要有name 不然编程式导航会找不到路径
+ * 后端取出来必须要有name 不然编程式导航会找不到路径 默认路由里不会存在id的 只有后台取出的路由才会带有ID ID还有个方法过虑追加路由使用，本身比对字符串不知道为什么有问题，导致过滤不了
  * @type {[*]}
  */
 const router =[
@@ -61,6 +62,7 @@ const router =[
     },
     {
         path: '/login', //登录
+        name: 'login',
         meta: {
             title: '管理登陆',
             routeAuth: false
@@ -69,20 +71,20 @@ const router =[
         display: 0
     },
     //以下我测试用的路由
-    {
-        path: '/manage/',
-        component: Manage,
-        name: '角色权限',
-        icon: 'fa fa-id-card-o',
-        meta: {
-            title: '管理中心'
-        },
-        display: 0,
-        children: [
-            { path: 'iview', component: Iview, name: '角色管理', display: 1 },
-            { path: 'validate', component: Validate, name: '权限管理', display: 1 }
-        ]
-    },
+    // {
+    //     path: '/manage/',
+    //     component: Manage,
+    //     name: '角色权限',
+    //     icon: 'fa fa-id-card-o',
+    //     meta: {
+    //         title: '管理中心'
+    //     },
+    //     display: 0,
+    //     children: [
+    //         { path: 'iview', component: Iview, name: '角色管理', display: 1 },
+    //         { path: 'validate', component: Validate, name: '权限管理', display: 1 }
+    //     ]
+    // },
     {
         path: '/state/:id?',
         component: resolve => require(['./test/store.vue'], resolve),
@@ -188,11 +190,12 @@ export function sessionRouters(menu = [], routes = []) {
 export function filterRouters(old = [], routes = []) {
     if(old.length == 0 || routes.length == 0) return []
     var new_routes = []
-    //for (let [index, route] of new Map(old.map((item, i) => [i, item]))) { }
+    //for (let [index, route] of new Map(old.map((item, i) => [i, item]))) {}
     for (let route of old){
         for(let tmp of routes) {
-            if(route.name != tmp.name) {
+            if(!route.id && route.id != tmp.id) {
                 new_routes.push(route)
+                break
             }
         }
     }

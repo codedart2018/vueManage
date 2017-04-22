@@ -267,6 +267,11 @@
             //分页切换页码
             changePage (page) {
                 console.log(page)
+                this.$router.beforeEach(({meta, path}, from, next) => {
+                    console.log(from)
+                    console.log(meta)
+                })
+                //this.$router.router.push({ name: 'user', params: { page: page }})
             }
         },
         mounted() {

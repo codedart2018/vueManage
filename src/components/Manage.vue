@@ -116,7 +116,12 @@
         },
         mounted() {
             this.user = this.$store.state.User.user_info
+
+            //let menu = JSON.parse(window.localStorage.getItem('mainMenu'))
+            //let new_router = filterRouters(this.$router.options.routes, menu)
+
             //console.log(this.$router.options.routes)
+
         },
         methods: {
             ...mapActions(['delMainMenu', 'userOut']),
