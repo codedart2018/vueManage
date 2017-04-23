@@ -73,7 +73,7 @@
                             <Icon type="ios-paper"></Icon>
                             {{item.name}}
                         </template>
-                        <Menu-item v-bind:name="(index+9999)*(key+1)" v-for="(child, key) in item.children" v-if="child.display == 1">
+                        <Menu-item v-bind:name="(index+9999)*(key+1)" v-for="(child, key) in item.children" v-if="child.display == 1" class="menu-item">
                             <span @click="goPath(child.name)">{{child.name}}</span>
                         </Menu-item>
                     </Submenu>
