@@ -62,7 +62,7 @@ npm run build --report
  cd node_modules
  git clone https://github.com/vuejs/vue-router.git
  npm install
- npm run build
+ npm run build  
  ```
  > 这样就可以完全解决以上问题. \
  > 目前官方没有路由删除掉。等官方下一个版本看是否有删除路由功能。暂时退出我自己把登陆追加进去的路由给删除了。
@@ -70,6 +70,11 @@ npm run build --report
 #### 亲测了打包后动态路由照样可以使用，不用担心路径问题！不用担心路径问题！说两遍。
 
 ### 截图
+#### 节点列表
+![节点列表](./demo/images/rule.jpg)
+
+#### 添加节点
+![添加节点](./demo/images/add_rule.jpg)
 
 ##### PHP 后端模拟菜单(暂时模拟输出)
 
