@@ -4,13 +4,15 @@
  */
 import Vue from 'vue'
 
-Vue.filter('time', function (value, format) {
+/**
+ * 时间戳过滤器
+ */
+Vue.filter('formatDate', function (value, format) {
     //防止PHP后台输出为10位的时间戳
     if(value.length == 10) {
         value = value * 1000
     }
     var format = format ? format : "yyyy-MM-dd h:m:s";
-    console.log(format)
     var time = new Date(parseInt(value));
     var date = {
         "M+": time.getMonth() + 1,

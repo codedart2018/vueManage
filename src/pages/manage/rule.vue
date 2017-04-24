@@ -182,7 +182,7 @@
                         width: 135,
                         align: 'center',
                         render (row) {
-                            return `<span>{{ row.create_time | time('yyyy-MM-dd h:m')}}</span>`
+                            return `<span>{{ row.create_time | formatDate('yyyy-MM-dd h:m')}}</span>`
                         }
                     },
                     {
