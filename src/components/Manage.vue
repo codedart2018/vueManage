@@ -1,5 +1,6 @@
 <style src="../assets/style/common/base.less" lang="less" scoped></style>
 <style src="../assets/style/manage/index.less" lang="less" scoped></style>
+
 <template>
     <div class="container">
         <row class="nav-bar">
@@ -24,19 +25,6 @@
                 <li class="li-border">
                     <Icon type="ios-bell" class="bell"></Icon>
                     <span class="bell-num">310</span>
-                </li>
-                <li class="li-border">
-                    <Dropdown placement="bottom-end" @on-click="topRightDropDown">
-                        <a href="javascript:void(0)" style="color: #FFFFFF;">
-                            Administrator
-                            <Icon type="arrow-down-b"></Icon>
-                        </a>
-                        <Dropdown-menu slot="list">
-                            <Dropdown-item name="edit_user">资料修改</Dropdown-item>
-                            <Dropdown-item name="platform">平台切换</Dropdown-item>
-                            <Dropdown-item divided name="out">退出登陆</Dropdown-item>
-                        </Dropdown-menu>
-                    </Dropdown>
                 </li>
                 <li class="li-border">客服工单</li>
                 <li class="li-border">帮助文档</li>
@@ -121,7 +109,7 @@
             //let new_router = filterRouters(this.$router.options.routes, menu)
 
             //console.log(this.$router.options.routes)
-
+            //this.$loading('加载中')
         },
         methods: {
             ...mapActions(['delMainMenu', 'userOut']),

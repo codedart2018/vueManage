@@ -7,10 +7,10 @@
             <Col span="12">col-12</Col>
         </Row>
         <Row class="mb-15">
-            <Table border :columns="columns4" :data="data1"></Table>
+            <Table border :columns="columns4" :data="list"></Table>
         </Row>
         <Row type="flex" justify="end">
-            <Page :total="1000" :page-size="15" show-total show-elevator @on-change="changePage"></Page>
+            <Page :total="total" :page-size="15" show-total show-elevator @on-change="changePage"></Page>
         </Row>
 
         <!--Modal 对话框-->
@@ -76,7 +76,7 @@
                         </Radio-group>
                     </Form-item>
                     <Form-item label="节点说明" prop="desc">
-                        <Input v-model="formValidate.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入..."></Input>
+                        <Input v-model="formValidate.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="节点简要说明..."></Input>
                     </Form-item>
                 </Form>
             </div>
@@ -127,7 +127,7 @@
                     },
                     {
                         title: 'PATH',
-                        key: 'name'
+                        key: 'path'
                     },
                     {
                         title: 'URL',
@@ -176,24 +176,8 @@
                         }
                     }
                 ],
-                data1: [
-                    {
-                        name: '角色权限',
-                        url: '/api/manage/auth',
-                        path: 'auth',
-                        display: 2,
-                        status: 1,
-                        auth: 1
-                    },
-                    {
-                        name: '权限节点',
-                        url: '/api/manage/rule',
-                        path: 'rule',
-                        display: 1,
-                        status: 2,
-                        auth: 0
-                    }
-                ],
+                list: [], //列表数据
+                total: 0, //总共数据多少条
                 formValidate: {
                     name: '',
                     icon: '',
@@ -273,6 +257,14 @@
         },
         mounted() {
             //服务端获取数据
+            this.request('GetRule', {}, true).then((res) => {
+                if(res.status) {
+                    this.list = res.data.list
+                    this.total = res.data.count
+                }
+            }).catch((response) => {
+
+            })
             console.log(this.$route.query)
             console.info(this.$router)
             console.log('deviceid: ' + this.$route.params.page);
