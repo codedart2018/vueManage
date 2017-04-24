@@ -24,20 +24,15 @@ Http.install = function (Vue) {
                 opts = {}
             }
             if(m.method == 'get') {
-                let result = Vue.prototype.apiGet(m.url, opts)
-                closeLoading(toast)
-                return result
+                return Vue.prototype.apiGet(m.url, opts)
             } else if(m.method == 'post') {
-                let result = Vue.prototype.apiPost(m.url, opts)
-                closeLoading(toast)
-                return result
+                return Vue.prototype.apiPost(m.url, opts)
             } else {
-                closeLoading(toast)
                 return "非法请求";
             }
 
         } else {
-            closeLoading(toast)
+            closeLoading()
             console.log("url 错误", "返回结果：err = ", "无法请求，无效的请求！", "\n")
         }
     }
@@ -50,9 +45,11 @@ Http.install = function (Vue) {
                     this.$Message.error("接口输出异常...")
                     return
                 }
+                setTimeout(() => closeLoading(), 800)
                 resolve(response.data)
             }).catch((response) => {
                 console.log('Customize Notice', response)
+                closeLoading()
                 reject(response)
             })
         })
@@ -68,20 +65,19 @@ Http.install = function (Vue) {
                     this.$Message.error("接口输出异常...")
                     return
                 }
+                //延迟关闭
+                setTimeout(() => closeLoading(), 800)
                 resolve(response.data)
             }).catch((response) => {
                 console.log('Customize Notice', response)
+                closeLoading()
                 reject(response)
             })
         })
     }
 
-    function closeLoading(toast) {
-        if(toast) {
-            setTimeout(function () {
-                Vue.prototype.$loading.close()
-            }, 1000)
-        }
+    function closeLoading() {
+        Vue.prototype.$loading.close()
     }
 }
 
