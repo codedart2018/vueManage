@@ -12,6 +12,13 @@ class Http {
 
 Http.install = function (Vue) {
 
+    /**
+     * 全局请求接口
+     * @param method 方法
+     * @param opts 参数
+     * @param toast 是否提示
+     * @returns {string}
+     */
     Vue.prototype.request = function (method, opts, toast) {
         //如果有给 toast 参数则显示 loading 加载数据
         if(toast) {
@@ -37,6 +44,12 @@ Http.install = function (Vue) {
         }
     }
 
+    /**
+     * POST 请求 无提示
+     * @param url 请求URL
+     * @param data 请求数据
+     * @returns {Promise}
+     */
     Vue.prototype.apiPost = function(url, data) {
         return new Promise((resolve, reject) => {
             AxiosInst.post(url, data).then((response) => {
@@ -55,6 +68,12 @@ Http.install = function (Vue) {
         })
     }
 
+    /**
+     * GET 请求 无提示
+     * @param url 请求URL
+     * @param data 请求数据
+     * @returns {Promise}
+     */
     Vue.prototype.apiGet = function(url, data) {
         return new Promise((resolve, reject) => {
             AxiosInst.get(url, {
@@ -76,6 +95,9 @@ Http.install = function (Vue) {
         })
     }
 
+    /**
+     * 关闭方法
+     */
     function closeLoading() {
         Vue.prototype.$loading.close()
     }
