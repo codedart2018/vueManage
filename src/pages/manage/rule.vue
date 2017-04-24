@@ -7,7 +7,7 @@
             <Col span="12">col-12</Col>
         </Row>
         <Row class="mb-15">
-            <Table border :columns="columns4" :data="list"></Table>
+            <Table :columns="columns4" :data="list"></Table>
         </Row>
         <Row type="flex" justify="end">
             <Page :total="total" :page-size="15" show-total show-elevator @on-change="changePage"></Page>
@@ -122,8 +122,18 @@
                         align: 'center'
                     },
                     {
+                        title: 'ID',
+                        key: 'id',
+                        width: 60
+                    },
+                    {
                         title: '名称',
-                        key: 'name'
+                        key: 'name',
+                        width: 200
+                    },
+                    {
+                        title: 'ICON',
+                        key: 'icon'
                     },
                     {
                         title: 'PATH',
@@ -164,6 +174,15 @@
                             const color = row.status == 1 ? 'green' : 'red';
                             const text = row.status == 1 ? '正常' : '锁定';
                             return `<tag type="dot" color="${color}">${text}</tag>`;
+                        }
+                    },
+                    {
+                        title: '添加时间',
+                        key: 'create_time',
+                        width: 135,
+                        align: 'center',
+                        render (row) {
+                            return `<span>{{ row.create_time | time('yyyy-MM-dd h:m')}}</span>`
                         }
                     },
                     {
