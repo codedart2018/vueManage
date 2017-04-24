@@ -7,7 +7,7 @@
             <Col span="12">col-12</Col>
         </Row>
         <Row class="mb-15">
-            <Table :columns="columns4" :data="list"></Table>
+            <Table :context="self" :columns="columns4" :data="list"></Table>
         </Row>
         <Row type="flex" justify="end">
             <Page :total="total" :page-size="pageSize" show-total show-elevator @on-change="changePage"></Page>
@@ -97,7 +97,6 @@
 
 
 <script>
-    import Http from '../../libs/http'
 
     export default {
         data () {
@@ -113,6 +112,8 @@
             }
 
             return {
+                //render 里使用 如果没有此this 会导致找不到方法而报错
+                self: this,
                 modal_title: '添加权限节点',
                 columns4: [
                     {
@@ -170,8 +171,8 @@
                         width: 120,
                         align: 'center',
                         render (row) {
-                            const color = row.status == 1 ? 'green' : 'red';
-                            const text = row.status == 1 ? '正常' : '锁定';
+                            const color = row.status == 1 ? 'green' : row.status == 0 ? 'yellow' : 'red';
+                            const text = row.status == 1 ? '正常' : row.status == 0 ? '锁定' : '删除';
                             return `<tag type="dot" color="${color}">${text}</tag>`;
                         }
                     },
@@ -181,7 +182,7 @@
                         width: 135,
                         align: 'center',
                         render (row) {
-                            return `<span>{{ row.create_time | formatDate('yyyy-MM-dd h:m')}}</span>`
+                            return "<span>{{ row.create_time | formatDate('yyyy-MM-dd h:m') }}</span>"
                         }
                     },
                     {
@@ -190,7 +191,7 @@
                         width: 120,
                         align: 'center',
                         render (row, column, index) {
-                            return `<i-button type="primary" size="small" @click="show(${index})">查看</i-button> <i-button type="error" size="small" @click="remove(${index})">删除</i-button>`;
+                            return `<i-button type="primary" size="small" @click="edit(${index}, ${row.id})">查看</i-button> <i-button type="error" size="small" @click="del(${index}, ${row.id})">删除</i-button>`;
                         }
                     }
                 ],
@@ -198,6 +199,7 @@
                 total: 0, //总共数据多少条
                 pageSize: 1, //每页多少条数据
                 formValidate: {
+                    id: '',
                     name: '',
                     icon: '',
                     controller: '',
@@ -223,8 +225,7 @@
                         { type: 'string', message: '方法只能是英文前小后驼峰', trigger: 'blur', pattern: /^[a-zA-z]+$/}
                     ],
                     sort: [
-                        { type: 'number', message: '排序只能填写正正数', trigger: 'blur'},
-                        { type: 'number', max: 9999, message: '排序最大9999', trigger: 'blur'},
+                        { type: 'string', message: '排序只能填写正正数,最大9999', trigger: 'blur', pattern: /^[0-9]?[0-9]+$/},
                     ],
                     params: [
                         { validator: validateParams, trigger: 'blur'}
@@ -283,6 +284,32 @@
                 }).catch((response) => {
 
                 })
+            },
+            edit (index, id) {
+                //打开 modal 窗口
+                this.modal_rule = true
+                //获取原数据
+                this.formValidate = this.list[index]
+            },
+            //删除节点数据
+            del (index, id) {
+                this.$Modal.confirm({
+                    title: '确认删除',
+                    width: 300,
+                    content: '<p>你确定要删除?删除后不可恢复!</p>',
+                    loading: true,
+                    onOk: () => {
+                        this.request('DelRule', {id, id}).then((res) => {
+                            if(res.status) {
+                                this.$Message.info(res.msg)
+                                this.$Modal.remove();
+                                this.list[index].status = -1
+                            } else {
+                                this.$Message.error(res.msg)
+                            }
+                        })
+                    }
+                });
             }
         },
         mounted() {
