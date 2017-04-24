@@ -1,6 +1,6 @@
 /**
  * Created by truncate on 2017/4/19.
- * 网络请求插件
+ * 网络请求插件 引入了toast 加载提示
  */
 
 import methodMap from './methodMap'
@@ -12,7 +12,11 @@ class Http {
 
 Http.install = function (Vue) {
 
-    Vue.prototype.request = function (method, opts) {
+    Vue.prototype.request = function (method, opts, toast) {
+        //如果有给 toast 参数则显示 loading 加载数据
+        if(toast) {
+            Vue.prototype.$loading("加载中")
+        }
         let m = methodMap[method]
         if (m) {
             var opts_type = typeof(opts);
@@ -20,15 +24,21 @@ Http.install = function (Vue) {
                 opts = {}
             }
             if(m.method == 'get') {
-                return Vue.prototype.apiGet(m.url, opts)
+                let result = Vue.prototype.apiGet(m.url, opts)
+                closeLoading(toast)
+                return result
             } else if(m.method == 'post') {
-                return Vue.prototype.apiPost(m.url, opts)
+                let result = Vue.prototype.apiPost(m.url, opts)
+                closeLoading(toast)
+                return result
             } else {
+                closeLoading(toast)
                 return "非法请求";
             }
 
         } else {
-            console.log("url 错误", "返回结果：err = ", "无法请求，无效的请求！", "\n");
+            closeLoading(toast)
+            console.log("url 错误", "返回结果：err = ", "无法请求，无效的请求！", "\n")
         }
     }
 
@@ -66,6 +76,13 @@ Http.install = function (Vue) {
         })
     }
 
+    function closeLoading(toast) {
+        if(toast) {
+            setTimeout(function () {
+                Vue.prototype.$loading.close()
+            }, 1000)
+        }
+    }
 }
 
 export default Http
