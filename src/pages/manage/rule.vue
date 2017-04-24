@@ -10,7 +10,7 @@
             <Table :columns="columns4" :data="list"></Table>
         </Row>
         <Row type="flex" justify="end">
-            <Page :total="total" :page-size="15" show-total show-elevator @on-change="changePage"></Page>
+            <Page :total="total" :page-size="pageSize" show-total show-elevator @on-change="changePage"></Page>
         </Row>
 
         <!--Modal 对话框-->
@@ -197,6 +197,7 @@
                 ],
                 list: [], //列表数据
                 total: 0, //总共数据多少条
+                pageSize: 1, //每页多少条数据
                 formValidate: {
                     name: '',
                     icon: '',
@@ -271,19 +272,31 @@
             changePage (page) {
                 console.log(page)
                 console.info(this.$router.currentRoute)
+                //分页
                 this.$router.push({ name: this.$router.currentRoute.name, query: { page: page }})
+                //获取最新数据
+                this.getData({page: page})
+            },
+            getData (params) {
+                if (!params) params = {page: 1}
+                this.request('GetRule', params, true).then((res) => {
+                    if(res.status) {
+                        //列表数据
+                        this.list = res.data.list
+                        //总页数
+                        this.total = res.data.count
+                        //每页多少条数据
+                        this.pageSize = res.data.size
+                    }
+                }).catch((response) => {
+
+                })
             }
         },
         mounted() {
             //服务端获取数据
-            this.request('GetRule', {}, true).then((res) => {
-                if(res.status) {
-                    this.list = res.data.list
-                    this.total = res.data.count
-                }
-            }).catch((response) => {
+            this.getData();
 
-            })
             console.log(this.$route.query)
             console.info(this.$router)
             console.log('deviceid: ' + this.$route.params.page);
