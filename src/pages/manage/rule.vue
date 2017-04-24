@@ -107,10 +107,9 @@
                     let reg = /^[a-zA-Z]+[,]?[a-zA-Z]+$/;
                     if (!reg.test(value)) {
                         callback(new Error('路由参数只能英文半角逗号'));
-                    } else {
-                        callback();
                     }
                 }
+                callback();
             }
 
             return {
@@ -236,35 +235,28 @@
             }
         },
         methods: {
-            ok (name) {
-                this.$refs[name].validate((valid) => {
-                    if (valid) {
-                        this.$Message.success('提交成功!');
-                    } else {
-                        this.$Message.error('表单验证失败!');
-                    }
-                })
-            },
-            cancel () {
-                this.$Message.info('点击了取消');
-            },
+            //提交数据
             handleSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        console.log(this.formValidate)
                         this.request('AddRule', this.formValidate).then((res) => {
                             if (res.status) {
                                 this.modal_rule = false
-                                this.$Message.success('提交成功!');
+                                this.$Message.success('提交成功!')
+                                //重置数据
+                                this.$refs[name].resetFields()
+                                //重新拉取服务端数据
+                                this.getData()
                             } else {
                                 this.$Message.error(res.msg)
                             }
                         })
                     } else {
-                        this.$Message.error('表单验证失败!');
+                        this.$Message.error('表单验证失败!')
                     }
                 })
             },
+            //重置表单数据
             handleReset (name) {
                 this.$refs[name].resetFields();
             },
@@ -299,8 +291,8 @@
 
             console.log(this.$route.query)
             console.info(this.$router)
-            console.log('deviceid: ' + this.$route.params.page);
-            console.log('deviceid: ' + this.$route);
+            console.log('deviceid: ' + this.$route.params.page)
+            console.log('deviceid: ' + this.$route)
         }
     }
 </script>

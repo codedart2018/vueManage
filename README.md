@@ -45,6 +45,10 @@ npm run build --report
  > 我本地不论访问 www.php.cn 还是 api.yongchuan.cc 都是没有问题的。但有朋友反应无法跨域，我暂时后端开启了跨域，但不定哪天关闭了
  建议装一个跨域插件 把 api.yongchuan.cc 规则加进去就可以了。 \
  > 插件地址：https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi
+ 
+#### 数据说明（特别是权限节点添加删除）
+ > 为了方便演示，我也不好把这数据的增删改查给屏掉。菜单我没有弄实时的，这个我最后上线才会去弄，由于节点里面有添加组件地址。而组件地址是会影响一个项目的运行的。 所以添加了节点组件后不会立即生效，
+ 但是退出重新登陆是会生效的，我希望大家添加数据后走的时候把你添加的数据给删除掉。我不希望我经常都去同步数据。
 
 ### 实现功能
 * 登录
