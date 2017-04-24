@@ -2,19 +2,19 @@
     <div>
         <Row class="mb-15">
             <Col span="12">
-            <Button type="primary" @click="modal_rule = true"><Icon type="plus-round"></Icon>&nbsp;添加节点</Button></Button>
+            <Button type="primary" @click="modalRule = true"><Icon type="plus-round"></Icon>&nbsp;添加节点</Button></Button>
             </Col>
             <Col span="12">col-12</Col>
         </Row>
         <Row class="mb-15">
-            <Table :context="self" :columns="columns4" :data="list"></Table>
+            <Table :context="self" :columns="columns" :data="list"></Table>
         </Row>
         <Row type="flex" justify="end">
             <Page :total="total" :page-size="pageSize" show-total show-elevator @on-change="changePage"></Page>
         </Row>
 
         <!--Modal 对话框-->
-        <Modal v-model="modal_rule" title="添加权限节点" class-name="customize-modal-center">
+        <Modal v-model="modalRule" title="添加权限节点" class-name="customize-modal-center" @on-cancel="modalCancel()">
             <div slot="header" class="ivu-modal-header-inner">{{modal_title}}</div>
             <div>
                 <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
@@ -110,12 +110,25 @@
                 }
                 callback();
             }
+            //验证正整数 自带的 number integer 好像有问题
+            const validateInt = (rule, value, callback) => {
+                if(value) {
+                    if(value > 9999) {
+                        callback(new Error('最大排序数9999'));
+                    }
+                    let reg = /^[0-9]?[0-9]+$/;
+                    if (!reg.test(value)) {
+                        callback(new Error('排序只能填写正正数'));
+                    }
+                }
+                callback();
+            }
 
             return {
                 //render 里使用 如果没有此this 会导致找不到方法而报错
                 self: this,
                 modal_title: '添加权限节点',
-                columns4: [
+                columns: [
                     {
                         type: 'selection',
                         width: 50,
@@ -191,7 +204,7 @@
                         width: 120,
                         align: 'center',
                         render (row, column, index) {
-                            return `<i-button type="primary" size="small" @click="edit(${index}, ${row.id})">查看</i-button> <i-button type="error" size="small" @click="del(${index}, ${row.id})">删除</i-button>`;
+                            return `<i-button type="primary" size="small" @click="edit(${index})">查看</i-button> <i-button type="error" size="small" @click="del(${index}, ${row.id})">删除</i-button>`;
                         }
                     }
                 ],
@@ -225,25 +238,37 @@
                         { type: 'string', message: '方法只能是英文前小后驼峰', trigger: 'blur', pattern: /^[a-zA-z]+$/}
                     ],
                     sort: [
-                        { type: 'string', message: '排序只能填写正正数,最大9999', trigger: 'blur', pattern: /^[0-9]?[0-9]+$/},
+                        { validator: validateInt, trigger: 'blur'}
                     ],
                     params: [
                         { validator: validateParams, trigger: 'blur'}
                     ]
 
                 },
-                modal_rule: false,
+                modalRule: false,
+                apiType: 'add'
             }
         },
         methods: {
+            //取消 modal
+            modalCancel() {
+                //取消表单 重置表单
+                this.$refs['formValidate'].resetFields()
+            },
             //提交数据
             handleSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        this.request('AddRule', this.formValidate).then((res) => {
+                        let apiUrl = ''
+                        if(this.apiType == 'add') {
+                            apiUrl = 'AddRule'
+                        }else {
+                            apiUrl = 'EditRule'
+                        }
+                        this.request(apiUrl, this.formValidate).then((res) => {
                             if (res.status) {
-                                this.modal_rule = false
-                                this.$Message.success('提交成功!')
+                                this.modalRule = false
+                                this.$Message.success(res.msg)
                                 //重置数据
                                 this.$refs[name].resetFields()
                                 //重新拉取服务端数据
@@ -285,11 +310,13 @@
 
                 })
             },
-            edit (index, id) {
+            edit (index) {
                 //打开 modal 窗口
-                this.modal_rule = true
+                this.modalRule = true
                 //获取原数据
                 this.formValidate = this.list[index]
+                //改变 apiUrl
+                this.apiType = 'edit'
             },
             //删除节点数据
             del (index, id) {
