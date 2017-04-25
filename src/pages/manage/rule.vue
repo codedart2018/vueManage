@@ -34,7 +34,7 @@
                 </Form>
             </Col>
             <Col span="6" class="text-align-right">
-                <Button type="primary" @click="modalOpen(); modalRule = true"><Icon type="plus-round"></Icon>&nbsp;添加节点</Button></Button>
+                <Button type="primary" @click="addModal = true"><Icon type="plus-round"></Icon>&nbsp;添加节点</Button></Button>
             </Col>
         </Row>
         <Row class="mb-15">
@@ -45,8 +45,7 @@
         </Row>
 
         <!--添加 Modal 对话框-->
-        <Modal v-model="modalRule" title="添加权限节点添加权限节点" class-name="customize-modal-center" @on-cancel="modalCancel()">
-            <div slot="header" class="ivu-modal-header-inner">添加权限节点</div>
+        <Modal v-model="addModal" title="添加权限节点" class-name="customize-modal-center" @on-cancel="modalCancel()">
             <div>
                 <Form ref="addForm" :model="addForm" :rules="ruleValidate" :label-width="80">
                     <Form-item label="所属模块">
@@ -118,7 +117,7 @@
         </Modal>
 
         <!--编辑 Modal 对话框-->
-        <Modal v-model="editModalRule" class-name="customize-modal-center">
+        <Modal v-model="editModal" class-name="customize-modal-center">
             <div slot="header" class="ivu-modal-header-inner">编辑权限节点</div>
             <div>
                 <Form ref="editForm" :model="editForm" :rules="ruleValidate" :label-width="80">
@@ -244,7 +243,7 @@
                         width: 60
                     },
                     {
-                        title: '名称',
+                        title: '节点名称',
                         key: 'name',
                         width: 200
                     },
@@ -318,8 +317,6 @@
                 ],
                 //列表数据
                 list: [],
-                //数据当前指针 用于添加编辑中切换数据以免被双向
-                listNeedle: 0,
                 //总共数据多少条
                 total: 0,
                 //每页多少条数据
@@ -364,16 +361,15 @@
                 //编辑表单
                 editForm: {},
                 //添加 modal
-                modalRule: false,
+                addModal: false,
                 //编辑 modal
-                editModalRule: false,
-                apiType: 'add'
+                editModal: false
             }
         },
         methods: {
             //取消 modal
             modalCancel() {
-                this.editModalRule = false
+                this.editModal = false
             },
             //添加数据
             addSubmit (name) {
@@ -425,13 +421,9 @@
             },
             edit (index) {
                 //打开 modal 窗口
-                this.editModalRule = true
+                this.editModal = true
                 //获取原数据
                 this.editForm = this.list[index]
-                //改变 apiUrl
-                this.apiType = 'edit'
-                //重新改变当前指针
-                this.listNeedle = index
             },
             //删除节点数据
             del (index, id) {
@@ -464,10 +456,12 @@
             save(url, data) {
                 this.request(url, data).then((res) => {
                     if (res.status) {
-                        this.modalRule = false
+                        this.addModal = false
+                        this.editModal = false
                         this.$Message.success(res.msg)
                         //重置数据
-                        this.$refs[name].resetFields()
+                        this.$refs['addForm'].resetFields()
+                        this.$refs['editForm'].resetFields()
                         //重新拉取服务端数据
                         this.getData()
                     } else {

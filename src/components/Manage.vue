@@ -58,7 +58,7 @@
                 <Menu width="auto" theme="dark" >
                     <Submenu :name="index" v-for="(item, index) in $router.options.routes" v-if="item.display == 1">
                         <template slot="title">
-                            <Icon type="ios-paper"></Icon>
+                            <Icon :type="item.icon"></Icon>
                             {{item.name}}
                         </template>
                         <Menu-item v-bind:name="(index+9999)*(key+1)" v-for="(child, key) in item.children" v-if="child.display == 1" class="menu-item">
