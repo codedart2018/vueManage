@@ -6,8 +6,6 @@
 const methodMap = {
     /** 登陆接口 **/
     Login: {url: '/api/login/manage_login', method: "post"},
-    /** 菜单接口 **/
-    MainMenu: {url: '/api/login/menu', method: "get"},
     /** 持续验证登陆 **/
     VerifyLogin: {url: '/api/login/verify_login', method: "post"},
     /** 权限节点接口 **/

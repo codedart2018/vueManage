@@ -44,48 +44,48 @@
             <Page :total="total" :page-size="pageSize" show-total show-elevator @on-change="changePage"></Page>
         </Row>
 
-        <!--Modal 对话框-->
-        <Modal v-model="modalRule" title="添加权限节点" class-name="customize-modal-center" @on-cancel="modalCancel()">
-            <div slot="header" class="ivu-modal-header-inner">{{modal_title}}</div>
+        <!--添加 Modal 对话框-->
+        <Modal v-model="modalRule" title="添加权限节点添加权限节点" class-name="customize-modal-center" @on-cancel="modalCancel()">
+            <div slot="header" class="ivu-modal-header-inner">添加权限节点</div>
             <div>
-                <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
+                <Form ref="addForm" :model="addForm" :rules="ruleValidate" :label-width="80">
                     <Form-item label="所属模块">
-                        <Select v-model="formValidate.select" placeholder="请选择">
+                        <Select v-model="addForm.select" placeholder="请选择">
                             <Option value="beijing">管理</Option>
                             <Option value="shanghai">上海市</Option>
                             <Option value="shenzhen">深圳市</Option>
                         </Select>
                     </Form-item>
                     <Form-item label="节点名称" prop="name">
-                        <Input v-model="formValidate.name" placeholder="请填写节点名称"></Input>
+                        <Input v-model="addForm.name" placeholder="请填写节点名称"></Input>
                     </Form-item>
                     <Form-item label="节点图标" prop="icon">
-                        <Input v-model="formValidate.icon" placeholder="请填写节点图标"></Input>
+                        <Input v-model="addForm.icon" placeholder="请填写节点图标"></Input>
                     </Form-item>
                     <Form-item label="控制器名称" prop="controller">
-                        <Input v-model="formValidate.controller" placeholder="请填写控制器名称"></Input>
+                        <Input v-model="addForm.controller" placeholder="请填写控制器名称"></Input>
                     </Form-item>
                     <Form-item label="方法名称" prop="action">
-                        <Input v-model="formValidate.action" placeholder="请填写方法名称"></Input>
+                        <Input v-model="addForm.action" placeholder="请填写方法名称"></Input>
                     </Form-item>
                     <Form-item label="路由路径" prop="path">
-                        <Input v-model="formValidate.path" placeholder="请填写path路径"></Input>
+                        <Input v-model="addForm.path" placeholder="请填写path路径"></Input>
                         <div class="ng-mb-15 label-color">path路径vue前端路由路径</div>
                     </Form-item>
                     <Form-item label="路由参数" prop="params">
-                        <Input v-model="formValidate.params" placeholder="多个参数请用半角逗号分隔"></Input>
+                        <Input v-model="addForm.params" placeholder="多个参数请用半角逗号分隔"></Input>
                     </Form-item>
                     <Form-item label="组件地址" prop="component">
-                        <Input v-model="formValidate.component" placeholder="请填写组件地址"></Input>
+                        <Input v-model="addForm.component" placeholder="请填写组件地址"></Input>
                         <div class="ng-mb-15 label-color">填写了path路径请一定填写组件地址,且地址是相对地址</div>
                     </Form-item>
                     <Form-item label="排序" prop="sort">
-                        <Input type="text" v-model="formValidate.sort" placeholder="只能填写正数,数值越大越靠前" number></Input>
+                        <Input type="text" v-model="addForm.sort" placeholder="只能填写正数,数值越大越靠前" number></Input>
                     </Form-item>
                     <Row>
                         <Col span="12">
                             <Form-item label="是否显示" prop="display">
-                                <Radio-group v-model="formValidate.display">
+                                <Radio-group v-model="addForm.display">
                                     <Radio label="1">显示</Radio>
                                     <Radio label="0">隐藏</Radio>
                                 </Radio-group>
@@ -93,7 +93,7 @@
                         </Col>
                         <Col span="12">
                             <Form-item label="节点认证" prop="auth">
-                                <Radio-group v-model="formValidate.auth">
+                                <Radio-group v-model="addForm.auth">
                                     <Radio label="1">认证</Radio>
                                     <Radio label="0">拒绝</Radio>
                                 </Radio-group>
@@ -101,19 +101,92 @@
                         </Col>
                     </Row>
                     <Form-item label="节点状态" prop="status">
-                        <Radio-group v-model="formValidate.status">
+                        <Radio-group v-model="addForm.status">
                             <Radio label="1">正常</Radio>
                             <Radio label="0">锁定</Radio>
                         </Radio-group>
                     </Form-item>
                     <Form-item label="节点说明" prop="desc">
-                        <Input v-model="formValidate.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="节点简要说明..."></Input>
+                        <Input v-model="addForm.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="节点简要说明..."></Input>
                     </Form-item>
                 </Form>
             </div>
             <div slot="footer">
-                <Button type="primary" @click="handleSubmit('formValidate')">提交</Button>
-                <Button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button>
+                <Button type="primary" @click="addSubmit('addForm')">提交</Button>
+                <Button type="ghost" @click="handleReset('addForm')" style="margin-left: 8px">重置</Button>
+            </div>
+        </Modal>
+
+        <!--编辑 Modal 对话框-->
+        <Modal v-model="editModalRule" class-name="customize-modal-center">
+            <div slot="header" class="ivu-modal-header-inner">编辑权限节点</div>
+            <div>
+                <Form ref="editForm" :model="editForm" :rules="ruleValidate" :label-width="80">
+                    <Form-item label="所属模块">
+                        <Select v-model="editForm.select" placeholder="请选择">
+                            <Option value="beijing">管理</Option>
+                            <Option value="shanghai">上海市</Option>
+                            <Option value="shenzhen">深圳市</Option>
+                        </Select>
+                    </Form-item>
+                    <Form-item label="节点名称" prop="name">
+                        <Input v-model="editForm.name" placeholder="请填写节点名称"></Input>
+                    </Form-item>
+                    <Form-item label="节点图标" prop="icon">
+                        <Input v-model="editForm.icon" placeholder="请填写节点图标"></Input>
+                    </Form-item>
+                    <Form-item label="控制器名称" prop="controller">
+                        <Input v-model="editForm.controller" placeholder="请填写控制器名称"></Input>
+                    </Form-item>
+                    <Form-item label="方法名称" prop="action">
+                        <Input v-model="editForm.action" placeholder="请填写方法名称"></Input>
+                    </Form-item>
+                    <Form-item label="路由路径" prop="path">
+                        <Input v-model="editForm.path" placeholder="请填写path路径"></Input>
+                        <div class="ng-mb-15 label-color">path路径vue前端路由路径</div>
+                    </Form-item>
+                    <Form-item label="路由参数" prop="params">
+                        <Input v-model="editForm.params" placeholder="多个参数请用半角逗号分隔"></Input>
+                    </Form-item>
+                    <Form-item label="组件地址" prop="component">
+                        <Input v-model="editForm.component" placeholder="请填写组件地址"></Input>
+                        <div class="ng-mb-15 label-color">填写了path路径请一定填写组件地址,且地址是相对地址</div>
+                    </Form-item>
+                    <Form-item label="排序" prop="sort">
+                        <Input type="text" v-model="editForm.sort" placeholder="只能填写正数,数值越大越靠前" number></Input>
+                    </Form-item>
+                    <Row>
+                        <Col span="12">
+                        <Form-item label="是否显示" prop="display">
+                            <Radio-group v-model="editForm.display">
+                                <Radio label="1">显示</Radio>
+                                <Radio label="0">隐藏</Radio>
+                            </Radio-group>
+                        </Form-item>
+                        </Col>
+                        <Col span="12">
+                        <Form-item label="节点认证" prop="auth">
+                            <Radio-group v-model="editForm.auth">
+                                <Radio label="1">认证</Radio>
+                                <Radio label="0">拒绝</Radio>
+                            </Radio-group>
+                        </Form-item>
+                        </Col>
+                    </Row>
+                    <Form-item label="节点状态" prop="status">
+                        <Radio-group v-model="editForm.status">
+                            <Radio label="1">正常</Radio>
+                            <Radio label="0">锁定</Radio>
+                        </Radio-group>
+                    </Form-item>
+                    <Form-item label="节点说明" prop="desc">
+                        <Input v-model="editForm.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="节点简要说明..."></Input>
+                    </Form-item>
+                </Form>
+            </div>
+            <div slot="footer">
+                <Button type="primary" @click="editSubmit('editForm')">提交</Button>
+                <Button type="ghost" @click="modalCancel()" style="margin-left: 8px">取消</Button>
             </div>
         </Modal>
     </div>
@@ -159,7 +232,6 @@
             return {
                 //render 里使用 如果没有此this 会导致找不到方法而报错
                 self: this,
-                modal_title: '添加权限节点',
                 columns: [
                     {
                         type: 'selection',
@@ -252,9 +324,7 @@
                 total: 0,
                 //每页多少条数据
                 pageSize: 1,
-                //搜索表单
-                formSearch: {},
-                formValidate: {
+                addForm: {
                     id: '',
                     name: '',
                     icon: '',
@@ -269,6 +339,7 @@
                     sort: 0,
                     desc: ''
                 },
+                //验证规则
                 ruleValidate: {
                     name: [
                         { required: true, message: '节点名称不能为空', trigger: 'blur' },
@@ -288,47 +359,37 @@
                     ]
 
                 },
-                formSearch: {
-
-                },
+                //搜索表单
+                formSearch: {},
+                //编辑表单
+                editForm: {},
+                //添加 modal
                 modalRule: false,
+                //编辑 modal
+                editModalRule: false,
                 apiType: 'add'
             }
         },
         methods: {
-            //确保打开modal
-            modalOpen() {
-
-            },
             //取消 modal
             modalCancel() {
-                //取消表单 重置表单
-                if(this.apiType == 'add') {
-                    this.$refs['formValidate'].resetFields()
-                }
+                this.editModalRule = false
             },
-            //提交数据
-            handleSubmit (name) {
+            //添加数据
+            addSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        let apiUrl = ''
-                        if(this.apiType == 'add') {
-                            apiUrl = 'AddRule'
-                        }else {
-                            apiUrl = 'EditRule'
-                        }
-                        this.request(apiUrl, this.formValidate).then((res) => {
-                            if (res.status) {
-                                this.modalRule = false
-                                this.$Message.success(res.msg)
-                                //重置数据
-                                this.$refs[name].resetFields()
-                                //重新拉取服务端数据
-                                this.getData()
-                            } else {
-                                this.$Message.error(res.msg)
-                            }
-                        })
+                        this.save("AddRule", this.addForm)
+                    } else {
+                        this.$Message.error('表单验证失败!')
+                    }
+                })
+            },
+            //修改数据
+            editSubmit (name) {
+                this.$refs[name].validate((valid) => {
+                    if (valid) {
+                        this.save("EditRule", this.editForm)
                     } else {
                         this.$Message.error('表单验证失败!')
                     }
@@ -364,9 +425,9 @@
             },
             edit (index) {
                 //打开 modal 窗口
-                this.modalRule = true
+                this.editModalRule = true
                 //获取原数据
-                this.formValidate = this.list[index]
+                this.editForm = this.list[index]
                 //改变 apiUrl
                 this.apiType = 'edit'
                 //重新改变当前指针
@@ -396,6 +457,23 @@
             search() {
                 let search = this.formSearch
                 this.getData({ params : search })
+                //暂时不做关键词显示在路由上
+                //this.$router.push({ name: this.$router.currentRoute.name, query: search})
+            },
+            //保存数据方法
+            save(url, data) {
+                this.request(url, data).then((res) => {
+                    if (res.status) {
+                        this.modalRule = false
+                        this.$Message.success(res.msg)
+                        //重置数据
+                        this.$refs[name].resetFields()
+                        //重新拉取服务端数据
+                        this.getData()
+                    } else {
+                        this.$Message.error(res.msg)
+                    }
+                })
             }
         },
         mounted() {
