@@ -83,6 +83,7 @@ Http.install = function (Vue) {
                 if(response.data == null) {
                     console.log("接口输出异常...")
                     this.$Message.error("接口输出异常...")
+                    setTimeout(() => closeLoading(), 800)
                     return
                 }
                 //延迟关闭

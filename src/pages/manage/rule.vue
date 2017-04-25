@@ -1,10 +1,41 @@
 <template>
     <div>
         <Row class="mb-15">
-            <Col span="12">
-            <Button type="primary" @click="modalRule = true"><Icon type="plus-round"></Icon>&nbsp;添加节点</Button></Button>
+            <Col span="18" class="search">
+                <Form :model="formSearch" :label-width="80" inline label-position="right">
+                    <Form-item label="节点名称：">
+                        <Input v-model="formSearch.keywords" placeholder="请输入节点名称关键词"></Input>
+                    </Form-item>
+                    <Form-item label="添加日期：">
+                        <Date-picker type="date" placeholder="选择日期" v-model="formSearch.date"></Date-picker>
+                    </Form-item>
+                    <Form-item label="是否显示：">
+                        <Select v-model="formSearch.display" placeholder="请选择">
+                            <Option value="1">显示</Option>
+                            <Option value="0">隐藏</Option>
+                        </Select>
+                    </Form-item>
+                    <Form-item label="节点认证：">
+                        <Select v-model="formSearch.auth" placeholder="请选择">
+                            <Option value="1">认证</Option>
+                            <Option value="0">拒绝</Option>
+                        </Select>
+                    </Form-item>
+                    <Form-item label="节点状态：">
+                        <Select v-model="formSearch.status" placeholder="请选择">
+                            <Option value="1">正常</Option>
+                            <Option value="0">锁定</Option>
+                            <Option value="-1">删除</Option>
+                        </Select>
+                    </Form-item>
+                    <Form-item :label-width="1">
+                        <Button type="primary" @click="search('formSearch')" class="a1">搜索</Button>
+                    </Form-item>
+                </Form>
             </Col>
-            <Col span="12">col-12</Col>
+            <Col span="6" class="text-align-right">
+                <Button type="primary" @click="modalOpen(); modalRule = true"><Icon type="plus-round"></Icon>&nbsp;添加节点</Button></Button>
+            </Col>
         </Row>
         <Row class="mb-15">
             <Table :context="self" :columns="columns" :data="list"></Table>
@@ -89,10 +120,11 @@
 </template>
 
 <style scoped>
-    .mb-15 {
-        margin-bottom: 15px;
+    .search .ivu-form-item {
+        margin-bottom: 0px;
+        vertical-align: top;
+        zoom: 1;
     }
-
 </style>
 
 
@@ -157,6 +189,10 @@
                         key: 'url'
                     },
                     {
+                        title: '组件路径',
+                        key: 'component'
+                    },
+                    {
                         title: '是否显示',
                         key: 'display',
                         width: 120,
@@ -208,9 +244,16 @@
                         }
                     }
                 ],
-                list: [], //列表数据
-                total: 0, //总共数据多少条
-                pageSize: 1, //每页多少条数据
+                //列表数据
+                list: [],
+                //数据当前指针 用于添加编辑中切换数据以免被双向
+                listNeedle: 0,
+                //总共数据多少条
+                total: 0,
+                //每页多少条数据
+                pageSize: 1,
+                //搜索表单
+                formSearch: {},
                 formValidate: {
                     id: '',
                     name: '',
@@ -245,15 +288,24 @@
                     ]
 
                 },
+                formSearch: {
+
+                },
                 modalRule: false,
                 apiType: 'add'
             }
         },
         methods: {
+            //确保打开modal
+            modalOpen() {
+
+            },
             //取消 modal
             modalCancel() {
                 //取消表单 重置表单
-                this.$refs['formValidate'].resetFields()
+                if(this.apiType == 'add') {
+                    this.$refs['formValidate'].resetFields()
+                }
             },
             //提交数据
             handleSubmit (name) {
@@ -288,12 +340,12 @@
             },
             //分页切换页码
             changePage (page) {
-                console.log(page)
-                console.info(this.$router.currentRoute)
+                let search = this.formSearch
+                let query = Object.assign({page: page }, search)
                 //分页
-                this.$router.push({ name: this.$router.currentRoute.name, query: { page: page }})
+                this.$router.push({ name: this.$router.currentRoute.name, query: query})
                 //获取最新数据
-                this.getData({page: page})
+                this.getData({page: page, params: search})
             },
             getData (params) {
                 if (!params) params = {page: 1}
@@ -317,6 +369,8 @@
                 this.formValidate = this.list[index]
                 //改变 apiUrl
                 this.apiType = 'edit'
+                //重新改变当前指针
+                this.listNeedle = index
             },
             //删除节点数据
             del (index, id) {
@@ -337,11 +391,18 @@
                         })
                     }
                 });
+            },
+            //表单搜索
+            search() {
+                let search = this.formSearch
+                this.getData({ params : search })
             }
         },
         mounted() {
             //服务端获取数据
             this.getData();
+            let page = { page: 1 }
+            console.log(Object.assign(page, this.formSearch));
 
             console.log(this.$route.query)
             console.info(this.$router)
