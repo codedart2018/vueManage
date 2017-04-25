@@ -19,11 +19,11 @@ const methodMap = {
     /** 角色列表 **/
     GetRole: {url: '/api/role_auth/role', method: "get"},
     /** 添加角色 **/
-    GetRole: {url: '/api/role_auth/add_role', method: "post"},
+    AddRole: {url: '/api/role_auth/add_role', method: "post"},
     /** 编辑角色 **/
-    GetRole: {url: '/api/role_auth/edit_role', method: "post"},
+    EditRole: {url: '/api/role_auth/edit_role', method: "post"},
     /** 删除角色 **/
-    GetRole: {url: '/api/role_auth/delete_role', method: "post"},
+    DelRole: {url: '/api/role_auth/delete_role', method: "post"},
 }
 
 export default methodMap

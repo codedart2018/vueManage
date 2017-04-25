@@ -322,7 +322,6 @@
                 //每页多少条数据
                 pageSize: 1,
                 addForm: {
-                    id: '',
                     name: '',
                     icon: '',
                     controller: '',

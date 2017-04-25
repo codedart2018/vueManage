@@ -4,9 +4,9 @@
             <Col span="18" class="search">
             <Form :model="formSearch" :label-width="80" inline label-position="right">
                 <Form-item label="角色名称：">
-                    <Input v-model="formSearch.keywords" placeholder="请输入节点名称关键词"></Input>
+                    <Input v-model="formSearch.keywords" placeholder="请输入角色名称关键词"></Input>
                 </Form-item>
-                <Form-item label="节点状态：">
+                <Form-item label="角色状态：">
                     <Select v-model="formSearch.status" placeholder="请选择">
                         <Option value="1">正常</Option>
                         <Option value="0">锁定</Option>
@@ -34,7 +34,7 @@
             <div>
                 <Form ref="addForm" :model="addForm" :rules="ruleValidate" :label-width="80">
                     <Form-item label="角色名称" prop="name">
-                        <Input v-model="addForm.name" placeholder="请填写节点名称"></Input>
+                        <Input v-model="addForm.name" placeholder="请填写角色名称"></Input>
                     </Form-item>
                     <Form-item label="角色状态" prop="status">
                         <Radio-group v-model="addForm.status">
@@ -43,7 +43,7 @@
                         </Radio-group>
                     </Form-item>
                     <Form-item label="角色说明" prop="desc">
-                        <Input v-model="addForm.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="节点简要说明..."></Input>
+                        <Input v-model="addForm.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="角色简要说明..."></Input>
                     </Form-item>
                 </Form>
             </div>
@@ -55,11 +55,11 @@
 
         <!--编辑 Modal 对话框-->
         <Modal v-model="editModal" class-name="customize-modal-center">
-            <div slot="header" class="ivu-modal-header-inner">编辑权限节点</div>
+            <div slot="header" class="ivu-modal-header-inner">编辑权限角色</div>
             <div>
                 <Form ref="editForm" :model="editForm" :rules="ruleValidate" :label-width="80">
                     <Form-item label="角色名称" prop="name">
-                        <Input v-model="editForm.name" placeholder="请填写节点名称"></Input>
+                        <Input v-model="editForm.name" placeholder="请填写角色名称"></Input>
                     </Form-item>
                     <Form-item label="角色状态" prop="status">
                         <Radio-group v-model="editForm.status">
@@ -93,29 +93,6 @@
 
     export default {
         data () {
-            //参数验证
-            const validateParams = (rule, value, callback) => {
-                if (value) {
-                    let reg = /^[a-zA-Z]+[,]?[a-zA-Z]+$/;
-                    if (!reg.test(value)) {
-                        callback(new Error('路由参数只能英文半角逗号'));
-                    }
-                }
-                callback();
-            }
-            //验证正整数 自带的 number integer 好像有问题
-            const validateInt = (rule, value, callback) => {
-                if(value) {
-                    if(value > 9999) {
-                        callback(new Error('最大排序数9999'));
-                    }
-                    let reg = /^[0-9]?[0-9]+$/;
-                    if (!reg.test(value)) {
-                        callback(new Error('排序只能填写正正数'));
-                    }
-                }
-                callback();
-            }
 
             return {
                 //render 里使用 如果没有此this 会导致找不到方法而报错
@@ -132,6 +109,15 @@
                         width: 60
                     },
                     {
+                        title: '角色名称',
+                        key: 'name',
+                        width: 200
+                    },
+                    {
+                        title: '角色简介',
+                        key: 'desc'
+                    },
+                    {
                         title: '状态',
                         key: 'status',
                         width: 120,
@@ -141,15 +127,6 @@
                             const text = row.status == 1 ? '正常' : row.status == 0 ? '锁定' : '删除';
                             return `<tag type="dot" color="${color}">${text}</tag>`;
                         }
-                    },
-                    {
-                        title: '角色名称',
-                        key: 'name',
-                        width: 200
-                    },
-                    {
-                        title: '角色简介',
-                        key: 'desc'
                     },
                     {
                         title: '添加时间',
@@ -177,31 +154,16 @@
                 //每页多少条数据
                 pageSize: 1,
                 addForm: {
-                    id: '',
                     name: '',
                     status: 1,
-                    desc: '',
-                    create_time: ''
+                    desc: ''
                 },
                 //验证规则
                 ruleValidate: {
                     name: [
-                        { required: true, message: '节点名称不能为空', trigger: 'blur' },
-                        { type: 'string', min: 2, message: '节点名称不能少于2个字符', trigger: 'blur' }
-                    ],
-                    controller: [
-                        { type: 'string', message: '控制器只能英文前小后驼峰', trigger: 'blur', pattern: /^[a-zA-z]+$/}
-                    ],
-                    action: [
-                        { type: 'string', message: '方法只能是英文前小后驼峰', trigger: 'blur', pattern: /^[a-zA-z]+$/}
-                    ],
-                    sort: [
-                        { validator: validateInt, trigger: 'blur'}
-                    ],
-                    params: [
-                        { validator: validateParams, trigger: 'blur'}
+                        { required: true, message: '角色名称不能为空', trigger: 'blur' },
+                        { type: 'string', min: 2, message: '角色名称不能少于2个字符', trigger: 'blur' }
                     ]
-
                 },
                 //搜索表单
                 formSearch: {},
@@ -222,7 +184,7 @@
             addSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        this.save("AddRule", this.addForm)
+                        this.save("AddRole", this.addForm)
                     } else {
                         this.$Message.error('表单验证失败!')
                     }
@@ -232,7 +194,7 @@
             editSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        this.save("EditRule", this.editForm)
+                        this.save("EditRole", this.editForm)
                     } else {
                         this.$Message.error('表单验证失败!')
                     }
@@ -253,7 +215,7 @@
             },
             getData (params) {
                 if (!params) params = {page: 1}
-                this.request('GetRule', params, true).then((res) => {
+                this.request('GetRole', params, true).then((res) => {
                     if(res.status) {
                         //列表数据
                         this.list = res.data.list
@@ -269,7 +231,7 @@
             edit (index) {
 
             },
-            //删除节点数据
+            //删除角色数据
             del (index, id) {
                 this.$Modal.confirm({
                     title: '确认删除',
@@ -277,7 +239,7 @@
                     content: '<p>你确定要删除?删除后不可恢复!</p>',
                     loading: true,
                     onOk: () => {
-                        this.request('DelRule', {id, id}).then((res) => {
+                        this.request('DelRole', {id, id}).then((res) => {
                             if(res.status) {
                                 this.$Message.info(res.msg)
                                 this.$Modal.remove();
@@ -295,11 +257,25 @@
             },
             //保存数据方法
             save(url, data) {
-
+                this.request(url, data).then((res) => {
+                    if (res.status) {
+                        this.addModal = false
+                        this.editModal = false
+                        this.$Message.success(res.msg)
+                        //重置数据
+                        this.$refs['addForm'].resetFields()
+                        this.$refs['editForm'].resetFields()
+                        //重新拉取服务端数据
+                        this.getData()
+                    } else {
+                        this.$Message.error(res.msg)
+                    }
+                })
             }
         },
         mounted() {
             //服务端获取数据
+            this.getData();
 
         }
     }
