@@ -29,7 +29,7 @@
                         </Select>
                     </Form-item>
                     <Form-item :label-width="1">
-                        <Button type="primary" @click="search('formSearch')" class="a1">搜索</Button>
+                        <Button type="primary" @click="search('formSearch')" icon="ios-search">搜索</Button>
                     </Form-item>
                 </Form>
             </Col>

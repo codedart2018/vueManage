@@ -123,7 +123,7 @@ function eachMenu(menu = [], routes = []) {
                 icon: item.icon,
                 name: item.name,
                 parent: item.parent,
-                path: `${item.path}`,
+                path: item.path,
                 url: item.url,
                 display: item.display,
                 component: resolve => require([`${item.component}`], resolve)

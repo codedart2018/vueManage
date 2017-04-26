@@ -14,7 +14,7 @@
                     </Select>
                 </Form-item>
                 <Form-item :label-width="1">
-                    <Button type="primary" @click="search('formSearch')" class="a1">搜索</Button>
+                    <Button type="primary" @click="search('formSearch')" icon="ios-search">搜索</Button>
                 </Form-item>
             </Form>
             </Col>
@@ -140,10 +140,10 @@
                     {
                         title: '操作',
                         key: 'operation',
-                        width: 120,
+                        width: 210,
                         align: 'center',
                         render (row, column, index) {
-                            return `<i-button type="primary" size="small" @click="edit(${index})">查看</i-button> <i-button type="error" size="small" @click="del(${index}, ${row.id})">删除</i-button>`;
+                            return `<i-button type="success" size="small" @click="authGo(${row.id})">角色授权</i-button> <i-button type="primary" size="small" @click="edit(${index})">查看</i-button> <i-button type="error" size="small" @click="del(${index}, ${row.id})">删除</i-button>`;
                         }
                     }
                 ],
@@ -271,12 +271,15 @@
                         this.$Message.error(res.msg)
                     }
                 })
+            },
+            authGo(id) {
+                this.$router.push({ path: '/manage/authorize/' + id, params: { id: id }})
             }
         },
         mounted() {
             //服务端获取数据
             this.getData();
-
+            //console.log(this.$router.options.routes)
         }
     }
 </script>
