@@ -1,4 +1,4 @@
-<style src="../../assets/style/manage/authorize.less" lang="less" scoped></style>
+<style src="../../../assets/style/manage/authorize.less" lang="less" scoped></style>
 <!--角色授权-->
 <template>
     <div style="background:#eee;">

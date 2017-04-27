@@ -1,5 +1,5 @@
-<style src="../assets/style/common/base.less" lang="less" scoped></style>
-<style src="../assets/style/manage/index.less" lang="less" scoped></style>
+<style src="../../../assets/style/common/base.less" lang="less" scoped></style>
+<style src="../../../assets/style/manage/index.less" lang="less" scoped></style>
 
 <template>
     <div class="container">
@@ -90,9 +90,9 @@
 
 <script>
     //引入公共 main
-    import commonMain from "./Common/Main.vue"
+    import commonMain from "./main.vue"
     import {mapActions, mapGetters} from 'vuex'
-    import {filterRouters} from '../router'
+    import {filterRouters} from '../../../router'
 
     export default {
         beforeCreate: function () {

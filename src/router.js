@@ -5,12 +5,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Manage from './components/Manage'  //管理页
-import Login from '@/components/Manage/Login'  //登陆页
+import Login from '@/pages/login/login'  //登陆页
 import NotFound from '@/components/Common/404'  //404 未找到页面
-import Validate from './test/validate.vue' //验证测试页面
 import Hello from '@/components/Hello'
-import Iview from '@/components/Iview'
 
 Vue.use(Router)
 
@@ -70,21 +67,6 @@ const router =[
         component: Login,
         display: 0
     },
-    //以下我测试用的路由
-    // {
-    //     path: '/manage/',
-    //     component: Manage,
-    //     name: '角色权限',
-    //     icon: 'fa fa-id-card-o',
-    //     meta: {
-    //         title: '管理中心'
-    //     },
-    //     display: 0,
-    //     children: [
-    //         { path: 'iview', component: Iview, name: '角色管理', display: 1 },
-    //         { path: 'validate', component: Validate, name: '权限管理', display: 1 }
-    //     ]
-    // },
     {
         path: '/state/:id?',
         component: resolve => require(['./test/store.vue'], resolve),

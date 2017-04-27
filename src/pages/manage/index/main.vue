@@ -1,4 +1,4 @@
-<style src="../../assets/style/common/main.less" lang="less" scoped></style>
+<style src="../../../assets/style/common/main.less" lang="less" scoped></style>
 
 <template>
     <Row type="flex">
