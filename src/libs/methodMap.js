@@ -24,6 +24,10 @@ const methodMap = {
     EditRole: {url: '/api/role_auth/edit_role', method: "post"},
     /** 删除角色 **/
     DelRole: {url: '/api/role_auth/delete_role', method: "post"},
+    /** 角色授权列表 **/
+    Authorize: {url: '/api/role_auth/authorize', method: "get"},
+    /** 保存角色授权 **/
+    SaveAuth: {url: '/api/role_auth/save_authorize', method: "post"},
 }
 
 export default methodMap

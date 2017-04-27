@@ -8,7 +8,7 @@
                 <Col span="24" class="mb-20">
                 <Row>
                     <Col span="22" push="2" class="col">
-                    <Input placeholder="请输入..." style="width: 300px"></Input></Col>
+                    <Input placeholder="请输入..." style="width: 300px" v-model="name"></Input></Col>
                     <Col span="2" pull="22" class="text-align-right col pr-20">角色名称</Col>
                 </Row>
                 </Col>
@@ -19,7 +19,7 @@
                                 <table class="table">
                                     <tbody>
 
-                                        <tr class="ng-scope" v-for="(item, index) in rule" :key="item.id">
+                                        <tr class="ng-scope" v-for="(item, index) in list" :key="item.id">
                                             <td class="col-td-1"><Icon type="network"></Icon></i>&nbsp;{{item.name}}</td>
                                             <td class="col-td-2">
                                                 <label class="checkbox-inline">
@@ -43,7 +43,12 @@
                         <Col span="2" pull="22" class="text-align-right col pr-20">权限分配</Col>
                     </Row>
                 </Col>
-                <Col span="24"> {{rule}} </Col>
+                <Col span="24">
+                    <Row>
+                        <Col span="2" push="22"> <Button type="primary" @click="save">保存权限</Button> </Col>
+                        <Col span="22" pull="2" class="text-align-right col pr-20"> </Col>
+                    </Row>
+                </Col>
             </Row>
         </Card>
 
@@ -93,60 +98,128 @@
                             }
                         ]
                     }
-                ]
+                ],
+                //节点名称
+                name: '',
+                //节点列表数据
+                list: [],
+                //原后台取出已有权限数据
+                rules: []
             }
         },
         methods: {
             changeData(index, key) {
+                let t = this.list[index]
+                let tk = t.children[key]
                 //反转
-                this.rule[index].children[key].select = !this.rule[index].children[key].select
+                tk.select = !tk.select
                 //获取子菜单长度
-                let len = this.rule[index].children.length
+                let len = t.children.length
                 let count = 0
                 //判断
                 let is = false //全选状态
-                for(let item of this.rule[index].children) {
+                for(let item of t.children) {
                     if(item.select == false){
                         count++
                         is = true //总有一个反选
                     }
                 }
                 if(is && count != len) {
-                    this.rule[index].status = true;
-                    this.rule[index].select = false;
+                    if(tk.select) {
+                        this.rules.push(tk.id)
+                    } else {
+                        //删除指定值
+                        this.removeByValue(tk.id)
+                    }
+                    t.status = true
+                    t.select = false
                 }else if(is && count == len){
-                    this.rule[index].status = false;
-                    this.rule[index].select = false;
+                    if(tk.select) {
+                        this.rules.push(tk.id)
+                    } else {
+                        this.removeByValue(tk.id)
+                    }
+                    t.status = false
+                    t.select = false
                 }else{
-                    this.rule[index].status = false;
-                    this.rule[index].select = true;
+                    t.status = false
+                    t.select = true
+                    this.rules.push(tk.id)
                 }
             },
             //全不选 全选
             checkAll (index) {
-                if (this.rule[index].status == false && this.rule[index].select == true) {
-                    this.rule[index].status = false
-                    this.rule[index].select = false
+                let t = this.list[index]
+                if (t.status == false && t.select == true) {
+                    console.log(1)
+                    t.status = false
+                    t.select = false
                     this.reversal(index, false)
-                } else if(this.rule[index].status == false && this.rule[index].select == false) {
-                    this.rule[index].status = false
-                    this.rule[index].select = true
+                } else if(t.status == false && t.select == false) {
+                    console.log(2)
+                    t.status = false
+                    t.select = true
                     this.reversal(index, true)
                 } else {
-                    this.rule[index].status = false
-                    this.rule[index].select = false
+                    console.log(3)
+                    t.status = false
+                    t.select = false
                     this.reversal(index, false)
                 }
 
             },
             //反转所有
             reversal(index, select) {
-                for(let item of this.rule[index].children) {
+                this.rules = []
+                for(let item of this.list[index].children) {
+                    if(select == true) {
+                        this.rules.push(item.id)
+                    }
                     item.select = select
                 }
             },
+            //删除指定值
+            removeByValue(val) {
+                for(let i=0; i < this.rules.length; i++) {
+                    if(this.rules[i] == val) {
+                        this.rules.splice(i, 1);
+                        break;
+                    }
+                }
+            },
+            //请求后端数据
+            getData() {
+                let id = this.$route.params.id
+                if(id) {
+                    this.request('Authorize', {id: id}).then((res) => {
+                        if(res.status) {
+                            this.list = res.data.list
+                            this.select = res.data.select
+                            this.name = res.data.name
+                        } else {
+                            this.$Message.error(res.msg)
+                        }
+                    })
+                }
+            },
+            //提交保存数据
+            save() {
+                let id = this.$route.params.id
+                if(id) {
+                    this.request('SaveAuth', {id: id, rules: this.rules, name: this.name}).then((res) => {
+                        if(res.status) {
+                            this.$Message.success(res.msg)
+                            this.$router.go(-1)
+                        } else {
+                            this.$Message.error(res.msg)
+                        }
+                    })
+                }
+            }
         },
         mounted() {
+            //获取数据
+            this.getData();
 
         },
         components: {}
