@@ -99,10 +99,6 @@ npm run build --report
 #### 添加节点
 ![添加节点](./demo/images/add_rule.jpg)
 
-##### PHP 后端模拟菜单(暂时模拟输出)
-
-![后端模拟菜单](./demo/images/menu_arr.jpg)
-
 ##### 登陆页
 
 ![登陆页](./demo/images/login.jpg)
