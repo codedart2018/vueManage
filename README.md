@@ -86,6 +86,13 @@ npm run build --report
 #### 亲测了打包后动态路由照样可以使用，不用担心路径问题！不用担心路径问题！说两遍。
 
 ### 截图
+
+#### 节点列表
+![角色授权](./demo/images/auth1.jpg)
+
+#### 节点列表
+![角色授权](./demo/images/auth.jpg)
+
 #### 节点列表
 ![节点列表](./demo/images/rule.jpg)
 
