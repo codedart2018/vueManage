@@ -45,8 +45,8 @@
                 </Col>
                 <Col span="24">
                     <Row>
-                        <Col span="2" push="22"> <Button type="primary" @click="save">保存权限</Button> </Col>
-                        <Col span="22" pull="2" class="text-align-right col pr-20"> </Col>
+                        <Col span="3" push="21"> <Button type="primary" @click="save">保存权限</Button>&nbsp;&nbsp;&nbsp;&nbsp;<Button @click="goBack()">返回</Button></Col>
+                        <Col span="21" pull="3" class="text-align-right col pr-20"> </Col>
                     </Row>
                 </Col>
             </Row>
@@ -67,38 +67,9 @@
                     this.$router.go(-1)
                 }, 2000)
             }
-            console.log('deviceid: ' + this.$route.params.id)
         },
         data(){
             return {
-                rule: [
-                    {
-                        id: 1,
-                        name: '角色权限',
-                        status: false, //样式 全选择 false
-                        select: true, //选择
-                        children: [
-                            {
-                                id: 11,
-                                name: '权限节点',
-                                select: true
-                            },
-                            {
-                                id: 12,
-                                name: '添加',
-                                select: true
-                            },{
-                                id: 13,
-                                name: '修改节点',
-                                select: true
-                            },{
-                                id: 14,
-                                name: '删除节点',
-                                select: true
-                            }
-                        ]
-                    }
-                ],
                 //节点名称
                 name: '',
                 //节点列表数据
@@ -215,6 +186,9 @@
                         }
                     })
                 }
+            },
+            goBack() {
+                this.$router.go(-1)
             }
         },
         mounted() {

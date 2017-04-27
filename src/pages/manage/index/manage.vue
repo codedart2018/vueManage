@@ -62,7 +62,7 @@
                             {{item.name}}
                         </template>
                         <Menu-item v-bind:name="(index+9999)*(key+1)" v-for="(child, key) in item.children" :key="child.id" v-if="child.display == 1" class="menu-item">
-                            <span @click="goPath(child.name)">{{child.name}}</span>
+                            <span @click="goPath(child.name, [index, key])">{{child.name}}</span>
                         </Menu-item>
                     </Submenu>
                 </Menu>
@@ -72,9 +72,8 @@
                 <div style="height: 40px;">
                     <Breadcrumb>
                         <Breadcrumb-item>首页</Breadcrumb-item>
-                        <Breadcrumb-item>角色权限</Breadcrumb-item>
-                        <Breadcrumb-item>角色授权分配</Breadcrumb-item>
-                        <!--<Breadcrumb-item>{{this.$route.path.replace('/','')}}</Breadcrumb-item>-->
+                        <Breadcrumb-item v-if="navOne">{{navOne}}</Breadcrumb-item>
+                        <Breadcrumb-item v-if="navTwo">{{navTwo}}</Breadcrumb-item>
                     </Breadcrumb>
                 </div>
                 <span v-if="$route.path == /manage/">
@@ -104,7 +103,8 @@
                 spanRight: 19,
                 openNames: ["1"],
                 transitionName: 'slide-left',
-                user: {}
+                user: {},
+                navOne: ''
             }
         },
         beforeMount() {
@@ -137,7 +137,9 @@
                 console.log(name)
             },
             //编程式导航
-            goPath(name) {
+            goPath(name, params) {
+                this.navOne = this.$router.options.routes[params[0]].name
+                this.navTwo = this.$route.name
                 this.$router.push({ name: name })
             }
         },
