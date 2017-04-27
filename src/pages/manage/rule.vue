@@ -249,7 +249,8 @@
                     },
                     {
                         title: 'ICON',
-                        key: 'icon'
+                        key: 'icon',
+                        width: 100,
                     },
                     {
                         title: 'PATH',
