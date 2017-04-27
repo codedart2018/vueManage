@@ -9,8 +9,7 @@
                 <Row>
                     <Col span="22" push="2" class="col">
                     <Input placeholder="请输入..." style="width: 300px"></Input></Col>
-                    <Col span="2" pull="22" class="text-align-right col pr-20">
-                    分组名称</Col>
+                    <Col span="2" pull="22" class="text-align-right col pr-20">角色名称</Col>
                 </Row>
                 </Col>
                 <Col span="24">
