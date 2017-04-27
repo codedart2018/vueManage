@@ -47,6 +47,8 @@
                 <Col span="24"> {{rule}} </Col>
             </Row>
         </Card>
+
+
     </div>
 </template>
 
@@ -65,16 +67,12 @@
         },
         data(){
             return {
-                indeterminate: true,
-                checkAll: false,
-                checkAllGroup: ['香蕉', '西瓜'],
-
                 rule: [
                     {
                         id: 1,
                         name: '角色权限',
-                        status: true,
-                        select: false,
+                        status: false, //样式 全选择 false
+                        select: true, //选择
                         children: [
                             {
                                 id: 11,
@@ -84,11 +82,11 @@
                             {
                                 id: 12,
                                 name: '添加',
-                                select: false
+                                select: true
                             },{
                                 id: 13,
                                 name: '修改节点',
-                                select: false
+                                select: true
                             },{
                                 id: 14,
                                 name: '删除节点',
@@ -101,33 +99,53 @@
         },
         methods: {
             changeData(index, key) {
+                //反转
                 this.rule[index].children[key].select = !this.rule[index].children[key].select
+                //获取子菜单长度
+                let len = this.rule[index].children.length
+                let count = 0
+                //判断
+                let is = false //全选状态
+                for(let item of this.rule[index].children) {
+                    if(item.select == false){
+                        count++
+                        is = true //总有一个反选
+                    }
+                }
+                if(is && count != len) {
+                    this.rule[index].status = true;
+                    this.rule[index].select = false;
+                }else if(is && count == len){
+                    this.rule[index].status = false;
+                    this.rule[index].select = false;
+                }else{
+                    this.rule[index].status = false;
+                    this.rule[index].select = true;
+                }
             },
             handleCheckAll (index) {
-                if (this.rule[index].status) {
+                //全不选
+                if (this.rule[index].status == false && this.rule[index].select == true) {
+                    this.rule[index].status = false
                     this.rule[index].select = false
                     this.reversal(index, false)
-                } else {
-                    this.rule[index].select = !this.rule[index].select
+                } else if(this.rule[index].status == false && this.rule[index].select == false) {
+                    this.rule[index].status = false
+                    this.rule[index].select = true
                     this.reversal(index, true)
-                }
-                this.rule[index].status = false;
-
-                if (this.rule[index].select) {
-                    this.checkAllGroup = ['香蕉', '苹果', '西瓜'];
                 } else {
-                    this.checkAllGroup = [];
+                    this.rule[index].status = false
+                    this.rule[index].select = false
+                    this.reversal(index, false)
                 }
-            },
-            //反转
-            reversal(index, select) {
-                for (let [key, item] of new Map(this.rule[index].children.map((item, i) => [i, item]))) {
-                    if(select) {
 
-                    }
+            },
+            //反转所有
+            reversal(index, select) {
+                for(let item of this.rule[index].children) {
                     item.select = select
                 }
-            }
+            },
         },
         mounted() {
 
