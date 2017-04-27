@@ -69,6 +69,14 @@
             </aside>
 
             <section class="content-container">
+                <div style="height: 40px;">
+                    <Breadcrumb>
+                        <Breadcrumb-item>首页</Breadcrumb-item>
+                        <Breadcrumb-item>角色权限</Breadcrumb-item>
+                        <Breadcrumb-item>角色授权分配</Breadcrumb-item>
+                        <!--<Breadcrumb-item>{{this.$route.path.replace('/','')}}</Breadcrumb-item>-->
+                    </Breadcrumb>
+                </div>
                 <span v-if="$route.path == /manage/">
                     <common-main></common-main>
                 </span>
