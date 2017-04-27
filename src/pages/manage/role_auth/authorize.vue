@@ -20,18 +20,18 @@
                                 <table class="table">
                                     <tbody>
 
-                                        <tr class="ng-scope" v-for="(item, index) in rule">
+                                        <tr class="ng-scope" v-for="(item, index) in rule" :key="item.id">
                                             <td class="col-td-1"><Icon type="network"></Icon></i>&nbsp;{{item.name}}</td>
                                             <td class="col-td-2">
                                                 <label class="checkbox-inline">
                                                     <Checkbox
                                                         :indeterminate="item.status"
                                                         :value="item.select"
-                                                        @click.prevent.native="handleCheckAll(index)">全选</Checkbox>
+                                                        @click.prevent.native="checkAll(index)">全选</Checkbox>
                                                 </label>
                                             </td>
                                             <td>
-                                                <Checkbox v-for="(child, key) in item.children" :value="item.children[key].select" @on-change="changeData(index, key)">
+                                                <Checkbox v-for="(child, key) in item.children" :value="item.children[key].select" :key="item.id" @on-change="changeData(index, key)">
                                                     {{child.name}}
                                                 </Checkbox>
                                             </td>
@@ -123,8 +123,8 @@
                     this.rule[index].select = true;
                 }
             },
-            handleCheckAll (index) {
-                //全不选
+            //全不选 全选
+            checkAll (index) {
                 if (this.rule[index].status == false && this.rule[index].select == true) {
                     this.rule[index].status = false
                     this.rule[index].select = false

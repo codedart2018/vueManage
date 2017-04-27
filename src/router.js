@@ -6,7 +6,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Login from '@/pages/login/login'  //登陆页
-import NotFound from '@/components/Common/404'  //404 未找到页面
+import NotFound from '@/components/common/404'  //404 未找到页面
 import Hello from '@/components/Hello'
 
 Vue.use(Router)

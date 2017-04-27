@@ -15,7 +15,7 @@
         <p v-for='tel in telephone'>{{tel | filterPhone}}</p>
         List
         <ul>
-            <li v-for="(item, index) in memberList" @click="memberDetail(item.id)">
+            <li v-for="(item, index) in memberList" :key="index" @click="memberDetail(item.id)">
                 <span>{{item.name}}</span>
                 <span>{{item.age}}</span>
                 <span>{{item.birthday}}</span>
@@ -30,7 +30,7 @@
         </template>
         //组件传递数据
         {{name}}
-        <my-article v-for="(item, index) in artList" :art-list="item" :name="name"></my-article>
+        <my-article v-for="(item, index) in artList" :key="index" :art-list="item" :name="name"></my-article>
         <button @click='push'>添加文章</button>
         <button @click='pop'>尾部去除一篇文章</button>
         <button @click='unshift'>在头部加入一条数据</button>
