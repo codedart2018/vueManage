@@ -39,6 +39,11 @@
                     <Form-item label="密码" prop="password">
                         <Input type="password" v-model="addForm.password" placeholder="请填写密码"></Input>
                     </Form-item>
+                    <Form-item label="所属角色">
+                        <Select v-model="addForm.role_id" placeholder="请选择">
+                            <Option v-for="item in roles" :value="item.id" :key="item.id">{{ item.name }}</Option>
+                        </Select>
+                    </Form-item>
                     <Form-item label="姓名" prop="real_name">
                         <Input v-model="addForm.real_name" placeholder="请填写姓名"></Input>
                     </Form-item>
@@ -74,6 +79,11 @@
                     </Form-item>
                     <Form-item label="密码" prop="password">
                         <Input type="password" v-model="editForm.password" placeholder="请填写密码"></Input>
+                    </Form-item>
+                    <Form-item label="所属角色">
+                        <Select v-model="editForm.role_id" placeholder="请选择">
+                            <Option v-for="item in roles" :value="item.id" :key="item.id">{{ item.name }}</Option>
+                        </Select>
                     </Form-item>
                     <Form-item label="姓名" prop="real_name">
                         <Input v-model="editForm.real_name" placeholder="请填写姓名"></Input>
@@ -140,7 +150,7 @@
                     },
                     {
                         title: '用户角色',
-                        key: 'role'
+                        key: 'role_name'
                     },
                     {
                         title: '联系人',
@@ -217,6 +227,7 @@
                         }
                     }
                 ],
+                roles: [],
                 //列表数据
                 list: [],
                 //总共数据多少条
@@ -261,7 +272,7 @@
             addSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        this.save("AddRole", this.addForm)
+                        this.save("AddUser", this.addForm)
                     } else {
                         this.$Message.error('表单验证失败!')
                     }
@@ -300,6 +311,8 @@
                         this.total = res.data.count
                         //每页多少条数据
                         this.pageSize = res.data.size
+                        //角色数据
+                        this.roles = res.data.role
                     }
                 }).catch((response) => {
 
