@@ -93,7 +93,6 @@
 
     export default {
         data () {
-
             return {
                 //render 里使用 如果没有此this 会导致找不到方法而报错
                 self: this,
@@ -229,7 +228,10 @@
                 })
             },
             edit (index) {
-
+                //打开 modal 窗口
+                this.editModal = true
+                //获取原数据
+                this.editForm = this.list[index]
             },
             //删除角色数据
             del (index, id) {

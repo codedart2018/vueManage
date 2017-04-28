@@ -104,7 +104,8 @@
                 openNames: ["1"],
                 transitionName: 'slide-left',
                 user: {},
-                navOne: ''
+                navOne: '',
+                navTwo: ''
             }
         },
         beforeMount() {
