@@ -6,11 +6,11 @@
             <p slot="title">角色授权分配</p>
             <Row>
                 <Col span="24" class="mb-20">
-                <Row>
-                    <Col span="22" push="2" class="col">
-                    <Input placeholder="请输入..." style="width: 300px" v-model="name"></Input></Col>
-                    <Col span="2" pull="22" class="text-align-right col pr-20">角色名称</Col>
-                </Row>
+                    <Row>
+                        <Col span="22" push="2" class="col">
+                        <Input placeholder="请输入..." style="width: 300px" v-model="name"></Input></Col>
+                        <Col span="2" pull="22" class="text-align-right col pr-20">角色名称</Col>
+                    </Row>
                 </Col>
                 <Col span="24">
                     <Row>
@@ -51,13 +51,9 @@
                 </Col>
             </Row>
         </Card>
-
-
     </div>
 </template>
-
 <script>
-
     export default{
         beforeCreate: function () {
             let id = this.$route.params.id

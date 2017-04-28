@@ -474,12 +474,11 @@
             //服务端获取数据
             this.getData();
             let page = { page: 1 }
-            console.log(Object.assign(page, this.formSearch));
-
-            console.log(this.$route.query)
-            console.info(this.$router)
-            console.log('deviceid: ' + this.$route.params.page)
-            console.log('deviceid: ' + this.$route)
+            //console.log(Object.assign(page, this.formSearch));
+            //console.log(this.$route.query)
+            //console.info(this.$router)
+            //console.log('deviceid: ' + this.$route.params.page)
+            //console.log('deviceid: ' + this.$route)
         }
     }
 </script>
