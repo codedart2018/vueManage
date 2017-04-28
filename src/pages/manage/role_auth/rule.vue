@@ -253,12 +253,12 @@
                         width: 100,
                     },
                     {
-                        title: 'PATH',
-                        key: 'path'
-                    },
-                    {
                         title: 'URL',
                         key: 'url'
+                    },
+                    {
+                        title: 'PATH',
+                        key: 'path'
                     },
                     {
                         title: '组件路径',
@@ -476,7 +476,7 @@
             let page = { page: 1 }
             //console.log(Object.assign(page, this.formSearch));
             //console.log(this.$route.query)
-            //console.info(this.$router)
+            console.info(this.$router.options.routes)
             //console.log('deviceid: ' + this.$route.params.page)
             //console.log('deviceid: ' + this.$route)
         }

@@ -28,6 +28,10 @@ const methodMap = {
     Authorize: {url: '/api/role_auth/authorize', method: "get"},
     /** 保存角色授权 **/
     SaveAuth: {url: '/api/role_auth/save_authorize', method: "post"},
+    /** 后台用户列表 **/
+    User: {url: '/api/user/index', method: "get"},
+    /** 编辑后台用户 **/
+    EditUser: {url: '/api/user/edit', method: "post"},
 }
 
 export default methodMap

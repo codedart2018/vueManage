@@ -95,6 +95,7 @@ export default new Router({
  * @param menu 菜单
  * @param routes 路由
  * @returns {Array}
+ * todo 后期来处理一级导航可以不填组件地址
  */
 function eachMenu(menu = [], routes = []) {
     if(menu.length <= 0) return routes
@@ -104,7 +105,7 @@ function eachMenu(menu = [], routes = []) {
                 id: item.id,
                 icon: item.icon,
                 name: item.name,
-                parent: item.parent,
+                pid: item.pid,
                 path: item.path,
                 url: item.url,
                 display: item.display,

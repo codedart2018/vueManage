@@ -1,0 +1,365 @@
+<template>
+    <div>
+        <Row class="mb-15">
+            <Col span="18" class="search">
+            <Form :model="formSearch" :label-width="80" inline label-position="right">
+                <Form-item label="角色名称：">
+                    <Input v-model="formSearch.keywords" placeholder="请输入角色名称关键词"></Input>
+                </Form-item>
+                <Form-item label="角色状态：">
+                    <Select v-model="formSearch.status" placeholder="请选择">
+                        <Option value="1">正常</Option>
+                        <Option value="0">锁定</Option>
+                        <Option value="-1">删除</Option>
+                    </Select>
+                </Form-item>
+                <Form-item :label-width="1">
+                    <Button type="primary" @click="search('formSearch')" icon="ios-search">搜索</Button>
+                </Form-item>
+            </Form>
+            </Col>
+            <Col span="6" class="text-align-right">
+            <Button type="primary" @click="addModal = true"><Icon type="plus-round"></Icon>&nbsp;添加用户</Button></Button>
+            </Col>
+        </Row>
+        <Row class="mb-15">
+            <Table :context="self" :columns="columns" :data="list"></Table>
+        </Row>
+        <Row type="flex" justify="end">
+            <Page :total="total" :page-size="pageSize" show-total show-elevator @on-change="changePage"></Page>
+        </Row>
+
+        <!--添加 Modal 对话框-->
+        <Modal v-model="addModal" title="添加用户" class-name="customize-modal-center" @on-cancel="modalCancel()">
+            <div>
+                <Form ref="addForm" :model="addForm" :rules="ruleValidate" :label-width="80">
+                    <Form-item label="帐号" prop="account">
+                        <Input v-model="addForm.account" placeholder="请填写帐号"></Input>
+                    </Form-item>
+                    <Form-item label="密码" prop="password">
+                        <Input type="password" v-model="addForm.password" placeholder="请填写密码"></Input>
+                    </Form-item>
+                    <Form-item label="姓名" prop="real_name">
+                        <Input v-model="addForm.real_name" placeholder="请填写姓名"></Input>
+                    </Form-item>
+                    <Form-item label="手机号" prop="mobile">
+                        <Input v-model="addForm.mobile" placeholder="请填写手机号"></Input>
+                    </Form-item>
+                    <Form-item label="邮箱" prop="email">
+                        <Input v-model="addForm.email" placeholder="请填写邮箱"></Input>
+                    </Form-item>
+                    <Form-item label="状态" prop="status">
+                        <Radio-group v-model="addForm.status">
+                            <Radio label="1">正常</Radio>
+                            <Radio label="0">锁定</Radio>
+                        </Radio-group>
+                    </Form-item>
+                    <Form-item label="备注说明" prop="desc">
+                        <Input v-model="addForm.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="200字说明备注..."></Input>
+                    </Form-item>
+                </Form>
+            </div>
+            <div slot="footer">
+                <Button type="primary" @click="addSubmit('addForm')">提交</Button>
+                <Button type="ghost" @click="handleReset('addForm')" style="margin-left: 8px">重置</Button>
+            </div>
+        </Modal>
+
+        <!--编辑 Modal 对话框-->
+        <Modal v-model="editModal" title="编辑用户" class-name="customize-modal-center" @on-cancel="modalCancel()">
+            <div>
+                <Form ref="editForm" :model="editForm" :rules="ruleValidate" :label-width="80">
+                    <Form-item label="帐号" prop="account">
+                        <Input v-model="editForm.account" disabled placeholder="请填写帐号"></Input>
+                    </Form-item>
+                    <Form-item label="密码" prop="password">
+                        <Input type="password" v-model="editForm.password" placeholder="请填写密码"></Input>
+                    </Form-item>
+                    <Form-item label="姓名" prop="real_name">
+                        <Input v-model="editForm.real_name" placeholder="请填写姓名"></Input>
+                    </Form-item>
+                    <Form-item label="手机号" prop="mobile">
+                        <Input v-model="editForm.mobile" placeholder="请填写手机号"></Input>
+                    </Form-item>
+                    <Form-item label="邮箱" prop="email">
+                        <Input v-model="editForm.email" placeholder="请填写邮箱"></Input>
+                    </Form-item>
+                    <Form-item label="状态" prop="status">
+                        <Radio-group v-model="editForm.status">
+                            <Radio label="1">正常</Radio>
+                            <Radio label="0">锁定</Radio>
+                        </Radio-group>
+                    </Form-item>
+                    <Form-item label="备注说明" prop="desc">
+                        <Input v-model="editForm.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="200字说明备注..."></Input>
+                    </Form-item>
+                </Form>
+            </div>
+            <div slot="footer">
+                <Button type="primary" @click="editSubmit('editForm')">提交</Button>
+                <Button type="ghost" @click="modalCancel()" style="margin-left: 8px">取消</Button>
+            </div>
+        </Modal>
+
+    </div>
+</template>
+
+<style scoped>
+    .search .ivu-form-item {
+        margin-bottom: 0px;
+        vertical-align: top;
+        zoom: 1;
+    }
+</style>
+
+
+<script>
+
+    export default {
+        data () {
+            const validatePassword = (rule, value, callback) => {
+                if (value && (value.length < 6 || value.length > 32)) {
+                    callback(new Error('密码长度6-32个字符'))
+                }
+                callback();
+            }
+
+            return {
+                //render 里使用 如果没有此this 会导致找不到方法而报错
+                self: this,
+                columns: [
+                    {
+                        title: 'ID',
+                        key: 'id',
+                        width: 60
+                    },
+                    {
+                        title: '帐号',
+                        key: 'account',
+                        width: 130
+                    },
+                    {
+                        title: '用户角色',
+                        key: 'role'
+                    },
+                    {
+                        title: '联系人',
+                        key: 'real_name',
+                        width: 130
+                    },
+                    {
+                        title: '手机号',
+                        key: 'mobile',
+                        align: 'center',
+                        width: 150
+                    },
+                    {
+                        title: '邮箱',
+                        key: 'email',
+                        align: 'center',
+                        width: 180,
+                    },
+                    {
+                        title: '状态',
+                        key: 'status',
+                        width: 80,
+                        align: 'center',
+                        render (row) {
+                            const color = row.status == 1 ? 'green' : row.status == 0 ? 'yellow' : 'red';
+                            const text = row.status == 1 ? '正常' : row.status == 0 ? '锁定' : '删除';
+                            return `<tag type="dot" style="padding-right: 3px" color="${color}" title="${text}"></tag>`;
+                        }
+                    },
+                    {
+                        title: '登陆次数',
+                        key: 'login_count'
+                    },
+                    {
+                        title: '最后登陆',
+                        key: 'last_login_time',
+                        width: 135,
+                        align: 'center',
+                        render (row) {
+                            return "<span>{{ row.last_login_time | formatDate('yyyy-MM-dd h:m') }}</span>"
+                        }
+                    },
+                    {
+                        title: '最后登陆IP',
+                        key: 'last_login_ip',
+                        width: 135,
+                        align: 'center'
+                    },
+                    {
+                        title: '添加时间',
+                        key: 'create_time',
+                        width: 135,
+                        align: 'center',
+                        render (row) {
+                            return "<span>{{ row.create_time | formatDate('yyyy-MM-dd h:m') }}</span>"
+                        }
+                    },
+                    {
+                        title: '最后更新',
+                        key: 'update_time',
+                        align: 'center',
+                        width: 135,
+                        render (row) {
+                            return "<span>{{ row.update_time | formatDate('yyyy-MM-dd h:m') }}</span>"
+                        }
+                    },
+                    {
+                        title: '操作',
+                        key: 'operation',
+                        width: 140,
+                        align: 'center',
+                        render (row, column, index) {
+                            return `<i-button type="primary" size="small" @click="edit(${index})">查看</i-button> <i-button type="success" size="small" @click="del(${index}, ${row.id})"><Icon type="key"></Icon> 重置</i-button>`;
+                        }
+                    }
+                ],
+                //列表数据
+                list: [],
+                //总共数据多少条
+                total: 0,
+                //每页多少条数据
+                pageSize: 1,
+                addForm: {
+                    account: '',
+                    password: '',
+                    role_id: 0,
+                    mobile: '',
+                    email: '',
+                    status: 1,
+                    real_name: ''
+                },
+                //验证规则
+                ruleValidate: {
+                    account: [
+                        { required: true, message: '帐号不能为空', trigger: 'blur' },
+                        { type: 'string', min: 2, message: '帐号不能少于2个字符', trigger: 'blur' }
+                    ],
+                    password: [
+                        {validator: validatePassword, trigger: 'blur'}
+                    ],
+                },
+                //搜索表单
+                formSearch: {},
+                //编辑表单
+                editForm: {},
+                //添加 modal
+                addModal: false,
+                //编辑 modal
+                editModal: false,
+            }
+        },
+        methods: {
+            //取消 modal
+            modalCancel() {
+                this.editModal = false
+            },
+            //添加数据
+            addSubmit (name) {
+                this.$refs[name].validate((valid) => {
+                    if (valid) {
+                        this.save("AddRole", this.addForm)
+                    } else {
+                        this.$Message.error('表单验证失败!')
+                    }
+                })
+            },
+            //修改数据
+            editSubmit (name) {
+                this.$refs[name].validate((valid) => {
+                    if (valid) {
+                        this.save("EditUser", this.editForm)
+                    } else {
+                        this.$Message.error('表单验证失败!')
+                    }
+                })
+            },
+            //重置表单数据
+            handleReset (name) {
+                this.$refs[name].resetFields();
+            },
+            //分页切换页码
+            changePage (page) {
+                let search = this.formSearch
+                let query = Object.assign({page: page }, search)
+                //分页
+                this.$router.push({ name: this.$router.currentRoute.name, query: query})
+                //获取最新数据
+                this.getData({page: page, params: search})
+            },
+            getData (params) {
+                if (!params) params = {page: 1}
+                this.request('User', params, true).then((res) => {
+                    if(res.status) {
+                        //列表数据
+                        this.list = res.data.list
+                        //总页数
+                        this.total = res.data.count
+                        //每页多少条数据
+                        this.pageSize = res.data.size
+                    }
+                }).catch((response) => {
+
+                })
+            },
+            edit (index) {
+                //打开 modal 窗口
+                this.editModal = true
+                //获取原数据
+                this.editForm = this.list[index]
+            },
+            //删除角色数据
+            del (index, id) {
+                this.$Modal.confirm({
+                    title: '确认删除',
+                    width: 300,
+                    content: '<p>你确定要删除?删除后不可恢复!</p>',
+                    loading: true,
+                    onOk: () => {
+                        this.request('DelRole', {id, id}).then((res) => {
+                            if(res.status) {
+                                this.$Message.info(res.msg)
+                                this.$Modal.remove();
+                                this.list[index].status = -1
+                            } else {
+                                this.$Message.error(res.msg)
+                            }
+                        })
+                    }
+                });
+            },
+            //表单搜索
+            search() {
+
+            },
+            //保存数据方法
+            save(url, data) {
+                this.request(url, data).then((res) => {
+                    if (res.status) {
+                        this.addModal = false
+                        this.editModal = false
+                        this.$Message.success(res.msg)
+                        //重置数据
+                        this.$refs['addForm'].resetFields()
+                        this.$refs['editForm'].resetFields()
+                        //重新拉取服务端数据
+                        this.getData()
+                    } else {
+                        this.$Message.error(res.msg)
+                    }
+                })
+            },
+            authGo(id) {
+                this.$router.push({ path: '/manage/authorize/' + id, params: { id: id }})
+            }
+        },
+        mounted() {
+            //服务端获取数据
+            this.getData();
+            //console.log(this.$router.options.routes)
+        }
+    }
+</script>

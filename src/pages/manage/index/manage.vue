@@ -139,9 +139,10 @@
             },
             //编程式导航
             goPath(name, params) {
+                this.$router.push({ name: name })
+                //todo 这个要二次才显示正确 后面解决
                 this.navOne = this.$router.options.routes[params[0]].name
                 this.navTwo = this.$route.name
-                this.$router.push({ name: name })
             }
         },
         components: {
