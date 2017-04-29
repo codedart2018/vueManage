@@ -7,7 +7,8 @@
                     <Input v-model="formSearch.keywords" placeholder="请输入角色名称关键词"></Input>
                 </Form-item>
                 <Form-item label="角色状态：">
-                    <Select v-model="formSearch.status" placeholder="请选择">
+                    <Select v-model="formSearch.status" placeholder="请选择" style="width:90px">
+                        <Option value="">请选择</Option>
                         <Option value="1">正常</Option>
                         <Option value="0">锁定</Option>
                         <Option value="-1">删除</Option>

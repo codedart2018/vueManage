@@ -11,18 +11,21 @@
                     </Form-item>
                     <Form-item label="是否显示：">
                         <Select v-model="formSearch.display" placeholder="请选择">
+                            <Option value="">请选择</Option>
                             <Option value="1">显示</Option>
                             <Option value="0">隐藏</Option>
                         </Select>
                     </Form-item>
                     <Form-item label="节点认证：">
                         <Select v-model="formSearch.auth" placeholder="请选择">
+                            <Option value="">请选择</Option>
                             <Option value="1">认证</Option>
                             <Option value="0">拒绝</Option>
                         </Select>
                     </Form-item>
                     <Form-item label="节点状态：">
                         <Select v-model="formSearch.status" placeholder="请选择">
+                            <Option value="">请选择</Option>
                             <Option value="1">正常</Option>
                             <Option value="0">锁定</Option>
                             <Option value="-1">删除</Option>

@@ -3,14 +3,29 @@
         <Row class="mb-15">
             <Col span="18" class="search">
             <Form :model="formSearch" :label-width="80" inline label-position="right">
-                <Form-item label="角色名称：">
+                <Form-item label="搜索类型：">
+                    <Select v-model="formSearch.type" placeholder="请选择" style="width:90px">
+                        <Option value="">请选择</Option>
+                        <Option value="1">帐号</Option>
+                        <Option value="2">联系人</Option>
+                        <Option value="3">手机号码</Option>
+                        <Option value="4">邮箱</Option>
+                    </Select>
+                </Form-item>
+                <Form-item label="关键词：">
                     <Input v-model="formSearch.keywords" placeholder="请输入角色名称关键词"></Input>
                 </Form-item>
-                <Form-item label="角色状态：">
-                    <Select v-model="formSearch.status" placeholder="请选择">
+                <Form-item label="所属角色">
+                    <Select v-model="formSearch.role_id" placeholder="请选择" style="width:100px">
+                        <Option value="">请选择</Option>
+                        <Option v-for="item in roles" :value="item.id" :key="item.id">{{ item.name }}</Option>
+                    </Select>
+                </Form-item>
+                <Form-item label="状态：">
+                    <Select v-model="formSearch.status" placeholder="请选择" style="width:70px">
+                        <Option value="">请选择</Option>
                         <Option value="1">正常</Option>
                         <Option value="0">锁定</Option>
-                        <Option value="-1">删除</Option>
                     </Select>
                 </Form-item>
                 <Form-item :label-width="1">
@@ -344,8 +359,6 @@
                         //角色数据
                         this.roles = res.data.role
                     }
-                }).catch((response) => {
-
                 })
             },
             edit (index) {
@@ -375,7 +388,8 @@
             },
             //表单搜索
             search() {
-
+                let search = this.formSearch
+                this.getData({ params : search })
             },
             //保存数据方法
             save(url, data) {
