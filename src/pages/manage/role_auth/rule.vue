@@ -207,7 +207,7 @@
             //参数验证
             const validateParams = (rule, value, callback) => {
                 if (value) {
-                    let reg = /^[a-zA-Z]+[,]?[a-zA-Z]+$/;
+                    let reg = /^[a-z]+[,]?[a-z]+$/;
                     if (!reg.test(value)) {
                         callback(new Error('路由参数只能英文半角逗号'));
                     }
@@ -343,10 +343,10 @@
                         { type: 'string', min: 2, message: '节点名称不能少于2个字符', trigger: 'blur' }
                     ],
                     controller: [
-                        { type: 'string', message: '控制器只能英文前小后驼峰', trigger: 'blur', pattern: /^[a-zA-z]+$/}
+                        { type: 'string', message: '控制器只能英文小写加下划线', trigger: 'blur', pattern: /^[a-z]+[_]?[a-z]+$/}
                     ],
                     action: [
-                        { type: 'string', message: '方法只能是英文前小后驼峰', trigger: 'blur', pattern: /^[a-zA-z]+$/}
+                        { type: 'string', message: '方法只能是英文小写加下划线', trigger: 'blur', pattern: /^[a-z]+[_]?[a-z]+$/}
                     ],
                     sort: [
                         { validator: validateInt, trigger: 'blur'}
@@ -428,7 +428,7 @@
             //删除节点数据
             del (index, id) {
                 this.$Modal.confirm({
-                    title: '确认删除',
+                    title: '温馨提示',
                     width: 300,
                     content: '<p>你确定要删除?删除后不可恢复!</p>',
                     loading: true,

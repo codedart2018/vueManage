@@ -236,7 +236,7 @@
             //删除角色数据
             del (index, id) {
                 this.$Modal.confirm({
-                    title: '确认删除',
+                    title: '温馨提示',
                     width: 300,
                     content: '<p>你确定要删除?删除后不可恢复!</p>',
                     loading: true,

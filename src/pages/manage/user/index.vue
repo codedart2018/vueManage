@@ -41,6 +41,7 @@
                     </Form-item>
                     <Form-item label="所属角色">
                         <Select v-model="addForm.role_id" placeholder="请选择">
+                            <Option value="">请选择</Option>
                             <Option v-for="item in roles" :value="item.id" :key="item.id">{{ item.name }}</Option>
                         </Select>
                     </Form-item>
@@ -82,6 +83,7 @@
                     </Form-item>
                     <Form-item label="所属角色">
                         <Select v-model="editForm.role_id" placeholder="请选择">
+                            <Option value="">请选择</Option>
                             <Option v-for="item in roles" :value="item.id" :key="item.id">{{ item.name }}</Option>
                         </Select>
                     </Form-item>
@@ -128,8 +130,18 @@
     export default {
         data () {
             const validatePassword = (rule, value, callback) => {
-                if (value && (value.length < 6 || value.length > 32)) {
+                if ((this.addModal || value) && (value.length < 6 || value.length > 32)) {
                     callback(new Error('密码长度6-32个字符'))
+                }
+                callback();
+            }
+
+            const validateMobile = (rule, value, callback) => {
+                if (value) {
+                    let reg = /^1[34578]\d{9}$/;
+                    if (!reg.test(value)) {
+                        callback(new Error('手机号码格式不正确'));
+                    }
                 }
                 callback();
             }
@@ -182,7 +194,8 @@
                     },
                     {
                         title: '登陆次数',
-                        key: 'login_count'
+                        key: 'login_count',
+                        align: 'center'
                     },
                     {
                         title: '最后登陆',
@@ -190,6 +203,9 @@
                         width: 135,
                         align: 'center',
                         render (row) {
+                        	if(row.last_login_time == 0) {
+                                return "<span>从未登陆</span>"
+                            }
                             return "<span>{{ row.last_login_time | formatDate('yyyy-MM-dd h:m') }}</span>"
                         }
                     },
@@ -223,7 +239,7 @@
                         width: 140,
                         align: 'center',
                         render (row, column, index) {
-                            return `<i-button type="primary" size="small" @click="edit(${index})">查看</i-button> <i-button type="success" size="small" @click="del(${index}, ${row.id})"><Icon type="key"></Icon> 重置</i-button>`;
+                            return `<i-button type="primary" size="small" @click="edit(${index})">查看</i-button> <i-button type="success" size="small" @click="restPassword(${index}, ${row.id})"><Icon type="key"></Icon> 重置</i-button>`;
                         }
                     }
                 ],
@@ -241,10 +257,12 @@
                     mobile: '',
                     email: '',
                     status: 1,
-                    real_name: ''
+                    real_name: '',
+                    desc: ''
                 },
                 //验证规则
                 ruleValidate: {
+                	//bug 记得后端验证问题要处理
                     account: [
                         { required: true, message: '帐号不能为空', trigger: 'blur' },
                         { type: 'string', min: 2, message: '帐号不能少于2个字符', trigger: 'blur' }
@@ -252,6 +270,18 @@
                     password: [
                         {validator: validatePassword, trigger: 'blur'}
                     ],
+                    real_name: [
+                        { type: 'string', min: 2, max: 6, message: '姓名2-6个字符', trigger: 'blur' }
+                    ],
+                    mobile: [
+                        {validator: validateMobile, trigger: 'blur'}
+                    ],
+                    email: [
+                        { type: 'email', message: '邮箱格式不正确', trigger: 'blur'}
+                    ],
+                    desc: [
+                        { type: 'string', max: 200, message: '备注说明不能超过200字', trigger: 'blur' }
+                    ]
                 },
                 //搜索表单
                 formSearch: {},
@@ -324,10 +354,30 @@
                 //获取原数据
                 this.editForm = this.list[index]
             },
+            //重置用户密码
+            restPassword (index, id) {
+                this.$Modal.confirm({
+                    title: '温馨提示',
+                    width: 300,
+                    content: '<p>你确定要重置密码为[123456]?</p>',
+                    loading: true,
+                    onOk: () => {
+                        this.request('restPassword', {id, id}).then((res) => {
+                            if(res.status) {
+                                this.$Message.info(res.msg)
+                                this.$Modal.remove();
+                                this.list[index].status = -1
+                            } else {
+                                this.$Message.error(res.msg)
+                            }
+                        })
+                    }
+                });
+            },
             //删除角色数据
             del (index, id) {
                 this.$Modal.confirm({
-                    title: '确认删除',
+                    title: '温馨提示',
                     width: 300,
                     content: '<p>你确定要删除?删除后不可恢复!</p>',
                     loading: true,

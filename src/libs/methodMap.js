@@ -34,6 +34,8 @@ const methodMap = {
     AddUser: {url: '/api/user/add', method: "post"},
     /** 编辑后台用户 **/
     EditUser: {url: '/api/user/edit', method: "post"},
+    /** 重置后台用户密码 **/
+    restPassword: {url: '/api/user/rest_password', method: "post"}
 }
 
 export default methodMap
