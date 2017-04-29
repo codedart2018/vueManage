@@ -239,7 +239,7 @@
                         width: 140,
                         align: 'center',
                         render (row, column, index) {
-                            return `<i-button type="primary" size="small" @click="edit(${index})">查看</i-button> <i-button type="success" size="small" @click="restPassword(${index}, ${row.id})"><Icon type="key"></Icon> 重置</i-button>`;
+                            return `<i-button type="primary" size="small" @click="edit(${index})">查看</i-button> <i-button type="success" size="small" @click="restPassword(${row.id})"><Icon type="key"></Icon> 重置</i-button>`;
                         }
                     }
                 ],
@@ -355,7 +355,7 @@
                 this.editForm = this.list[index]
             },
             //重置用户密码
-            restPassword (index, id) {
+            restPassword (id) {
                 this.$Modal.confirm({
                     title: '温馨提示',
                     width: 300,
@@ -366,27 +366,6 @@
                             if(res.status) {
                                 this.$Message.info(res.msg)
                                 this.$Modal.remove();
-                                this.list[index].status = -1
-                            } else {
-                                this.$Message.error(res.msg)
-                            }
-                        })
-                    }
-                });
-            },
-            //删除角色数据
-            del (index, id) {
-                this.$Modal.confirm({
-                    title: '温馨提示',
-                    width: 300,
-                    content: '<p>你确定要删除?删除后不可恢复!</p>',
-                    loading: true,
-                    onOk: () => {
-                        this.request('DelRole', {id, id}).then((res) => {
-                            if(res.status) {
-                                this.$Message.info(res.msg)
-                                this.$Modal.remove();
-                                this.list[index].status = -1
                             } else {
                                 this.$Message.error(res.msg)
                             }

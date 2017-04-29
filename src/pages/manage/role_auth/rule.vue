@@ -250,7 +250,7 @@
                     {
                         title: 'ICON',
                         key: 'icon',
-                        width: 100,
+                        width: 120,
                     },
                     {
                         title: 'URL',
@@ -262,7 +262,9 @@
                     },
                     {
                         title: '组件路径',
-                        key: 'component'
+                        key: 'component',
+                        width: 300,
+                        align: 'center'
                     },
                     {
                         title: '是否显示',
