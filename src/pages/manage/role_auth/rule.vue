@@ -48,11 +48,11 @@
         <Modal v-model="addModal" title="添加权限节点" class-name="customize-modal-center" @on-cancel="modalCancel()">
             <div>
                 <Form ref="addForm" :model="addForm" :rules="ruleValidate" :label-width="80">
-                    <Form-item label="所属模块">
-                        <Select v-model="addForm.select" placeholder="请选择">
-                            <Option value="beijing">管理</Option>
-                            <Option value="shanghai">上海市</Option>
-                            <Option value="shenzhen">深圳市</Option>
+                    <Form-item label="所属模块" prop="pid">
+                        <Select v-model="addForm.pid" placeholder="请选择">
+                            <Option value="">请选择</Option>
+                            <Option value="0">根节点</Option>
+                            <Option v-for="item in modules" :value="item.id" :key="item.id">{{ item.name }}</Option>
                         </Select>
                     </Form-item>
                     <Form-item label="节点名称" prop="name">
@@ -121,11 +121,11 @@
             <div slot="header" class="ivu-modal-header-inner">编辑权限节点</div>
             <div>
                 <Form ref="editForm" :model="editForm" :rules="ruleValidate" :label-width="80">
-                    <Form-item label="所属模块">
-                        <Select v-model="editForm.select" placeholder="请选择">
-                            <Option value="beijing">管理</Option>
-                            <Option value="shanghai">上海市</Option>
-                            <Option value="shenzhen">深圳市</Option>
+                    <Form-item label="所属模块" prop="pid">
+                        <Select v-model="editForm.pid" placeholder="请选择">
+                            <Option value="">请选择</Option>
+                            <Option value="0">根节点</Option>
+                            <Option v-for="item in modules" :value="item.id" :key="item.id">{{ item.name }}</Option>
                         </Select>
                     </Form-item>
                     <Form-item label="节点名称" prop="name">
@@ -318,6 +318,8 @@
                         }
                     }
                 ],
+                //模块
+                modules: [],
                 //列表数据
                 list: [],
                 //总共数据多少条
@@ -325,6 +327,7 @@
                 //每页多少条数据
                 pageSize: 1,
                 addForm: {
+                	pid: '',
                     name: '',
                     icon: '',
                     controller: '',
@@ -340,6 +343,9 @@
                 },
                 //验证规则
                 ruleValidate: {
+                    pid: [
+                        { required: true, message: '请选择模块', trigger: 'blur' },
+                    ],
                     name: [
                         { required: true, message: '节点名称不能为空', trigger: 'blur' },
                         { type: 'string', min: 2, message: '节点名称不能少于2个字符', trigger: 'blur' }
@@ -416,6 +422,8 @@
                         this.total = res.data.count
                         //每页多少条数据
                         this.pageSize = res.data.size
+                        //模块
+                        this.modules = res.data.modules
                     }
                 }).catch((response) => {
 
