@@ -114,7 +114,6 @@
                         this.removeByValue(tk.id)
                     }
                     //待有非常之功，必待非常之人
-                    console.log(this.rules)
                     t.status = false
                     t.select = false
                 }else{
@@ -146,6 +145,10 @@
             },
             //反转所有
             reversal(index, select) {
+            	//todo 我TMD 就不知道为什么第一个元素是空的
+                if(this.rules && this.rules[0] == "") {
+                    this.rules.splice(0, 1);
+                }
                 for(let item of this.list[index].children) {
                     if(select == true) {
                         this.rules.push(item.id)
