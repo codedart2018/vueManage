@@ -26,6 +26,7 @@
                                                     <Checkbox
                                                         :indeterminate="item.status"
                                                         :value="item.select"
+                                                        :defalut="item.id"
                                                         @click.prevent.native="checkAll(index)">全选</Checkbox>
                                                 </label>
                                             </td>
@@ -91,9 +92,13 @@
                         is = true //总有一个反选
                     }
                 }
+
                 if(is && count != len) {
                     if(tk.select) {
                         this.rules.push(tk.id)
+                        if(!this.inArray(t.id)) {
+                        	this.rules.push(t.id)
+                        }
                     } else {
                         //删除指定值
                         this.removeByValue(tk.id)
@@ -104,8 +109,12 @@
                     if(tk.select) {
                         this.rules.push(tk.id)
                     } else {
+                    	//移除当前父类ID
+                        this.removeByValue(t.id)
                         this.removeByValue(tk.id)
                     }
+                    //待有非常之功，必待非常之人
+                    console.log(this.rules)
                     t.status = false
                     t.select = false
                 }else{
@@ -118,29 +127,30 @@
             checkAll (index) {
                 let t = this.list[index]
                 if (t.status == false && t.select == true) {
-                    console.log(1)
                     t.status = false
                     t.select = false
                     this.reversal(index, false)
+                    //删除父ID
+                    this.removeByValue(t.id)
                 } else if(t.status == false && t.select == false) {
-                    console.log(2)
                     t.status = false
                     t.select = true
+                    this.rules.push(t.id)
                     this.reversal(index, true)
                 } else {
-                    console.log(3)
                     t.status = false
                     t.select = false
                     this.reversal(index, false)
+                    this.removeByValue(t.id)
                 }
-
             },
             //反转所有
             reversal(index, select) {
-                this.rules = []
                 for(let item of this.list[index].children) {
                     if(select == true) {
                         this.rules.push(item.id)
+                    } else {
+                    	this.removeByValue(item.id)
                     }
                     item.select = select
                 }
@@ -154,6 +164,16 @@
                     }
                 }
             },
+            //检查值是否已存在
+            inArray(value) {
+                var i = this.rules.length;
+                while (i--) {
+                    if (this.rules[i] === value) {
+                        return true;
+                    }
+                }
+                return false;
+            },
             //请求后端数据
             getData() {
                 let id = this.$route.params.id
@@ -161,7 +181,7 @@
                     this.request('Authorize', {id: id}).then((res) => {
                         if(res.status) {
                             this.list = res.data.list
-                            this.select = res.data.select
+                            this.rules = res.data.select
                             this.name = res.data.name
                         } else {
                             this.$Message.error(res.msg)
