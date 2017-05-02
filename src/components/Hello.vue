@@ -7,6 +7,19 @@
             <router-link to="/state">State</router-link>
             组件点击事件
             <my-button @click.native="buttonClick"></my-button>
+            <div style="border: 1px solid #dedede; height: 60px;">
+                <a href="javascript:;" class="file">选择文件
+                    <input type="file" name="" id="">
+                </a>
+                <div class="ivu-upload" style="display: inline-block; width: 58px;">
+                    <div class="ivu-upload ivu-upload-drag" @click="handleClick">
+                        <input type="file" ref="input" :multiple="multiple" accept="image/jpeg,image/jpg,image/png,image/gif" class="ivu-upload-input" @change="handleChange">
+                        <div style="width: 58px; height: 58px; line-height: 58px;">
+                            <i class="ivu-icon ivu-icon-camera" style="font-size: 20px;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         去除前后空格
         <input type="text" v-model.trim="content">
@@ -52,7 +65,28 @@
         <button @click="randomList">随机重置数组的值</button>
     </div>
 </template>
-
+<style scoped>
+    .base-file {
+        display: inline-block;
+        width: 58px;
+        height: 58px;
+        line-height: 58px;
+        background: #fff;
+        border: 1px dashed #d7dde4;
+        border-radius: 4px;
+        text-align: center;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: border-color .2s ease;
+    }
+    .base-file input[type=file] {
+        opacity: 0;
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
+    }
+</style>
 <script>
 
     import myButton from './Button.vue'
@@ -61,6 +95,18 @@
     import Vue from 'vue'
 
     export default {
+        props: {
+            // 是否支持多文件
+            multiple: {
+                type: Boolean,
+                default: false //true 支持多文件
+            },
+            // 当完成后要执行的方法
+            done: {
+                type: Function,
+                default: () => {}
+            }
+        },
         data () {
             return {
                 msg: 'Welcome to Your Vue.js App',
@@ -85,7 +131,8 @@
                     }
                 ],
                 artList : [],
-                name: 999998828382099
+                name: 999998828382099,
+                is_multiple: true
             }
         },
         created () {
@@ -169,7 +216,44 @@
                 this.list = this.list.map(item => {
                     return item + Math.round(Math.random() * 9 + 1)
                 })
-            }
+            },
+            handleClick () {
+                this.$refs.input.click();
+            },
+            handleChange (e) {
+            	//拿到表单获取文件
+                const files = e.target.files;
+                if (!files) {
+                    return;
+                }
+                const allFiles = []
+                // 临时长度
+                const len = 2;
+                if(files.length > len) {
+                	console.log("最多只能选择" + len + "个文件")
+                    return
+                }
+                for (let file of files){
+                    let reader = new FileReader()
+                    reader.readAsDataURL(file)
+                    reader.onload = () => {
+                        let fileInfo = {
+                            name: file.name,
+                            type: file.type,
+                            size: Math.round(file.size / 1000)+' kB',
+                            base64: reader.result,
+                            file: file
+                        }
+                        allFiles.push(fileInfo)
+                        //判断是否已经选择过文件了
+                        if(allFiles.length == files.length){
+                            if(this.multiple) this.done(allFiles)
+                            else this.done(allFiles[0])
+                        }
+                    }
+                }
+                console.log(allFiles)
+            },
         },
         filters: {
             filterPhone(value) {
@@ -212,7 +296,33 @@
     }
 
     .ht {
-        height: 100px;
+        height: 150px;
     }
 
+    .file {
+        position: relative;
+        display: inline-block;
+        background: #D0EEFF;
+        border: 1px solid #99D3F5;
+        border-radius: 4px;
+        padding: 4px 12px;
+        overflow: hidden;
+        color: #1E88C7;
+        text-decoration: none;
+        text-indent: 0;
+        line-height: 20px;
+    }
+    .file input {
+        position: absolute;
+        font-size: 100px;
+        right: 0;
+        top: 0;
+        opacity: 0;
+    }
+    .file:hover {
+        background: #AADFFD;
+        border-color: #78C3F3;
+        color: #004974;
+        text-decoration: none;
+    }
 </style>

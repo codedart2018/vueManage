@@ -26,7 +26,6 @@
                                                     <Checkbox
                                                         :indeterminate="item.status"
                                                         :value="item.select"
-                                                        :defalut="item.id"
                                                         @click.prevent.native="checkAll(index)">全选</Checkbox>
                                                 </label>
                                             </td>
