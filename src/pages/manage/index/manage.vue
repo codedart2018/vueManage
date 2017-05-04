@@ -72,6 +72,7 @@
                 <div style="height: 40px;">
                     <Breadcrumb>
                         <Breadcrumb-item>首页</Breadcrumb-item>
+                        <Breadcrumb-item >{{this.$route.name}}</Breadcrumb-item>
                         <Breadcrumb-item v-if="navOne">{{navOne}}</Breadcrumb-item>
                         <Breadcrumb-item v-if="navTwo">{{navTwo}}</Breadcrumb-item>
                     </Breadcrumb>
@@ -114,11 +115,10 @@
         mounted() {
             this.user = this.$store.state.User.user_info
 
-            //let menu = JSON.parse(window.localStorage.getItem('mainMenu'))
-            //let new_router = filterRouters(this.$router.options.routes, menu)
-
             //console.log(this.$router.options.routes)
             //this.$loading('加载中')
+//            console.log(this.$router)
+            //console.log(this.$store.state.MainMenu.mainMenu)
         },
         methods: {
             ...mapActions(['delMainMenu', 'userOut']),
@@ -134,15 +134,12 @@
                     this.$Message.success("退出成功")
                 }
             },
-            abc(name) {
-                console.log(name)
-            },
             //编程式导航
             goPath(name, params) {
                 this.$router.push({ name: name })
                 //todo 这个要二次才显示正确 后面解决
-                this.navOne = this.$router.options.routes[params[0]].name
-                this.navTwo = this.$route.name
+                //this.navOne = this.$router.options.routes[params[0]].name
+                //this.navTwo = this.$route.name
             }
         },
         components: {
