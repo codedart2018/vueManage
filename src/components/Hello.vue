@@ -8,19 +8,11 @@
             组件点击事件
             <my-button @click.native="buttonClick"></my-button>
             <div style="border: 1px solid #dedede; height: 60px;">
-                <a href="javascript:;" class="file">选择文件
-                    <input type="file" name="" id="">
-                </a>
-                <div class="ivu-upload" style="display: inline-block; width: 58px;">
-                    <div class="ivu-upload ivu-upload-drag" @click="handleClick">
-                        <input type="file" ref="input" :multiple="multiple" accept="image/jpeg,image/jpg,image/png,image/gif" class="ivu-upload-input" @change="handleChange">
-                        <div style="width: 58px; height: 58px; line-height: 58px;">
-                            <i class="ivu-icon ivu-icon-camera" style="font-size: 20px;"></i>
-                        </div>
-                    </div>
-                </div>
+
+                <pic-Base64 :multiple="true" :done="getFiles" :number=1></pic-Base64>
             </div>
         </div>
+        {{files}}
         去除前后空格
         <input type="text" v-model.trim="content">
         <input type="text" v-model = 'content'>
@@ -91,22 +83,11 @@
 
     import myButton from './Button.vue'
     import myArticle from "../test/list.vue"
+    import picBase64 from './picBase64.vue';
 
     import Vue from 'vue'
 
     export default {
-        props: {
-            // 是否支持多文件
-            multiple: {
-                type: Boolean,
-                default: false //true 支持多文件
-            },
-            // 当完成后要执行的方法
-            done: {
-                type: Function,
-                default: () => {}
-            }
-        },
         data () {
             return {
                 msg: 'Welcome to Your Vue.js App',
@@ -132,7 +113,7 @@
                 ],
                 artList : [],
                 name: 999998828382099,
-                is_multiple: true
+                files: []
             }
         },
         created () {
@@ -153,7 +134,8 @@
         },
         components: {
             myButton,
-            myArticle
+            myArticle,
+            picBase64
         },
         methods: {
             buttonClick() {
@@ -217,43 +199,10 @@
                     return item + Math.round(Math.random() * 9 + 1)
                 })
             },
-            handleClick () {
-                this.$refs.input.click();
-            },
-            handleChange (e) {
-            	//拿到表单获取文件
-                const files = e.target.files;
-                if (!files) {
-                    return;
-                }
-                const allFiles = []
-                // 临时长度
-                const len = 2;
-                if(files.length > len) {
-                	console.log("最多只能选择" + len + "个文件")
-                    return
-                }
-                for (let file of files){
-                    let reader = new FileReader()
-                    reader.readAsDataURL(file)
-                    reader.onload = () => {
-                        let fileInfo = {
-                            name: file.name,
-                            type: file.type,
-                            size: Math.round(file.size / 1000)+' kB',
-                            base64: reader.result,
-                            file: file
-                        }
-                        allFiles.push(fileInfo)
-                        //判断是否已经选择过文件了
-                        if(allFiles.length == files.length){
-                            if(this.multiple) this.done(allFiles)
-                            else this.done(allFiles[0])
-                        }
-                    }
-                }
-                console.log(allFiles)
-            },
+            getFiles(files){
+                this.files = files
+            }
+
         },
         filters: {
             filterPhone(value) {
@@ -299,30 +248,4 @@
         height: 150px;
     }
 
-    .file {
-        position: relative;
-        display: inline-block;
-        background: #D0EEFF;
-        border: 1px solid #99D3F5;
-        border-radius: 4px;
-        padding: 4px 12px;
-        overflow: hidden;
-        color: #1E88C7;
-        text-decoration: none;
-        text-indent: 0;
-        line-height: 20px;
-    }
-    .file input {
-        position: absolute;
-        font-size: 100px;
-        right: 0;
-        top: 0;
-        opacity: 0;
-    }
-    .file:hover {
-        background: #AADFFD;
-        border-color: #78C3F3;
-        color: #004974;
-        text-decoration: none;
-    }
 </style>

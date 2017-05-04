@@ -5,34 +5,11 @@
 </template>
 
 <script>
-    import {mapActions} from 'vuex'
-    import {filterRouters} from './router'
 
     export default {
         name: 'app',
         mounted() {
-            if (this.$store.state.User.token) {
-                this.verify_login()
-            }
-        },
-        methods: {
-            ...mapActions(['delMainMenu', 'userOut']),
-            verify_login() {
-                let token = this.$store.state.User.token
-                let uid = this.$store.state.User.user_info.uid
-                this.request('VerifyLogin', {uid: uid, token: token}).then((res) => {
-                    if (!res.status) {
-                        let menu = this.$store.state.MainMenu.mainMenu
-                        let new_router = filterRouters(this.$router.options.routes, menu)
-                        this.$router.options.routes = new_router
-                        //删除登陆的一切信息
-                        this.delMainMenu(this)
-                        this.userOut(this)
-                        this.$router.push({path: '/login'})
-                        this.$Message.error(res.msg)
-                    }
-                })
-            }
+
         },
         watch: {
             '$route' (to, from) {

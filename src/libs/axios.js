@@ -23,11 +23,23 @@ const config = {
 
 const AxiosInst = axios.create(config);
 
-//拦截器
+//请求拦截器
 AxiosInst.interceptors.request.use((config) => {
+    if (window.localStorage.getItem('token')) {
+        config.headers.Authorization = `${window.localStorage.getItem('token')}`;
+    }
     return config
-},function(err){
+},(err) => {
     return Promise.reject(err);
+})
+
+//响应拦截器
+AxiosInst.interceptors.response.use((response) => {
+    //对响应数据做些事
+    return response;
+},(error) => {
+    //请求错误时做些事
+    return Promise.reject(error)
 })
 
 export default AxiosInst

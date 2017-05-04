@@ -5,13 +5,17 @@
 
 import methodMap from './methodMap'
 import AxiosInst from './axios'
+import Store from '../vuex/store'
+import {delMainMenu, userOut} from '../vuex/actions'
+import {filterRouters} from '../router'
+import Router from '../router.js'
 
 class Http {
 
 }
 
 Http.install = function (Vue) {
-
+    
     /**
      * 全局请求接口
      * @param method 方法
@@ -53,13 +57,7 @@ Http.install = function (Vue) {
     Vue.prototype.apiPost = function(url, data) {
         return new Promise((resolve, reject) => {
             AxiosInst.post(url, data).then((response) => {
-                if(response.data == null) {
-                    console.log("接口输出异常...")
-                    this.$Message.error("接口输出异常...")
-                    setTimeout(() => closeLoading(), 800)
-                    return
-                }
-                setTimeout(() => closeLoading(), 800)
+                Vue.prototype.response(response.data)
                 resolve(response.data)
             }).catch((response) => {
                 console.log('Customize Notice', response)
@@ -80,14 +78,7 @@ Http.install = function (Vue) {
             AxiosInst.get(url, {
                 params: data
             }).then((response) => {
-                if(response.data == null) {
-                    console.log("接口输出异常...")
-                    this.$Message.error("接口输出异常...")
-                    setTimeout(() => closeLoading(), 800)
-                    return
-                }
-                //延迟关闭
-                setTimeout(() => closeLoading(), 800)
+                Vue.prototype.response(response.data)
                 resolve(response.data)
             }).catch((response) => {
                 console.log('Customize Notice', response)
@@ -102,6 +93,47 @@ Http.install = function (Vue) {
      */
     function closeLoading() {
         Vue.prototype.$loading.close()
+    }
+    
+    /**
+     * 返回码检查
+     * @param data
+     * @returns {boolean}
+     */
+    Vue.prototype.response = function (data) {
+        if(data == null) {
+            console.log("接口输出异常...")
+            this.$Message.error("接口输出异常...")
+            setTimeout(() => closeLoading(), 800)
+            return false
+        }
+        //登陆失效 做退出处理
+        if(data['code'] == 1000) {
+            this.$Message.error(data['msg'])
+            let uid = Store.state.User.user_info.uid
+            let menu = Store.state.MainMenu.mainMenu
+            let new_router = filterRouters(Router.options.routes, menu)
+            Router.options.routes = new_router
+            delMainMenu(Store)
+            userOut(Store)
+            Router.push({path: '/login'})
+            //暂时不后台处理退出
+            // this.request("LoginOut", {uid: uid}).then((res) => {
+            //     if (res.status) {
+            //
+            //     }
+            // })
+            setTimeout(() => closeLoading(), 800)
+            return false
+        }
+        //没有权限
+        if(data['code'] == 1001) {
+            this.$Message.error(data['msg'])
+            setTimeout(() => closeLoading(), 800)
+            return false
+        }
+        //延迟关闭
+        setTimeout(() => closeLoading(), 800)
     }
 }
 
