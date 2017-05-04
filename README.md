@@ -101,11 +101,11 @@ npm run build --report
 #### 非法权限请求
 ![非法权限请求](./demo/images/auth2.jpg)
 
-#### 节点列表
-![角色授权](./demo/images/auth1.jpg)
-
-#### 节点列表
+#### 角色授权
 ![角色授权](./demo/images/auth.jpg)
+
+#### 角色列表
+![角色授权](./demo/images/auth1.jpg)
 
 #### 节点列表
 ![节点列表](./demo/images/rule.jpg)
