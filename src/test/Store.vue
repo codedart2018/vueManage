@@ -39,8 +39,8 @@
             editorReady(instance) {
                 instance.setContent('hello world');
                 instance.addListener('contentChange', () => {
-                    this.content = instance.getContent();
-                });
+                    this.content = instance.getContent()
+                })
             },
             setContent() {
                 this.$refs.editor.setContent('这是重新设置的内容')

@@ -466,7 +466,7 @@
                     content: '<p>你确定要重置密码为[123456]?</p>',
                     loading: true,
                     onOk: () => {
-                        this.request('restPassword', {id, id}).then((res) => {
+                        this.request('RestPassword', {id, id}).then((res) => {
                             if(res.status) {
                                 this.$Message.info(res.msg)
                                 this.$Modal.remove();

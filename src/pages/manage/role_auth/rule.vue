@@ -236,11 +236,6 @@
                 self: this,
                 columns: [
                     {
-                        type: 'selection',
-                        width: 50,
-                        align: 'center'
-                    },
-                    {
                         title: 'ID',
                         key: 'id',
                         width: 60

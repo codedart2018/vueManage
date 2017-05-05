@@ -37,7 +37,11 @@ const methodMap = {
     /** 编辑后台用户 **/
     EditUser: {url: '/api/user/edit', method: "post"},
     /** 重置后台用户密码 **/
-    restPassword: {url: '/api/user/rest_password', method: "post"}
+    RestPassword: {url: '/api/user/rest_password', method: "post"},
+    /** 商户列表 **/
+    Merchant: {url: '/api/merchant/index', method: "get"},
+    /** 添加商户 **/
+    AddMerchant: {url: '/api/merchant/add', method: "post"},
 }
 
 export default methodMap
