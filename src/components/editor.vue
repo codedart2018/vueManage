@@ -1,0 +1,67 @@
+<!--百度编辑器组件-->
+<template>
+    <div>
+        <script :id="randomNumber" type="text/plain"></script>
+        <div>百度编辑器</div>
+    </div>
+</template>
+
+<style>
+
+</style>
+
+<script>
+    //主体文件引入
+    import '../../static/ueditor/ueditor.config.js'
+    import '../../static/ueditor/ueditor.all.min.js'
+    import '../../static/ueditor/lang/zh-cn/zh-cn.js'
+    //主体文件引入
+
+    export default{
+        props: {
+            //配置可以传递进来
+            config: {
+                type: Object,
+                default:() => {}
+            }
+        },
+        data(){
+            return{
+                //每个编辑器生成不同的id,以防止冲突
+                randomNumber: 'editor_' + (Math.random() * 100000000000000000),
+                //实例
+                instance: null,
+            }
+        },
+        //挂载实例
+        mounted () {
+            this.initEditor()
+        },
+        methods: {
+            initEditor () {
+                //把dom元素挂载上去
+                this.$nextTick(() => {
+                    this.instance = UE.getEditor(this.randomNumber, this.config);
+                    // 绑定事件，当 UEditor 初始化完成后，将编辑器实例通过自定义的 ready 事件交出去
+                    this.instance.addListener('ready', () => {
+                        this.$emit('ready', this.instance);
+                    });
+                });
+            },
+            //追加内容
+            setContent(text) {
+            	console.log(123)
+                this.instance.setContent(text, true);
+            }
+        },
+        beforeDestroy () {
+            // 组件销毁的时候，要销毁 UEditor 实例
+            if (this.instance !== null && this.instance.destroy) {
+                this.instance.destroy();
+            }
+        },
+        components:{
+
+        }
+    }
+</script>
