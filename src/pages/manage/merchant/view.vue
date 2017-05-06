@@ -172,9 +172,6 @@
                 data: {
                     name: '',
                     mail: '',
-                    city: '',
-                    gender: '',
-                    interest: [],
                     date: '',
                     time: '',
                     desc: ''

@@ -8,6 +8,7 @@ import Vue from 'vue'
  * 时间戳过滤器
  */
 Vue.filter('formatDate', function (value, format) {
+    if(!value) return
     //防止PHP后台输出为10位的时间戳
     if(value.length == 10) {
         value = value * 1000
