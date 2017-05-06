@@ -354,7 +354,6 @@
                 },
                 //验证规则
                 ruleValidate: {
-                	//bug 记得后端验证问题要处理
                     account: [
                         { required: true, message: '帐号不能为空', trigger: 'blur' },
                         { type: 'string', min: 2, message: '帐号不能少于2个字符', trigger: 'blur' }

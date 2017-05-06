@@ -42,6 +42,8 @@ const methodMap = {
     Merchant: {url: '/api/merchant/index', method: "get"},
     /** 添加商户 **/
     AddMerchant: {url: '/api/merchant/add', method: "post"},
+    /** 查看商户 **/
+    MerchantView: {url: '/api/merchant/view', method: "get"},
 }
 
 export default methodMap

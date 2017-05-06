@@ -62,7 +62,7 @@
                     <Form-item label="联系邮箱" prop="email">
                         <Input v-model="addForm.email" placeholder="请填写邮箱地址"></Input>
                     </Form-item>
-                    <Form-item prop="validity" label="联系邮箱">
+                    <Form-item prop="validity" label="有效期">
                         <Date-picker type="date" :options="maxDate" placeholder="选择日期" v-model="addForm.validity" confirm></Date-picker>
                         <div class="ng-mb-15 label-color">不选择日期永久有效</div>
                     </Form-item>
@@ -178,10 +178,10 @@
                     {
                         title: '操作',
                         key: 'operation',
-                        width: 140,
+                        width: 200,
                         align: 'center',
                         render (row, column, index) {
-                            return `<i-button type="primary" size="small" @click="edit(${index})">查看</i-button> <i-button type="error" size="small" @click="del(${index}, ${row.id})">删除</i-button>`;
+                            return `<i-button type="primary" size="small" @click="view(${row.id})">查看</i-button> <i-button type="primary" size="small" @click="del(${index}, ${row.id})">切换商户</i-button>`;
                         }
                     }
                 ],
@@ -271,27 +271,6 @@
 
                 })
             },
-
-            //删除角色数据
-            del (index, id) {
-                this.$Modal.confirm({
-                    title: '温馨提示',
-                    width: 300,
-                    content: '<p>你确定要删除?删除后不可恢复!</p>',
-                    loading: true,
-                    onOk: () => {
-                        this.request('DelRole', {id, id}).then((res) => {
-                            if(res.status) {
-                                this.$Message.info(res.msg)
-                                this.$Modal.remove();
-                                this.list[index].status = -1
-                            } else {
-                                this.$Message.error(res.msg)
-                            }
-                        })
-                    }
-                });
-            },
             //表单搜索
             search() {
 
@@ -311,8 +290,8 @@
                     }
                 })
             },
-            authGo(id) {
-                this.$router.push({ path: '/manage/authorize/' + id, params: { id: id }})
+            view(id) {
+                this.$router.push({ path: '/manage/merchant/view/' + id, params: { id: id }})
             }
         },
         mounted() {
