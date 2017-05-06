@@ -44,7 +44,7 @@
             <Table :context="self" :columns="columns" :data="list"></Table>
         </Row>
         <Row type="flex" justify="end">
-            <Page :total="total" :page-size="pageSize" show-total show-elevator @on-change="changePage"></Page>
+            <Page :total="total" :page-size="pageSize" :current="2" show-total show-elevator @on-change="changePage"></Page>
         </Row>
 
         <!--添加 Modal 对话框-->
@@ -406,7 +406,7 @@
                 let search = this.formSearch
                 let query = Object.assign({page: page }, search)
                 //分页
-                this.$router.push({ name: this.$router.currentRoute.name, query: query})
+                this.$router.push({ name: this.$router.currentRoute.name, query: {page: page}})
                 //获取最新数据
                 this.getData({page: page, params: search})
             },
@@ -414,12 +414,22 @@
                 if (!params) params = {page: 1}
                 this.request('GetRule', params, true).then((res) => {
                     if(res.status) {
-                        //列表数据
-                        this.list = res.data.list
-                        //总页数
-                        this.total = res.data.count
-                        //每页多少条数据
-                        this.pageSize = res.data.size
+                        let list = res.data.list
+                        if(list) {
+                            //列表数据
+                            this.list = list
+                            //总页数
+                            this.total = res.data.count
+                            //每页多少条数据
+                            this.pageSize = res.data.size
+                        } else {
+                            //列表数据
+                            this.list = []
+                            //总页数
+                            this.total = 0
+                            //每页多少条数据
+                            this.pageSize = 0
+                        }
                         //模块
                         this.modules = res.data.modules
                     }
@@ -458,7 +468,7 @@
                 let search = this.formSearch
                 this.getData({ params : search })
                 //暂时不做关键词显示在路由上
-                //this.$router.push({ name: this.$router.currentRoute.name, query: search})
+                this.$router.push({ name: this.$router.currentRoute.name, query: {page: 1}})
             },
             //保存数据方法
             save(url, data) {
