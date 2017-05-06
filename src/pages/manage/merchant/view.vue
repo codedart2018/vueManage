@@ -9,7 +9,7 @@
                         <Col span="24"><span style="font-size: 16px; color: #657180;">基本信息</span></Col>
                     </Row>
                     <Form-item label="商户名称">
-                        <Input v-model="data.name" disabled ></Input>
+                        {{data.name}}
                     </Form-item>
                     <Form-item label="商户类型">
                         <Tag color="green" v-if="data.type == 1">个人</Tag>
@@ -20,13 +20,11 @@
                         <!--<Tag color="blue">一级商户</Tag>-->
                     </Form-item>
                     <Form-item label="管理员帐号">
-                        <Input v-model="data.account" disabled></Input>
+                        {{data.account}}
                     </Form-item>
-                    <Form-item label="所在地区">
-                        <Cascader :data="data" v-model="value2"></Cascader>
-                    </Form-item>
-                    <Form-item label="所属行业">
-                        <Cascader :data="data" v-model="value2"></Cascader>
+                    <Form-item label="帐号有效期">
+                        <div v-if="data.validity == 0">长期有效</div>
+                        <div v-if="data.validity != 0">{{ data.validity | formatDate('yyyy-MM-dd h:m') }}</div>
                     </Form-item>
                     <Row style="margin-bottom: 24px;">
                         <Col span="24"><span style="font-size: 16px; color: #657180;">联系信息</span></Col>
@@ -43,6 +41,9 @@
                     <Form-item label="联系邮箱" prop="email">
                         <Input v-model="data.email" placeholder="请填写邮箱地址"></Input>
                     </Form-item>
+                    <Form-item label="qq/微信" prop="email">
+                        <Input v-model="data.qq" placeholder="请填写邮箱地址"></Input>
+                    </Form-item>
 
                     <Form-item label="简要说明" prop="desc">
                         <Input v-model="data.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入..."></Input>
@@ -54,28 +55,29 @@
                         <Col span="24"><span style="font-size: 16px; color: #657180;">财务信息</span></Col>
                     </Row>
                     <Form-item label="帐户余额">
-                        <Input v-model="data.balance" disabled></Input>
+                        {{data.balance}} 元
                     </Form-item>
                     <Form-item label="已消费金额">
-                        <Input v-model="data.name" disabled ></Input>
+                        {{data.consume}} 元
                     </Form-item>
                     <Form-item label="支付宝帐号">
-                        <Input v-model="data.account" disabled></Input>
+                        {{data.alipay}}
+                    </Form-item>
+                    <Form-item label="银行帐号">
+                        6228480470234336910（农行）
                     </Form-item>
 
                     <Row style="margin-bottom: 24px;">
                         <Col span="24"><span style="font-size: 16px; color: #657180;">认证信息</span></Col>
                     </Row>
                     <Form-item label="商户认证">
-                        <Tag>未认证</Tag>    <Tag color="green">已认证</Tag>
+                        <Tag v-if="data.is_auth == 0">未认证</Tag>
+                        <Tag v-if="data.is_auth == 1" color="green">已认证</Tag>
                     </Form-item>
                     <div v-if="data.type == 1">
                     <Form-item label="姓名">
-                        <Input v-model="data.name" disabled ></Input>
                     </Form-item>
-
                     <Form-item label="身份证号">
-                        <Input v-model="data.account" disabled></Input>
                     </Form-item>
                     </div>
                     <!--企业-->
@@ -183,54 +185,6 @@
                         { type: 'email', message: '邮箱格式不正确', trigger: 'blur' }
                     ]
                 },
-                value2: ['jiangsu', 'suzhou', 'zhuozhengyuan'],
-                data: [{
-                    value: 'beijing',
-                    label: '北京',
-                    children: [
-                        {
-                            value: 'gugong',
-                            label: '故宫'
-                        },
-                        {
-                            value: 'tiantan',
-                            label: '天坛'
-                        },
-                        {
-                            value: 'wangfujing',
-                            label: '王府井'
-                        }
-                    ]
-                }, {
-                    value: 'jiangsu',
-                    label: '江苏',
-                    children: [
-                        {
-                            value: 'nanjing',
-                            label: '南京',
-                            children: [
-                                {
-                                    value: 'fuzimiao',
-                                    label: '夫子庙',
-                                }
-                            ]
-                        },
-                        {
-                            value: 'suzhou',
-                            label: '苏州',
-                            children: [
-                                {
-                                    value: 'zhuozhengyuan',
-                                    label: '拙政园',
-                                },
-                                {
-                                    value: 'shizilin',
-                                    label: '狮子林',
-                                }
-                            ]
-                        }
-                    ],
-                }]
             }
         },
         methods: {
