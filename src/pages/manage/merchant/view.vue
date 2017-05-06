@@ -2,25 +2,25 @@
 <style src="../../../assets/style/manage/merchant.less" lang="less" scoped></style>
 <template>
     <Card dis-hover>
-        <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="110">
+        <Form ref="data" :model="data" :rules="ruleValidate" :label-width="110">
             <Row>
                 <Col span="8">
                     <Row style="margin-bottom: 24px;">
                         <Col span="24"><span style="font-size: 16px; color: #657180;">基本信息</span></Col>
                     </Row>
                     <Form-item label="商户名称">
-                        <Input v-model="formValidate.name" disabled ></Input>
+                        <Input v-model="data.name" disabled ></Input>
                     </Form-item>
                     <Form-item label="商户类型">
-                        <Tag color="green">个人</Tag>
-                        <Tag color="blue">企业</Tag>
+                        <Tag color="green" v-if="data.type == 1">个人</Tag>
+                        <Tag color="blue" v-if="data.type == 2">企业</Tag>
                     </Form-item>
                     <Form-item label="帐号等级">
                         <Tag color="green">普通商户</Tag>
-                        <Tag color="blue">一级商户</Tag>
+                        <!--<Tag color="blue">一级商户</Tag>-->
                     </Form-item>
                     <Form-item label="管理员帐号">
-                        <Input v-model="formValidate.account" disabled></Input>
+                        <Input v-model="data.account" disabled></Input>
                     </Form-item>
                     <Form-item label="所在地区">
                         <Cascader :data="data" v-model="value2"></Cascader>
@@ -32,20 +32,20 @@
                         <Col span="24"><span style="font-size: 16px; color: #657180;">联系信息</span></Col>
                     </Row>
                     <Form-item label="联系人" prop="contacts">
-                        <Input v-model="formValidate.contacts" placeholder="请填写联系人"></Input>
+                        <Input v-model="data.contacts" placeholder="请填写联系人"></Input>
                     </Form-item>
                     <Form-item label="手机号码" prop="mobile">
-                        <Input v-model="formValidate.mobile" placeholder="请填写手机号码"></Input>
+                        <Input v-model="data.mobile" placeholder="请填写手机号码"></Input>
                     </Form-item>
                     <Form-item label="电话号码" prop="tel">
-                        <Input v-model="formValidate.tel" placeholder="请填写电话号码"></Input>
+                        <Input v-model="data.tel" placeholder="请填写电话号码"></Input>
                     </Form-item>
                     <Form-item label="联系邮箱" prop="email">
-                        <Input v-model="formValidate.email" placeholder="请填写邮箱地址"></Input>
+                        <Input v-model="data.email" placeholder="请填写邮箱地址"></Input>
                     </Form-item>
 
                     <Form-item label="简要说明" prop="desc">
-                        <Input v-model="formValidate.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入..."></Input>
+                        <Input v-model="data.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入..."></Input>
                     </Form-item>
                 </Col>
                 <Col span="1">&nbsp;</Col>
@@ -54,13 +54,13 @@
                         <Col span="24"><span style="font-size: 16px; color: #657180;">财务信息</span></Col>
                     </Row>
                     <Form-item label="帐户余额">
-                        <Input v-model="formValidate.balance" disabled></Input>
+                        <Input v-model="data.balance" disabled></Input>
                     </Form-item>
                     <Form-item label="已消费金额">
-                        <Input v-model="formValidate.name" disabled ></Input>
+                        <Input v-model="data.name" disabled ></Input>
                     </Form-item>
                     <Form-item label="支付宝帐号">
-                        <Input v-model="formValidate.account" disabled></Input>
+                        <Input v-model="data.account" disabled></Input>
                     </Form-item>
 
                     <Row style="margin-bottom: 24px;">
@@ -69,25 +69,30 @@
                     <Form-item label="商户认证">
                         <Tag>未认证</Tag>    <Tag color="green">已认证</Tag>
                     </Form-item>
+                    <div v-if="data.type == 1">
                     <Form-item label="姓名">
-                        <Input v-model="formValidate.name" disabled ></Input>
+                        <Input v-model="data.name" disabled ></Input>
                     </Form-item>
-                    <Form-item label="企业名称">
-                        <Input v-model="formValidate.name" disabled ></Input>
-                    </Form-item>
+
                     <Form-item label="身份证号">
-                        <Input v-model="formValidate.account" disabled></Input>
+                        <Input v-model="data.account" disabled></Input>
                     </Form-item>
+                    </div>
                     <!--企业-->
+                    <div v-if="data.type == 2">
+                    <Form-item label="企业名称">
+                        <Input v-model="data.name" disabled ></Input>
+                    </Form-item>
                     <Form-item label="社会信用代码认证">
-                        <Input v-model="formValidate.account" disabled></Input>
+                        <Input v-model="data.account" disabled></Input>
                     </Form-item>
                     <Form-item label="营业执照号认证">
-                        <Input v-model="formValidate.account" disabled></Input>
+                        <Input v-model="data.account" disabled></Input>
                     </Form-item>
                     <Form-item label="非盈利组织认证">
-                        <Input v-model="formValidate.account" disabled></Input>
+                        <Input v-model="data.account" disabled></Input>
                     </Form-item>
+                    </div>
                 </Col>
                 <Col span="1">&nbsp;</Col>
                 <Col span="6">
@@ -148,9 +153,9 @@
             <Row>
                 <Col span="6" push="18">
                     <Form-item>
-                        <Button type="info" @click="handleSubmit('formValidate')">审核</Button>
-                        <Button type="primary" @click="handleSubmit('formValidate')">保存</Button>
-                        <Button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">返回</Button>
+                        <Button type="info" @click="handleSubmit('data')">审核</Button>
+                        <Button type="primary" @click="handleSubmit('data')" style="margin-left: 8px">保存</Button>
+                        <Button type="ghost" style="margin-left: 8px" @click="goBack()">返回</Button>
                     </Form-item>
                 </Col>
             </Row>
@@ -162,7 +167,7 @@
     export default {
         data () {
             return {
-                formValidate: {
+                data: {
                     name: '',
                     mail: '',
                     city: '',
@@ -176,26 +181,6 @@
                     mail: [
                         { required: true, message: '邮箱不能为空', trigger: 'blur' },
                         { type: 'email', message: '邮箱格式不正确', trigger: 'blur' }
-                    ],
-                    city: [
-                        { required: true, message: '请选择城市', trigger: 'change' }
-                    ],
-                    gender: [
-                        { required: true, message: '请选择性别', trigger: 'change' }
-                    ],
-                    interest: [
-                        { required: true, type: 'array', min: 1, message: '至少选择一个爱好', trigger: 'change' },
-                        { type: 'array', max: 2, message: '最多选择两个爱好', trigger: 'change' }
-                    ],
-                    date: [
-                        { required: true, type: 'date', message: '请选择日期', trigger: 'change' }
-                    ],
-                    time: [
-                        { required: true, type: 'date', message: '请选择时间', trigger: 'change' }
-                    ],
-                    desc: [
-                        { required: true, message: '请输入个人介绍', trigger: 'blur' },
-                        { type: 'string', min: 20, message: '介绍不能少于20字', trigger: 'blur' }
                     ]
                 },
                 value2: ['jiangsu', 'suzhou', 'zhuozhengyuan'],
@@ -265,15 +250,15 @@
                 let id = this.$route.params.id
                 this.request('MerchantView', {id: id}, true).then((res) => {
                     if(res.status) {
-                        //列表数据
-                        this.list = res.data.list
-                        //总页数
-                        this.total = res.data.count
-                        //每页多少条数据
-                        this.pageSize = res.data.size
+                        //数据
+                        this.data = res.data
                     }
                 })
             },
+            //后退海阔天空
+            goBack() {
+                this.$router.go(-1)
+            }
         },
         mounted() {
             //服务端获取数据
