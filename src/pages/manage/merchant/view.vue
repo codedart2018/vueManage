@@ -17,7 +17,7 @@
                     </Form-item>
                     <Form-item label="帐号等级">
                         <Tag color="green">普通商户</Tag>
-                        <!--<Tag color="blue">一级商户</Tag>-->
+                        <!--<Tag color="blue">一级商户 todo 后面这个可能取消</Tag>-->
                     </Form-item>
                     <Form-item label="管理员帐号">
                         {{data.account}}

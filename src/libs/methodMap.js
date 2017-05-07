@@ -44,6 +44,10 @@ const methodMap = {
     AddMerchant: {url: '/api/merchant/add', method: "post"},
     /** 查看商户 **/
     MerchantView: {url: '/api/merchant/view', method: "get"},
+    /** 商户用户列表 **/
+    MerchantUser: {url: '/api/merchant_user/index', method: "get"},
+    /** 重置商户用户密码 **/
+    MerchantUserRestPassWord: {url: '/api/merchant_user/reset_password', method: "post"},
 }
 
 export default methodMap

@@ -467,10 +467,11 @@
                     onOk: () => {
                         this.request('RestPassword', {id, id}).then((res) => {
                             if(res.status) {
-                                this.$Message.info(res.msg)
+                                this.$Message.success(res.msg)
                                 this.$Modal.remove();
                             } else {
                                 this.$Message.error(res.msg)
+                                this.$Modal.remove();
                             }
                         })
                     }
