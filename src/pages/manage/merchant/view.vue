@@ -212,6 +212,7 @@
             }
         },
         mounted() {
+            //debugger;
             //服务端获取数据
             this.getData();
         },

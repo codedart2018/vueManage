@@ -4,15 +4,29 @@
         <Row class="mb-15">
             <Col span="18" class="search">
             <Form :model="formSearch" :label-width="80" inline label-position="right">
+                <Form-item label="关键词类型：" :label-width="90">
+                    <Select v-model="formSearch.type_keywords" placeholder="请选择" style="width:80px">
+                        <Option value="">请选择</Option>
+                        <Option value="1">商户名称</Option>
+                        <Option value="2">联系人</Option>
+                        <Option value="3">手机号码</Option>
+                    </Select>
+                </Form-item>
                 <Form-item label="商户名称：">
                     <Input v-model="formSearch.keywords" placeholder="请输入商户名称关键词"></Input>
                 </Form-item>
+                <Form-item label="商户类型：">
+                    <Select v-model="formSearch.type" placeholder="请选择" style="width:80px">
+                        <Option value="">请选择</Option>
+                        <Option value="1">个人</Option>
+                        <Option value="2">个业</Option>
+                    </Select>
+                </Form-item>
                 <Form-item label="商户状态：">
-                    <Select v-model="formSearch.status" placeholder="请选择" style="width:90px">
+                    <Select v-model="formSearch.status" placeholder="请选择" style="width:80px">
                         <Option value="">请选择</Option>
                         <Option value="1">正常</Option>
                         <Option value="0">锁定</Option>
-                        <Option value="-1">删除</Option>
                     </Select>
                 </Form-item>
                 <Form-item :label-width="1">
@@ -266,6 +280,13 @@
                         this.total = res.data.count
                         //每页多少条数据
                         this.pageSize = res.data.size
+                    } else {
+                        //列表数据
+                        this.list = []
+                        //总页数
+                        this.total = 0
+                        //每页多少条数据
+                        this.pageSize = 0
                     }
                 }).catch((response) => {
 
@@ -273,7 +294,8 @@
             },
             //表单搜索
             search() {
-
+                let search = this.formSearch
+                this.getData({ params : search })
             },
             //保存数据方法
             save(url, data) {
