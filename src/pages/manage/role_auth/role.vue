@@ -2,6 +2,7 @@
     <div>
         <Row class="mb-15">
             <Col span="18" class="search">
+            <!-- 如果角色真多了再搜索
             <Form :model="formSearch" :label-width="80" inline label-position="right">
                 <Form-item label="角色名称：">
                     <Input v-model="formSearch.keywords" placeholder="请输入角色名称关键词"></Input>
@@ -18,6 +19,8 @@
                     <Button type="primary" @click="search('formSearch')" icon="ios-search">搜索</Button>
                 </Form-item>
             </Form>
+            -->
+            &nbsp;
             </Col>
             <Col span="6" class="text-align-right">
             <Button type="primary" @click="addModal = true"><Icon type="plus-round"></Icon>&nbsp;添加角色</Button></Button>
@@ -282,7 +285,6 @@
         mounted() {
             //服务端获取数据
             this.getData();
-            //console.log(this.$router.options.routes)
         }
     }
 </script>
