@@ -3,16 +3,11 @@
         <Row class="mb-15">
             <Col span="18" class="search">
                 <Form :model="formSearch" :label-width="80" inline label-position="right">
-                    <Form-item label="角色名称：">
-                        <Input v-model="formSearch.keywords" placeholder="请输入角色名称关键词"></Input>
+                    <Form-item label="用户帐号：">
+                        <Input v-model="formSearch.account" placeholder="请输入用户帐号"></Input>
                     </Form-item>
-                    <Form-item label="角色状态：">
-                        <Select v-model="formSearch.status" placeholder="请选择" style="width:90px">
-                            <Option value="">请选择</Option>
-                            <Option value="1">正常</Option>
-                            <Option value="0">锁定</Option>
-                            <Option value="-1">删除</Option>
-                        </Select>
+                    <Form-item label="商户名称：">
+                        <Input v-model="formSearch.mch_name" placeholder="请输入商户名称"></Input>
                     </Form-item>
                     <Form-item :label-width="1">
                         <Button type="primary" @click="search('formSearch')" icon="ios-search">搜索</Button>
@@ -129,7 +124,8 @@
             },
             //表单搜索
             search() {
-
+                let search = this.formSearch
+                this.getData({ params : search })
             },
             //重置用户密码
             restPassword (id) {
