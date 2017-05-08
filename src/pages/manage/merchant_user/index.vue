@@ -117,6 +117,10 @@
                         this.total = res.data.count
                         //每页多少条数据
                         this.pageSize = res.data.size
+                    } else {
+                        this.list = []
+                        this.total = 0
+                        this.pageSize = 0
                     }
                 }).catch((response) => {
 
