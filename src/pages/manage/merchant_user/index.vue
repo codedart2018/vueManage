@@ -21,7 +21,7 @@
             <Table :context="self" :columns="columns" :data="list"></Table>
         </Row>
         <Row type="flex" justify="end">
-            <Page :total="total" :page-size="pageSize" show-total show-elevator @on-change="changePage"></Page>
+            <Page :total="total" :page-size="pageSize" :current="pageNumber" show-total show-elevator @on-change="changePage"></Page>
         </Row>
 
     </div>
@@ -93,6 +93,8 @@
                 total: 0,
                 //每页多少条数据
                 pageSize: 1,
+                //当前页码
+                pageNumber: 1,
                 //搜索表单
                 formSearch: {},
             }
@@ -100,6 +102,7 @@
         methods: {
             //分页切换页码
             changePage (page) {
+                this.pageNumber = page
                 let search = this.formSearch
                 let query = Object.assign({page: page }, search)
                 //分页
@@ -128,6 +131,7 @@
             },
             //表单搜索
             search() {
+                this.pageNumber = 1
                 let search = this.formSearch
                 this.getData({ params : search })
             },

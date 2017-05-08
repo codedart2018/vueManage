@@ -41,7 +41,7 @@
             <Table :context="self" :columns="columns" :data="list"></Table>
         </Row>
         <Row type="flex" justify="end">
-            <Page :total="total" :page-size="pageSize" show-total show-elevator @on-change="changePage"></Page>
+            <Page :total="total" :page-size="pageSize" :current="pageNumber" show-total show-elevator @on-change="changePage"></Page>
         </Row>
 
         <!--添加 Modal 对话框-->
@@ -341,6 +341,9 @@
                 total: 0,
                 //每页多少条数据
                 pageSize: 1,
+                //当前页码
+                pageNumber: 1,
+                //添加表单
                 addForm: {
                     account: '',
                     password: '',
@@ -429,6 +432,7 @@
             },
             //分页切换页码
             changePage (page) {
+                this.pageNumber = page
                 let search = this.formSearch
                 let query = Object.assign({page: page }, search)
                 //分页
@@ -479,6 +483,8 @@
             },
             //表单搜索
             search() {
+                let page = 1
+                this.pageNumber = page
                 let search = this.formSearch
                 this.getData({ params : search })
             },

@@ -50,3 +50,7 @@ export const mainMenu = ({ commit }, menu) => {
 export const delMainMenu = ({ commit }) => {
     commit(types.DEL_MAIN_MENU, {})
 }
+
+export const auth = ({ commit }, auth) => {
+    commit(types.AUTH, auth)
+}

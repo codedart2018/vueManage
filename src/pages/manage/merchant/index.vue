@@ -35,14 +35,14 @@
             </Form>
             </Col>
             <Col span="6" class="text-align-right">
-            <Button type="primary" @click="addModal = true"><Icon type="plus-round"></Icon>&nbsp;添加商户</Button></Button>
+            <Button type="primary" @click="addModal = true" v-if=""><Icon type="plus-round"></Icon>&nbsp;添加商户</Button></Button>
             </Col>
         </Row>
         <Row class="mb-15">
             <Table :context="self" :columns="columns" :data="list"></Table>
         </Row>
         <Row type="flex" justify="end">
-            <Page :total="total" :page-size="pageSize" show-total show-elevator @on-change="changePage"></Page>
+            <Page :total="total" :page-size="pageSize" :current="pageNumber" show-total show-elevator @on-change="changePage"></Page>
         </Row>
 
         <!--添加 Modal 对话框-->
@@ -111,6 +111,8 @@
     export default {
         data () {
             return {
+            	//权限数据
+            	auth: {},
                 //render 里使用 如果没有此this 会导致找不到方法而报错
                 self: this,
                 columns: [
@@ -205,6 +207,9 @@
                 total: 0,
                 //每页多少条数据
                 pageSize: 1,
+                //当前页码
+                pageNumber: 1,
+                //添加表单
                 addForm: {
                     name: '',
                     type: '',
@@ -263,6 +268,7 @@
             },
             //分页切换页码
             changePage (page) {
+                this.pageNumber = page
                 let search = this.formSearch
                 let query = Object.assign({page: page }, search)
                 //分页
@@ -294,6 +300,7 @@
             },
             //表单搜索
             search() {
+                this.pageNumber = 1
                 let search = this.formSearch
                 this.getData({ params : search })
             },
@@ -317,6 +324,7 @@
             }
         },
         mounted() {
+        	this.auth = this.$store.state.MainMenu.auth
             //服务端获取数据
             this.getData();
         }

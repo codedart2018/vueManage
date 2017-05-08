@@ -4,7 +4,8 @@
 import * as types from '../mutation-types'
 
 const state = {
-    mainMenu: JSON.parse(window.localStorage.getItem('mainMenu')) || {}
+    mainMenu: JSON.parse(window.localStorage.getItem('mainMenu')) || {},
+    auth: {}
 }
 
 const mutations = {
@@ -17,6 +18,9 @@ const mutations = {
         window.localStorage.removeItem('mainMenu')
         window.localStorage.removeItem('mainMenu')
         state.mainMenu = menu
+    },
+    [types.AUTH] (state, auth) {
+        state.auth = auth
     }
 }
 

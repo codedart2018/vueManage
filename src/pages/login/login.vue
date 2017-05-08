@@ -113,7 +113,7 @@
 
         },
         methods: {
-            ...mapActions(['mainMenu', 'userLogin']),
+            ...mapActions(['mainMenu', 'userLogin', 'auth']),
             showAccount() {
                 this.scan = true
                 this.account = false
@@ -145,6 +145,7 @@
                                     user_info,
                                     token
                                 })
+                                this.auth({'append' : 1})
                                 this.$router.push({ path: '/manage/' })
                                 //console.log(this.$router.options.routes)
                                 //console.log(this.formValidate)

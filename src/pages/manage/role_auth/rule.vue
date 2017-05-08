@@ -44,7 +44,7 @@
             <Table :context="self" :columns="columns" :data="list"></Table>
         </Row>
         <Row type="flex" justify="end">
-            <Page :total="total" :page-size="pageSize" :current="2" show-total show-elevator @on-change="changePage"></Page>
+            <Page :total="total" :page-size="pageSize" :current="pageNumber" show-total show-elevator @on-change="changePage"></Page>
         </Row>
 
         <!--添加 Modal 对话框-->
@@ -324,6 +324,9 @@
                 total: 0,
                 //每页多少条数据
                 pageSize: 1,
+                //当前页码
+                pageNumber: 1,
+                //添加表单
                 addForm: {
                 	pid: '',
                     name: '',
@@ -403,6 +406,7 @@
             },
             //分页切换页码
             changePage (page) {
+            	this.pageNumber = page
                 let search = this.formSearch
                 let query = Object.assign({page: page }, search)
                 //分页
@@ -465,11 +469,12 @@
             },
             //表单搜索
             search() {
-            	// todo 搜索后的分页似乎有问题
+            	let page = 1
+                this.pageNumber = page
                 let search = this.formSearch
                 this.getData({ params : search })
                 //暂时不做关键词显示在路由上
-                this.$router.push({ name: this.$router.currentRoute.name, query: {page: 1}})
+                this.$router.push({ name: this.$router.currentRoute.name, query: {page: page}})
             },
             //保存数据方法
             save(url, data) {
@@ -492,7 +497,6 @@
         mounted() {
             //服务端获取数据
             this.getData();
-            let page = { page: 1 }
             //console.log(Object.assign(page, this.formSearch));
             //console.log(this.$route.query)
             //console.info(this.$router.options.routes)
