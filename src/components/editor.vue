@@ -2,7 +2,6 @@
 <template>
     <div>
         <script :id="randomNumber" type="text/plain"></script>
-        <div>百度编辑器</div>
     </div>
 </template>
 
@@ -50,8 +49,11 @@
             },
             //追加内容
             setContent(text) {
-            	console.log(123)
                 this.instance.setContent(text, true)
+            },
+            //插入HTML内容
+            insertHtml(content) {
+                this.instance.execCommand('insertHtml', content)
             }
         },
         beforeDestroy () {
