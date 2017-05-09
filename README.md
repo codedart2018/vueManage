@@ -130,6 +130,9 @@ npm run build --report
 
 ### 截图
 
+#### vue 微信编辑器
+![vue 微信编辑器](./demo/images/edit.jpg)
+
 #### vue 百度编辑器
 ![vue 百度编辑器](./demo/images/editor.jpg)
 
