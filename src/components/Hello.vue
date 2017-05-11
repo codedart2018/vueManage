@@ -4,13 +4,12 @@
         <h2>这个页面是我写测试用的</h2>
         <div class="ht">
             <router-link to="/login/"><h1>管理中心入口</h1></router-link>
-            <router-link to="/state">State</router-link>
+            <router-link to="/state"><h1>State</h1></router-link>
             组件点击事件
             <my-button @click.native="buttonClick"></my-button>
-            <div style="border: 1px solid #dedede; height: 60px;">
-
-                <pic-Base64 :multiple="true" :done="getFiles" :number=1></pic-Base64>
-            </div>
+            <!--<div style="border: 1px solid #dedede; height: 60px;">-->
+                <!--<pic-Base64 :multiple="true" :done="getFiles" :number=1></pic-Base64>-->
+            <!--</div>-->
         </div>
         {{files}}
         去除前后空格
@@ -77,6 +76,12 @@
         font-family: inherit;
         font-size: inherit;
         line-height: inherit;
+    }
+    .ht {
+
+    }
+    .ht a h1:hover {
+        color: #00a0e9;
     }
 </style>
 <script>
