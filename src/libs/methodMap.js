@@ -4,6 +4,12 @@
  */
 
 const methodMap = {
+    /** 公共接口 无须授权 **/
+    /** 编辑器素材分类接口 **/
+    EditMaterialType: {url: '/api/common_api/edit_material_type', method: 'get'},
+    /** 编辑器素材列表接口 **/
+    EditMaterialList: {url: '/api/common_api/edit_material_list', method: 'get'},
+    
     /** 登陆接口 **/
     Login: {url: '/api/login/manage_login', method: "post"},
     /** 退出接口 **/

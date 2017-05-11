@@ -51,6 +51,10 @@
             setContent(text) {
                 this.instance.setContent(text, true)
             },
+            //清空文本
+            setEmptyContent() {
+                this.instance.setContent('')
+            },
             //插入HTML内容
             insertHtml(content) {
                 this.instance.execCommand('insertHtml', content)
