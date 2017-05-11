@@ -77,6 +77,17 @@ const router =[
         },
         display: 0
     },
+    //微信编辑器没有提交上来 请删除
+    {
+        path: '/wx-editor/:id?',
+        component: resolve => require(['./test/wx-editor.vue'], resolve),
+        name: '微信编辑器',
+        meta: {
+            title: 'wx-editor',
+            routeAuth: false
+        },
+        display: 0
+    },
     ...sessionRouters(Menu)
 ]
 
