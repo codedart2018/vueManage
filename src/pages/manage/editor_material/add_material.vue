@@ -61,12 +61,14 @@
                 },
             	//分类数据
             	cate: [],
+                //表单字段
                 formField: {
                     title: '',
                     c_id: '',
                     status: "1",
                     content: ''
                 },
+                //验证规则
                 ruleValidate: {
                     title: [
                         { required: true, message: '素材标题不能为空', trigger: 'blur' },

@@ -1,7 +1,7 @@
 <!--百度编辑器组件-->
 <template>
     <div>
-        <script :id="randomNumber" type="text/plain"></script>
+        <script :id="randomNumber" v-html="content" type="text/plain"></script>
     </div>
 </template>
 
@@ -12,7 +12,7 @@
 <script>
     //主体文件引入
     import '../../static/ueditor/ueditor.config.js'
-    import '../../static/ueditor/ueditor.all.min.js'
+    import '../../static/ueditor/ueditor.all.js'
     import '../../static/ueditor/lang/zh-cn/zh-cn.js'
     //主体文件引入
 
@@ -22,12 +22,16 @@
             config: {
                 type: Object,
                 default:() => {}
+            },
+            content: {
+                type: String,
+                default: ''
             }
         },
         data(){
             return{
                 //每个编辑器生成不同的id,以防止冲突
-                randomNumber: 'editor_' + (Math.random() * 100000000000000000),
+                randomNumber: 'editor_' + Math.random().toString(6).substring(2),
                 //实例
                 instance: null,
             }
@@ -63,6 +67,7 @@
         beforeDestroy () {
             // 组件销毁的时候，要销毁 UEditor 实例
             if (this.instance !== null && this.instance.destroy) {
+            	console.log("destroy")
                 this.instance.destroy()
             }
         },

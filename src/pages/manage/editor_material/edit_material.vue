@@ -1,3 +1,4 @@
+<style src="../../../assets/style/manage/phone_preview.less" lang="less" scoped></style>
 <template>
     <div>
         <Card dis-hover>
@@ -22,7 +23,7 @@
 
                         <Form-item label="素材内容" prop="content">
                             <div style="line-height: normal">
-                                <UEditor ref="editor" @ready="editorReady" v-model="formField.content" :config="config"></UEditor>
+                                <UEditor v-show="status" ref="editor" @ready="editorReady" v-model="formField.content" :config="config"></UEditor>
                             </div>
                         </Form-item>
                         <Form-item>
@@ -32,16 +33,28 @@
                     </Form>
                 </Col>
                 <Col span="12">
+                    <div class="preview-box">
+                        <div class="title">代码兔，我们专注于微信公众号</div>
+                        <div class="tips">
+                            <em style="color: rgb(140, 140, 140); font-size: 12px; font-style: normal;">2020-02-02</em>
+                            <a style="color: rgb(96, 127, 166); font-size: 12px;" href="">代码兔 www.daimatu.cn</a>
+                        </div>
+                        <div class="preview">
+                            <div id="content">
+                                <div v-html="formField.content"></div>
+                            </div>
+                            <div>
+                                <a style="font-size:12px;color:#607fa6" href="" target="_blank" id="post-user">阅读原文</a> <em style="color:#8c8c8c;font-style:normal;font-size:12px;">阅读 100000+</em>
+                                <span class="fr"><a style="font-size:12px;color:#607fa6" href="" target="_blank">我要举报</a></span>
+                            </div>
+                        </div>
+                    </div>
                 </Col>
             </Row>
         </Card>
     </div>
 </template>
-<style>
-    body{
-        background-color:#ff0000;
-    }
-</style>
+
 <script>
     import UEditor from '../../../components/editor'
 
@@ -60,12 +73,15 @@
                 },
                 //分类数据
                 cate: [],
+                status: false,
+                //表单字段
                 formField: {
                     title: '',
                     c_id: '',
                     status: "",
                     content: ''
                 },
+                //验证规则
                 ruleValidate: {
                     title: [
                         { required: true, message: '素材标题不能为空', trigger: 'blur' },
@@ -81,7 +97,8 @@
                     content: [
                         { required: true, message: '请编写素材内容', trigger: 'change' }
                     ]
-                }
+                },
+                instance: null
             }
         },
 
@@ -108,9 +125,11 @@
                 let id = this.$route.params.id
                 this.apiGet('/api/editor_material/edit_material',{id: id}).then((res) => {
                     if(res.status) {
+                    	this.status = true
                     	this.formField = res.data
                         //插入编辑器内容
                         this.$refs.editor.insertHtml(res.data.content)
+                        //this.$forceUpdate()
                     } else {
                         this.$Message.error(res.msg)
                     }
@@ -126,7 +145,6 @@
             },
             //初始化编辑器
             editorReady(instance) {
-                instance.setContent('');
                 instance.addListener('contentChange', () => {
                     this.formField.content = instance.getContent();
                 });
