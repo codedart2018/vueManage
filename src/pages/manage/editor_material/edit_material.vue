@@ -27,7 +27,7 @@
                         </Form-item>
                         <Form-item>
                             <Button type="primary" @click="handleSubmit('formField')">提交</Button>
-                            <Button type="ghost" @click="handleReset('formField')" style="margin-left: 8px">重置</Button>
+                            <Button type="ghost" @click="goBack" style="margin-left: 8px">返回</Button>
                         </Form-item>
                     </Form>
                 </Col>
@@ -63,14 +63,14 @@
                 formField: {
                     title: '',
                     c_id: '',
-                    status: "1",
+                    status: "",
                     content: ''
                 },
                 ruleValidate: {
                     title: [
                         { required: true, message: '素材标题不能为空', trigger: 'blur' },
                         { type: 'string', min: 2, message: '素材名称不能少于2个字符', trigger: 'blur' },
-                        { type: 'string', max: 12, message: '素材名称不能大于12个字符', trigger: 'blur' }
+                        { type: 'string', max: 20, message: '素材名称不能大于20个字符', trigger: 'blur' }
                     ],
                     c_id: [
                         { required: true, message: '请选择素材分类', trigger: 'change' }
@@ -86,6 +86,23 @@
         },
 
         methods: {
+        	//提交数据
+            handleSubmit (name) {
+                this.$refs[name].validate((valid) => {
+                    if (valid) {
+                        this.request('EditMaterialEditor', this.formField).then((res) => {
+                            if(res.status) {
+                                this.$Message.success(res.msg);
+                                this.$router.go(-1)
+                            } else {
+                                this.$Message.error(res.msg);
+                            }
+                        })
+                    } else {
+                        this.$Message.error('表单验证失败!');
+                    }
+                })
+            },
         	//获取数据
             getData() {
                 let id = this.$route.params.id
@@ -114,6 +131,10 @@
                     this.formField.content = instance.getContent();
                 });
             },
+            //后退海阔天空
+            goBack() {
+                this.$router.go(-1)
+            }
         },
         components:{
             UEditor
