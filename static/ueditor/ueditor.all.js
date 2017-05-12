@@ -22798,7 +22798,7 @@ UE.plugins['formatmatch'] = function(){
             }
 
 
-              
+            
             var range = me.selection.getRange();
             img = range.getClosedNode();
             if(!img || img.tagName != 'IMG'){
