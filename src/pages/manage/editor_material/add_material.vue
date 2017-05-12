@@ -1,3 +1,4 @@
+<style src="../../../assets/style/manage/phone_preview.less" lang="less" scoped></style>
 <template>
     <div>
         <Card dis-hover>
@@ -28,10 +29,27 @@
                         <Form-item>
                             <Button type="primary" @click="handleSubmit('formField')">提交</Button>
                             <Button type="ghost" @click="handleReset('formField')" style="margin-left: 8px">重置</Button>
+                            <Button type="ghost" @click="goBack" style="margin-left: 8px">返回</Button>
                         </Form-item>
                     </Form>
                 </Col>
                 <Col span="12">
+                    <div class="preview-box">
+                        <div class="title">代码兔，我们专注于微信公众号</div>
+                        <div class="tips">
+                            <em style="color: rgb(140, 140, 140); font-size: 12px; font-style: normal;">2020-02-02</em>
+                            <a style="color: rgb(96, 127, 166); font-size: 12px;" href="">代码兔 www.daimatu.cn</a>
+                        </div>
+                        <div class="preview">
+                            <div id="content">
+                                <div v-html="formField.content"></div>
+                            </div>
+                            <div>
+                                <a style="font-size:12px;color:#607fa6" href="" target="_blank" id="post-user">阅读原文</a> <em style="color:#8c8c8c;font-style:normal;font-size:12px;">阅读 100000+</em>
+                                <span class="fr"><a style="font-size:12px;color:#607fa6" href="" target="_blank">我要举报</a></span>
+                            </div>
+                        </div>
+                    </div>
                 </Col>
             </Row>
         </Card>
