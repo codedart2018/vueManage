@@ -54,6 +54,14 @@ const methodMap = {
     MerchantUser: {url: '/api/merchant_user/index', method: "get"},
     /** 重置商户用户密码 **/
     MerchantUserRestPassWord: {url: '/api/merchant_user/reset_password', method: "post"},
+    /** 编辑器素材列表 **/
+    EditorMaterial: {url: '/api/editor_material/index', method: "get"},
+    /** 编辑器素材分类 **/
+    EditorMaterialCate: {url: '/api/editor_material/cate', method: "get"},
+    /** 添加编辑器素材 **/
+    AddEditorMaterial: {url: '/api/editor_material/add_material', method: "post"},
+    /** 编辑编辑器素材 **/
+    EditMaterialEditor: {url: '/api/editor_material/edit_material', method: "post"},
 }
 
 export default methodMap
