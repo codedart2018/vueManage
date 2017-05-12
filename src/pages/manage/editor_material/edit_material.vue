@@ -3,6 +3,33 @@
         <Card dis-hover>
             <Row>
                 <Col span="12">
+                    <Form ref="formField" :model="formField" :rules="ruleValidate" :label-width="80">
+                        <Form-item label="素材标题" prop="title" style="width: 400px;">
+                            <Input v-model="formField.title" placeholder="请输入姓名"></Input>
+                        </Form-item>
+                        <Form-item label="素材分类" prop="c_id" style="width: 400px;">
+                            <Select v-model="formField.c_id" placeholder="请选择">
+                                <Option value="">请选择</Option>
+                                <Option v-for="item in cate" :value="item.id" :key="item.id">{{ item.name }}</Option>
+                            </Select>
+                        </Form-item>
+                        <Form-item label="素材状态" prop="status">
+                            <Radio-group v-model="formField.status">
+                                <Radio label="1">正常</Radio>
+                                <Radio label="0">锁定</Radio>
+                            </Radio-group>
+                        </Form-item>
+
+                        <Form-item label="素材内容" prop="content">
+                            <div style="line-height: normal">
+                                <UEditor ref="editor" @ready="editorReady" v-model="formField.content" :config="config"></UEditor>
+                            </div>
+                        </Form-item>
+                        <Form-item>
+                            <Button type="primary" @click="handleSubmit('formField')">提交</Button>
+                            <Button type="ghost" @click="handleReset('formField')" style="margin-left: 8px">重置</Button>
+                        </Form-item>
+                    </Form>
                 </Col>
                 <Col span="12">
                 </Col>
@@ -16,15 +43,84 @@
     }
 </style>
 <script>
+    import UEditor from '../../../components/editor'
 
     export default{
         data(){
             return{
-                msg:'hello vue'
+                //编辑器配置
+                config: {
+                    initialFrameHeight: 450, // 高度
+                    toolbars: [["undo","redo","bold","italic","forecolor","backcolor","paragraph","fontfamily","fontsize","autotypeset",'insertorderedlist',"lineheight","inserttable","removeformat",'insertvideo','link',"insertimage","justifyleft","justifycenter","justifyright",'justifyjustify', "indent",'source']],
+                    zIndex: 0, // 编辑器层级
+                    charset:"utf-8", //编码
+                    saveInterval: 5000,
+                    autoHeightEnabled: false,
+                    enableAutoSave: false
+                },
+                //分类数据
+                cate: [],
+                formField: {
+                    title: '',
+                    c_id: '',
+                    status: "1",
+                    content: ''
+                },
+                ruleValidate: {
+                    title: [
+                        { required: true, message: '素材标题不能为空', trigger: 'blur' },
+                        { type: 'string', min: 2, message: '素材名称不能少于2个字符', trigger: 'blur' },
+                        { type: 'string', max: 12, message: '素材名称不能大于12个字符', trigger: 'blur' }
+                    ],
+                    c_id: [
+                        { required: true, message: '请选择素材分类', trigger: 'change' }
+                    ],
+                    status: [
+                        { required: true, message: '请选择状态', trigger: 'change' }
+                    ],
+                    content: [
+                        { required: true, message: '请编写素材内容', trigger: 'change' }
+                    ]
+                }
             }
         },
-        components:{
 
+        methods: {
+        	//获取数据
+            getData() {
+                let id = this.$route.params.id
+                this.apiGet('/api/editor_material/edit_material',{id: id}).then((res) => {
+                    if(res.status) {
+                    	this.formField = res.data
+                        //插入编辑器内容
+                        this.$refs.editor.insertHtml(res.data.content)
+                    } else {
+                        this.$Message.error(res.msg)
+                    }
+                })
+            },
+            //获得分类数据
+            getCate() {
+                this.request('EditorMaterialCate', {type: 1}, true).then((res) => {
+                    if(res.status) {
+                        this.cate = res.data
+                    }
+                })
+            },
+            //初始化编辑器
+            editorReady(instance) {
+                instance.setContent('');
+                instance.addListener('contentChange', () => {
+                    this.formField.content = instance.getContent();
+                });
+            },
+        },
+        components:{
+            UEditor
+        },
+        mounted() {
+            this.getCate()
+        	this.getData()
         }
     }
 </script>

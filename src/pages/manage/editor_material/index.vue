@@ -101,7 +101,7 @@
                         width: 140,
                         align: 'center',
                         render (row, column, index) {
-                            return `<i-button type="primary" size="small" @click="edit(${index})">编辑</i-button> <i-button type="error" size="small" @click="del(${index}, ${row.id})">删除</i-button>`;
+                            return `<i-button type="primary" size="small" @click="edit(${row.id})">编辑</i-button> <i-button type="error" size="small" @click="del(${index}, ${row.id})">删除</i-button>`;
                         }
                     }
                 ],
@@ -141,9 +141,10 @@
                         //每页多少条数据
                         this.pageSize = res.data.size
                     }
-                }).catch((response) => {
-
                 })
+            },
+            edit(id) {
+                this.$router.push({ path: '/manage/editor_material/edit_material/' + id, params: { id: id }})
             },
             //删除角色数据
             del (index, id) {
@@ -168,9 +169,6 @@
             //表单搜索
             search() {
 
-            },
-            authGo(id) {
-                this.$router.push({ path: '/manage/authorize/' + id, params: { id: id }})
             }
         },
         mounted() {

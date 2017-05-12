@@ -4,10 +4,10 @@
             <Row>
                 <Col span="12">
                     <Form ref="formField" :model="formField" :rules="ruleValidate" :label-width="80">
-                        <Form-item label="素材标题" prop="title">
+                        <Form-item label="素材标题" prop="title" style="width: 400px;">
                             <Input v-model="formField.title" placeholder="请输入姓名"></Input>
                         </Form-item>
-                        <Form-item label="素材分类" prop="c_id">
+                        <Form-item label="素材分类" prop="c_id" style="width: 400px;">
                             <Select v-model="formField.c_id" placeholder="请选择">
                                 <Option value="">请选择</Option>
                                 <Option v-for="item in cate" :value="item.id" :key="item.id">{{ item.name }}</Option>
@@ -64,7 +64,7 @@
                 formField: {
                     title: '',
                     c_id: '',
-                    status: 1,
+                    status: "1",
                     content: ''
                 },
                 ruleValidate: {
@@ -89,8 +89,14 @@
             handleSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                    	this.request('')
-                        this.$Message.success('提交成功!');
+                    	this.request('AddEditorMaterial', this.formField).then((res) => {
+                    		if(res.status) {
+                                this.$Message.success(res.msg);
+                                this.$router.go(-1)
+                            } else {
+                                this.$Message.error(res.msg);
+                            }
+                        })
                     } else {
                         this.$Message.error('表单验证失败!');
                     }
@@ -114,6 +120,10 @@
                     this.formField.content = instance.getContent();
                 });
             },
+            //后退海阔天空
+            goBack() {
+                this.$router.go(-1)
+            }
         },
         mounted() {
         	this.getCate()
