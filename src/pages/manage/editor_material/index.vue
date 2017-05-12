@@ -2,24 +2,28 @@
     <div>
         <Row class="mb-15">
             <Col span="18" class="search">
-            <!-- 如果角色真多了再搜索
-            <Form :model="formSearch" :label-width="80" inline label-position="right">
-                <Form-item label="角色名称：">
-                    <Input v-model="formSearch.keywords" placeholder="请输入角色名称关键词"></Input>
-                </Form-item>
-                <Form-item label="角色状态：">
-                    <Select v-model="formSearch.status" placeholder="请选择" style="width:90px">
-                        <Option value="">请选择</Option>
-                        <Option value="1">正常</Option>
-                        <Option value="0">锁定</Option>
-                        <Option value="-1">删除</Option>
-                    </Select>
-                </Form-item>
-                <Form-item :label-width="1">
-                    <Button type="primary" @click="search('formSearch')" icon="ios-search">搜索</Button>
-                </Form-item>
-            </Form>
-            -->
+                <Form :model="formSearch" :label-width="80" inline label-position="right">
+                    <Form-item label="素材名称：">
+                        <Input v-model="formSearch.keywords" placeholder="请输入角色名称关键词"></Input>
+                    </Form-item>
+                    <Form-item label="素材分类：">
+                        <Select v-model="formSearch.c_id" placeholder="请选择" style="width:90px">
+                            <Option value="">请选择</Option>
+                            <Option v-for="item in cate" :value="item.id" :key="item.id">{{ item.name }}</Option>
+                        </Select>
+                    </Form-item>
+                    <Form-item label="素材状态：">
+                        <Select v-model="formSearch.status" placeholder="请选择" style="width:90px">
+                            <Option value="">请选择</Option>
+                            <Option value="1">正常</Option>
+                            <Option value="0">锁定</Option>
+                            <Option value="-1">删除</Option>
+                        </Select>
+                    </Form-item>
+                    <Form-item :label-width="1">
+                        <Button type="primary" @click="search('formSearch')" icon="ios-search">搜索</Button>
+                    </Form-item>
+                </Form>
             &nbsp;
             </Col>
             <Col span="6" class="text-align-right">
@@ -30,7 +34,7 @@
             <Table :context="self" :columns="columns" :data="list"></Table>
         </Row>
         <Row type="flex" justify="end">
-            <Page :total="total" :page-size="pageSize" show-total show-elevator @on-change="changePage"></Page>
+            <Page :total="total" :page-size="pageSize" :current="pageNumber" show-total show-elevator @on-change="changePage"></Page>
         </Row>
     </div>
 </template>
@@ -42,7 +46,6 @@
         zoom: 1;
     }
 </style>
-
 
 <script>
 
@@ -111,8 +114,12 @@
                 total: 0,
                 //每页多少条数据
                 pageSize: 1,
+                //当前页码
+                pageNumber: 1,
                 //搜索表单
                 formSearch: {},
+                //分类
+                cate: []
             }
         },
         methods: {
@@ -122,6 +129,7 @@
             },
             //分页切换页码
             changePage (page) {
+                this.pageNumber = page
                 let search = this.formSearch
                 let query = Object.assign({page: page }, search)
                 //分页
@@ -140,6 +148,13 @@
                         this.total = res.data.count
                         //每页多少条数据
                         this.pageSize = res.data.size
+                    } else {
+                        //列表数据
+                        this.list = []
+                        //总页数
+                        this.total = 0
+                        //每页多少条数据
+                        this.pageSize = 0
                     }
                 })
             },
@@ -154,13 +169,14 @@
                     content: '<p>你确定要删除?删除后不可恢复!</p>',
                     loading: true,
                     onOk: () => {
-                        this.request('DelRole', {id, id}).then((res) => {
+                        this.request('DelEditorMaterial', {id, id}).then((res) => {
                             if(res.status) {
                                 this.$Message.info(res.msg)
                                 this.$Modal.remove();
                                 this.list[index].status = -1
                             } else {
                                 this.$Message.error(res.msg)
+                                this.$Modal.remove();
                             }
                         })
                     }
@@ -168,12 +184,27 @@
             },
             //表单搜索
             search() {
-
-            }
+                let page = 1
+                this.pageNumber = page
+                let search = this.formSearch
+                //if(JSON.stringify(search) == "{}") return
+                this.getData({ params : search })
+            },
+            //获得分类数据
+            getCate() {
+                this.request('EditorMaterialCate', {type: 1}, true).then((res) => {
+                    if(res.status) {
+                        this.cate = res.data
+                    }
+                })
+            },
         },
         mounted() {
             //服务端获取数据
-            this.getData();
+            this.getData()
+            //服务端分类数据
+            this.getCate()
+            console.log(JSON.stringify(this.formSearch))
         }
     }
 </script>

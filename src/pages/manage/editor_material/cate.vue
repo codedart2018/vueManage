@@ -44,17 +44,17 @@
             <div slot="header" class="ivu-modal-header-inner">编辑分类</div>
             <div>
                 <Form ref="editForm" :model="editForm" :rules="ruleValidate" :label-width="80">
-                    <Form-item label="角色名称" prop="name">
+                    <Form-item label="分类名称" prop="name">
                         <Input v-model="editForm.name" placeholder="请填写角色名称"></Input>
                     </Form-item>
-                    <Form-item label="角色状态" prop="status">
+                    <Form-item label="分类图标" prop="icon">
+                        <Input v-model="editForm.icon" placeholder="请填写角色名称"></Input>
+                    </Form-item>
+                    <Form-item label="分类状态" prop="status">
                         <Radio-group v-model="editForm.status">
                             <Radio label="1">正常</Radio>
                             <Radio label="0">锁定</Radio>
                         </Radio-group>
-                    </Form-item>
-                    <Form-item label="角色说明" prop="desc">
-                        <Input v-model="editForm.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="角色说明..."></Input>
                     </Form-item>
                 </Form>
             </div>
@@ -135,7 +135,7 @@
                 addForm: {
                     name: '',
                     status: 1,
-                    desc: ''
+                    icon: ''
                 },
                 //验证规则
                 ruleValidate: {
@@ -143,6 +143,9 @@
                         { required: true, message: '分类名称不能为空', trigger: 'blur' },
                         { type: 'string', min: 2, message: '分类名称不能少于2个字符', trigger: 'blur' },
                         { type: 'string', max: 6, message: '分类名称不能大于6个字符', trigger: 'blur' },
+                    ],
+                    icon: [
+                        { type: 'string', message: 'ICON只能英文数字下划线', trigger: 'blur', pattern: /^[a-zA-Z-_0-9]+$/}
                     ]
                 },
                 //搜索表单
@@ -164,7 +167,7 @@
             addSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        this.save("AddRole", this.addForm)
+                        this.save("AddEditorMaterialCate", this.addForm)
                     } else {
                         this.$Message.error('表单验证失败!')
                     }
@@ -174,7 +177,7 @@
             editSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        this.save("EditRole", this.editForm)
+                        this.save("EditEditorMaterialCate", this.editForm)
                     } else {
                         this.$Message.error('表单验证失败!')
                     }
@@ -203,9 +206,11 @@
                         this.total = res.data.count
                         //每页多少条数据
                         this.pageSize = res.data.size
+                    } else {
+                        this.list = []
+                        this.total = 0
+                        this.pageSize = 0
                     }
-                }).catch((response) => {
-
                 })
             },
             edit (index) {
@@ -222,7 +227,7 @@
                     content: '<p>你确定要删除?删除后不可恢复!</p>',
                     loading: true,
                     onOk: () => {
-                        this.request('DelRole', {id, id}).then((res) => {
+                        this.request('DelEditorMaterialCate', {id, id}).then((res) => {
                             if(res.status) {
                                 this.$Message.info(res.msg)
                                 this.$Modal.remove();
@@ -233,10 +238,6 @@
                         })
                     }
                 });
-            },
-            //表单搜索
-            search() {
-
             },
             //保存数据方法
             save(url, data) {
@@ -252,6 +253,7 @@
                         this.getData()
                     } else {
                         this.$Message.error(res.msg)
+                        this.$Modal.remove();
                     }
                 })
             }

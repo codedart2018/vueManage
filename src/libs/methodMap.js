@@ -62,6 +62,14 @@ const methodMap = {
     EditMaterialEditor: {url: '/api/editor_material/edit_material', method: "post"},
     /** 编辑器素材分类列表 **/
     EditorMaterialCate: {url: '/api/editor_material/cate', method: "get"},
+    /** 编辑器素材分类列表 **/
+    AddEditorMaterialCate: {url: '/api/editor_material/add_cate', method: "post"},
+    /** 编辑器素材分类列表 **/
+    EditEditorMaterialCate: {url: '/api/editor_material/edit_cate', method: "post"},
+    /** 删除编辑器素材分类 **/
+    DelEditorMaterialCate: {url: '/api/editor_material/del_cate', method: "post"},
+    /** 删除编辑器素材 **/
+    DelEditorMaterial: {url: '/api/editor_material/del', method: "post"},
 }
 
 export default methodMap

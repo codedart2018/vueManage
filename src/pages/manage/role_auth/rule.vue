@@ -462,6 +462,7 @@
                                 this.list[index].status = -1
                             } else {
                                 this.$Message.error(res.msg)
+                                this.$Modal.remove();
                             }
                         })
                     }
