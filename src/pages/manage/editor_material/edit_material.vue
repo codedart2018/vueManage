@@ -23,7 +23,7 @@
 
                         <Form-item label="素材内容" prop="content">
                             <div style="line-height: normal">
-                                <UEditor v-show="status" ref="editor" @ready="editorReady" v-model="formField.content" :config="config"></UEditor>
+                                <UEditor v-show="status" ref="editor" @ready="getData" v-model="formField.content" :config="config"></UEditor>
                             </div>
                         </Form-item>
                         <Form-item>
@@ -121,14 +121,16 @@
                 })
             },
         	//获取数据
-            getData() {
+            getData(instance) {
                 let id = this.$route.params.id
                 this.apiGet('/api/editor_material/edit_material',{id: id}).then((res) => {
                     if(res.status) {
                     	this.status = true
                     	this.formField = res.data
-                        //插入编辑器内容
-                        this.$refs.editor.insertHtml(res.data.content)
+                        instance.execCommand('insertHtml', res.data.content)
+                        instance.addListener('contentChange', () => {
+                            this.formField.content = instance.getContent();
+                        });
                         //this.$forceUpdate()
                     } else {
                         this.$Message.error(res.msg)
@@ -159,7 +161,6 @@
         },
         mounted() {
             this.getCate()
-        	this.getData()
         }
     }
 </script>

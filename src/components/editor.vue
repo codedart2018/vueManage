@@ -67,7 +67,6 @@
         beforeDestroy () {
             // 组件销毁的时候，要销毁 UEditor 实例
             if (this.instance !== null && this.instance.destroy) {
-            	console.log("destroy")
                 this.instance.destroy()
             }
         },
