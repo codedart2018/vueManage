@@ -13,7 +13,6 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "async-validate": "^1.0.1",
     "axios": "^0.15.3",
     "iview": "^2.0.0-rc.10",
     "vue": "^2.2.2",

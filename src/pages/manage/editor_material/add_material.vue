@@ -55,11 +55,6 @@
         </Card>
     </div>
 </template>
-<style>
-    body{
-        background-color:#ff0000;
-    }
-</style>
 
 <script>
     import UEditor from '../../../components/editor'
@@ -153,4 +148,3 @@
         }
     }
 </script>
-
